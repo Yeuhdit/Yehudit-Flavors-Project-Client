@@ -1,25 +1,19 @@
 // src/main.jsx
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App.jsx';
-import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
-import { SnackbarProvider } from 'notistack';
-import { heIL } from '@mui/material/locale';
+// •`StrictMode` הוא רכיב שנמצא בתוך ספריית React. זהו קומפוננט שמסייע לזהות בעיות פוטנציאליות בקוד במהלך הפיתוח.
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import { Provider } from 'react-redux'
+import { store } from './features/common/store.js' // ניצור בקרוב
+import { HashRouter as Router } from 'react-router-dom'
+import App from './features/common/App.jsx'
 
-const theme = createTheme({
-  direction: 'rtl',
-  palette: {
-    primary: { main: '#d35400' },
-    background: { default: '#fdf6f0' }
-  },
-  typography: { fontFamily: '"Heebo", sans-serif' }
-}, heIL);
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <SnackbarProvider maxSnack={3} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-      <App />
-    </SnackbarProvider>
-  </ThemeProvider>
-);
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <Router>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </Router>
+  </StrictMode>
+)
