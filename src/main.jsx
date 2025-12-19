@@ -6,7 +6,7 @@ import './index.css'
 import { Provider } from 'react-redux'
 import { store } from './features/common/store.js' 
 import { HashRouter as Router } from 'react-router-dom'
-// import App from './features/common/App.jsx'
+import App from './features/common/App.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
