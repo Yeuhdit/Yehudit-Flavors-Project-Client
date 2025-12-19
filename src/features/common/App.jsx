@@ -4,6 +4,7 @@ import rtlPlugin from '@mui/stylis-plugin-rtl';
 import { prefixer } from 'stylis';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
+import Navbar from './Navbar'
 
 const cacheRtl = createCache({
   key: 'muirtl',
