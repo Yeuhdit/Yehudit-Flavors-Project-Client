@@ -1,8 +1,9 @@
-// להקים חנות Redux שתכלול תוכניות לאחסון הנתונים שלך, כמו גם את כל המידעים הנדרשים על ידי reducers, middleware, ועוד.
-import { configureStore } from "@reduxjs/toolkit";
+//src/features/common/store.js
+import { configureStore } from '@reduxjs/toolkit'
+import categoriesReducer from '../categories/categorySlice'
 
 export const store = configureStore({
   reducer: {
-    // נוסיף slices אחר כך
+    categories: categoriesReducer
   }
-});
+})

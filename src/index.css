@@ -1,8 +1,9 @@
+/* src/index.css */
 :root {
   --primary-color: #ff9a8b;
 }
 
 body {
   margin: 0;
-  font-family: system-ui, sans-serif;
+  font-family: Arial, sans-serif;
 }

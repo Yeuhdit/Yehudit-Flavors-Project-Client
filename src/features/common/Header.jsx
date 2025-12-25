@@ -1,32 +1,41 @@
-// src/features/common/Header.jsx
-import { TextField, IconButton, Chip } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+//src/features/common/Header.jsx
+import { TextField, IconButton, Chip } from '@mui/material'
+import SearchIcon from '@mui/icons-material/Search'
+import { useSelector } from 'react-redux'
+import './Home.css'
 
-const difficulties = ['קל', 'בינוני', 'קשה'];
+const difficulties = ['קל', 'בינוני', 'קשה']
 
 const Header = () => {
+  const categories = useSelector(state => state.categories.allCategories)
+
   return (
     <div className="homeText">
-      {/* שדה חיפוש */}
       <TextField
         fullWidth
         placeholder="מה תרצו להכין היום?"
-        InputProps={{ endAdornment: <IconButton><SearchIcon /></IconButton> }}
+        InputProps={{
+          endAdornment: (
+            <IconButton>
+              <SearchIcon />
+            </IconButton>
+          )
+        }}
       />
-      
-      {/* קטגוריות */}
-      <div className="categories flex-center">
-        <Chip label="כללי" clickable />
+
+      <div className="flex-center">
+        {categories.map(cat => (
+          <Chip key={cat._id} label={cat.description} />
+        ))}
       </div>
-      
-      {/* רמות קושי */}
-      <div className="difficulty flex-center">
-        {difficulties.map(dif => (
-          <Chip key={dif} label={dif} clickable />
+
+      <div className="flex-center">
+        {difficulties.map(d => (
+          <Chip key={d} label={d} />
         ))}
       </div>
     </div>
-  );
+  )
 }
 
-export default Header;
+export default Header

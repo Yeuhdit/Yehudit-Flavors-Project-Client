@@ -1,19 +1,18 @@
 // src/main.jsx
-// •`StrictMode` הוא רכיב שנמצא בתוך ספריית React. זהו קומפוננט שמסייע לזהות בעיות פוטנציאליות בקוד במהלך הפיתוח.
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
 import { Provider } from 'react-redux'
-import { store } from './features/common/store.js' 
-import { HashRouter as Router } from 'react-router-dom'
-import App from './features/common/App.jsx'
+import { HashRouter } from 'react-router-dom'
+import { store } from './features/common/store'
+import App from './features/common/App'
+import './index.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Router>
+    <HashRouter>
       <Provider store={store}>
         <App />
       </Provider>
-    </Router>
+    </HashRouter>
   </StrictMode>
 )
