@@ -5,6 +5,7 @@ import { prefixer } from 'stylis';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import Navbar from './Navbar'
+<Route path='/' element={<Home />} />;
 
 const cacheRtl = createCache({
   key: 'muirtl',
