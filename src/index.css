@@ -7,3 +7,14 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
 }
+
+
+
+
+:root {
+  --primary-color: #ff9a8b;
+}
+
+body {
+  @apply bg-gradient-to-br from-secondary to-white min-h-screen;
+}
