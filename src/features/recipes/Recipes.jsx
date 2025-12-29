@@ -36,18 +36,30 @@
 //   );
 // }
 
- import { mockRecipes } from './recipesData.Js';
-const recipesList = mockRecipes;
+//  import { mockRecipes } from './recipesData.Js';
+// const recipesList = mockRecipes;
+
+// export default function Recipes() {
+//   return (
+//     <div>
+//       {mockRecipes.map(recipe => (
+//         <div key={recipe._id}>
+//           <img src={recipe.imageUrl} alt={recipe.name} width="200" />
+//           <p>{recipe.name}</p>
+//         </div>
+//       ))}
+//     </div>
+//   );
+// }
+import SingleRecipe from './SingleRecipe'
+import { mockRecipes } from './recipesData.Js';
 
 export default function Recipes() {
   return (
-    <div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
       {mockRecipes.map(recipe => (
-        <div key={recipe._id}>
-          <img src={recipe.imageUrl} alt={recipe.name} width="200" />
-          <p>{recipe.name}</p>
-        </div>
+        <SingleRecipe key={recipe._id} recipe={recipe} />
       ))}
     </div>
-  );
+  )
 }
