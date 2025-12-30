@@ -33,7 +33,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/recipes" element={<Recipes />} />
          {/* <Route path="/gallery" element={<Gallery />} />  */}
-     
+  
       </Routes>
     </CacheProvider>
   )
