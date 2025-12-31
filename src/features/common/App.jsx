@@ -12,6 +12,7 @@ import Home from './Home'
 import Recipes from '../recipes/Recipes'
 import { getAllCategories } from '../categories/categorySlice'
 import { getAllRecipes } from '../recipes/recipeSlice'
+import RecipeDetail from '../recipes/RecipeDetail';
 
 const cacheRtl = createCache({
   key: 'rtl',
@@ -33,7 +34,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/recipes" element={<Recipes />} />
          {/* <Route path="/gallery" element={<Gallery />} />  */}
-  
+  <Route path="/recipe/:id" element={<RecipeDetail />} />
+
       </Routes>
     </CacheProvider>
   )
