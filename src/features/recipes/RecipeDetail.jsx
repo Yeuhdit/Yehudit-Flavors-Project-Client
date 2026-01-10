@@ -1,3 +1,4 @@
+// src/features/recipes/RecipeDetail.jsx
 import { useParams } from 'react-router-dom';
 import { mockRecipes } from './recipesData.js'; // חשוב – אותו קובץ עם כל 35!
 import { Box, Typography, Chip, Divider, List, ListItem, ListItemText, Paper } from '@mui/material';

@@ -1,0 +1,70 @@
+// src/components/Register.jsx
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from '../features/common/axiosConfig'; // ייבוא הגדרות Axios
+import './AuthStyles.css';
+
+const Register = () => {
+  const [form, setForm] = useState({ username: '', email: '', password: '', confirmPassword: '', address: '' });
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const validate = () => {
+    const newErrors = {};
+    if (!form.username) newErrors.username = 'חובה';
+    if (!/^\S+@\S+\.\S+$/.test(form.email)) newErrors.email = 'אימייל לא תקין';
+    if (form.password.length < 8) newErrors.password = '8 תווים לפחות';
+    if (form.password !== form.confirmPassword) newErrors.confirmPassword = 'לא תואמות';
+    return newErrors;
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+//ולידציה עברה בהצלחה
+//לשים הערות  ב שיהיה לי ולידציה עם
+    try {
+      const response = await userService.register(form);
+     // const response = await instance.post('/api/users/signup', form);
+      const data = response.data;
+      localStorage.setItem('token', data.token);
+      alert('נרשמת בהצלחה! 🎉');
+      navigate('/');
+    } catch (err) {
+      // הטיפול בשגיאות יתבצע בהגדרות Axios שכבר הוגדרו
+      // אין צורך לשים כאן קוד נוסף
+    }
+  };
+
+  return (
+    <div className="auth-container">
+      <div className="auth-card">
+        <div className="auth-header">
+          <h1>הרשמה</h1>
+          <p>הצטרפי למשפחת המתכונים!</p>
+        </div>
+        <div className="auth-form">
+          <form onSubmit={handleRegister}>
+            <input type="text" name="username" placeholder="שם משתמש" onChange={handleChange} required className="auth-input" />
+            <input type="email" name="email" placeholder="אימייל" onChange={handleChange} required className="auth-input" />
+            <input type="password" name="password" placeholder="סיסמה" onChange={handleChange} required className="auth-input" />
+            <input type="password" name="confirmPassword" placeholder="אימות סיסמה" onChange={handleChange} required className="auth-input" />
+            <input type="text" name="address" placeholder="כתובת (אופציונלי)" onChange={handleChange} className="auth-input" />
+            <button type="submit" className="auth-button">הרשמי</button>
+          </form>
+          <div className="auth-link">
+            <p>כבר רשומה? <span onClick={() => navigate('/login')}>התחברי כאן</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Register;

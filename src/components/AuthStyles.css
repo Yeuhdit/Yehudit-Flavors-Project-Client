@@ -1,0 +1,108 @@
+/* ../components/AuthStyles.css */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap');
+
+* {
+  box-sizing: border-box;
+  font-family: 'Fredoka', sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #fffbf0; /* צהוב עדין כבסיס */
+  background-image: 
+    radial-gradient(circle 80px at 10% 20%, #fde68a 15%, transparent 0),
+    radial-gradient(circle 100px at 80% 80%, #fca5a5 15%, transparent 0),
+    radial-gradient(circle 60px at 50% 50%, #a5f3fc 15%, transparent 0);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.auth-container {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.auth-card {
+  width: 420px;
+  padding: 36px;
+  border-radius: 32px;
+  background: #ffffffee;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+  animation: popIn 0.5s ease;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.auth-card h1 {
+  font-size: 32px;
+  margin-bottom: 8px;
+  color: #f97316;
+}
+
+.auth-card p {
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 16px;
+  border-radius: 20px;
+  border: 2px solid #fde68a;
+  margin-bottom: 14px;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.auth-input:focus {
+  outline: none;
+  border-color: #f97316;
+  background: #fff7ed;
+}
+
+.auth-button {
+  width: 100%;
+  padding: 16px;
+  border-radius: 24px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #fb7185, #f97316);
+  color: white;
+  transition: 0.25s;
+}
+
+.auth-button:hover {
+  transform: translateY(-2px) rotate(-0.5deg);
+  box-shadow: 0 15px 35px #fb718555;
+}
+
+.google-btn {
+  margin-top: 14px;
+  background: #fff;
+  color: #ea580c;
+  border: 2px dashed #fed7aa;
+}
+
+.auth-link {
+  margin-top: 18px;
+  text-align: center;
+  color: #ea580c;
+  font-weight: 600;
+}
+
+.auth-link span {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.error {
+  color: #dc2626;
+  margin-bottom: 10px;
+  font-weight: 600;
+}

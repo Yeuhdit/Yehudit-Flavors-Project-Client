@@ -1,0 +1,87 @@
+/* ../components/CookingAnimation.css */
+.kitchen {
+  position: relative;
+  height: 160px;
+  margin-bottom: 20px;
+}
+
+.pot {
+  width: 140px;
+  height: 70px;
+  background: #fb7185;
+  border-radius: 0 0 50px 50px;
+  margin: auto;
+  position: relative;
+}
+
+.lid {
+  width: 120px;
+  height: 24px;
+  background: #f97316;
+  border-radius: 20px;
+  position: absolute;
+  top: -20px;
+  left: 10px;
+  animation: lidShake 1.2s infinite;
+}
+
+@keyframes lidShake {
+  0%,100% { transform: rotate(0); }
+  50% { transform: rotate(-8deg) translateY(-2px); }
+}
+
+/* Steam */
+.steam {
+  position: absolute;
+  bottom: 80px;
+  width: 14px;
+  height: 40px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 50%;
+  animation: steamUp 2s infinite;
+}
+
+.s1 { left: 45%; animation-delay: 0s; }
+.s2 { left: 52%; animation-delay: .4s; }
+.s3 { left: 60%; animation-delay: .8s; }
+
+@keyframes steamUp {
+  0% { opacity: 0; transform: translateY(0); }
+  50% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-40px); }
+}
+
+/* Pasta */
+.pasta span {
+  position: absolute;
+  top: 20px;
+  font-size: 22px;
+  animation: fall 1.5s infinite;
+}
+
+.pasta span:nth-child(1) { left: 45%; animation-delay: 0s; }
+.pasta span:nth-child(2) { left: 50%; animation-delay: .3s; }
+.pasta span:nth-child(3) { left: 55%; animation-delay: .6s; }
+.pasta span:nth-child(4) { left: 60%; animation-delay: .9s; }
+
+.veggies span {
+  position: absolute;
+  top: 0;
+  font-size: 20px;
+  animation: veggieFall 1.8s infinite;
+}
+
+.veggies span:nth-child(1) { left: 10%; animation-delay: 0s; }
+.veggies span:nth-child(2) { left: 80%; animation-delay: .4s; }
+.veggies span:nth-child(3) { left: 20%; animation-delay: .8s; }
+.veggies span:nth-child(4) { left: 70%; animation-delay: 1.2s; }
+
+@keyframes fall {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(60px); opacity: 0; }
+}
+
+@keyframes veggieFall {
+  from { transform: translateY(0) rotate(0); opacity: 1; }
+  to { transform: translateY(100px) rotate(180deg); opacity: 0; }
+}
