@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../features/common/axiosConfig'; // ייבוא הגדרות Axios
 import './AuthStyles.css';
+import userService from '../services/userService';
 
 const Register = () => {
   const [form, setForm] = useState({ username: '', email: '', password: '', confirmPassword: '', address: '' });
@@ -20,27 +21,54 @@ const Register = () => {
     return newErrors;
   };
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-//ולידציה עברה בהצלחה
-//לשים הערות  ב שיהיה לי ולידציה עם
-    try {
-      const response = await userService.register(form);
-     // const response = await instance.post('/api/users/signup', form);
-      const data = response.data;
-      localStorage.setItem('token', data.token);
-      alert('נרשמת בהצלחה! 🎉');
-      navigate('/');
-    } catch (err) {
-      // הטיפול בשגיאות יתבצע בהגדרות Axios שכבר הוגדרו
-      // אין צורך לשים כאן קוד נוסף
-    }
-  };
+//   const handleRegister = async (e) => {
+//     consloe.log('handleRegister called');
+//     e.preventDefault();
+//     const validationErrors = validate();
+//     if (Object.keys(validationErrors).length > 0) {
+//       setErrors(validationErrors);
+//       console.log('Validation errors:', validationErrors);
+//       console.log('Form data: errors', form);
+//       return;
+//     }
+// //ולידציה עברה בהצלחה
+// //לשים הערות  ב שיהיה לי ולידציה עם
+//     try {
+//       conlsole.log('Submitting form:', form);
+//       const response = await userService.register(form);
+//      // const response = await instance.post('/api/users/signup', form);
+//       const data = response.data;
+//       localStorage.setItem('token', data.token);
+//       alert('נרשמת בהצלחה! 🎉');
+//       navigate('/');
+//     } catch (err) {
+//       // הטיפול בשגיאות יתבצע בהגדרות Axios שכבר הוגדרו
+//       // אין צורך לשים כאן קוד נוסף
+//     }
+//   };
+const handleRegister = async (e) => {
+  console.log('handleRegister called');
+  e.preventDefault();
+
+  const validationErrors = validate();
+  if (Object.keys(validationErrors).length > 0) {
+    setErrors(validationErrors);
+    console.log('Validation errors:', validationErrors);
+    console.log('Form data:', form);
+    return;
+  }
+
+  try {
+    console.log('Submitting form:', form);
+    const response = await userService.register(form);
+    const data = response.data;
+    localStorage.setItem('token', data.token);
+    alert('נרשמת בהצלחה!');
+    navigate('/');
+  } catch (err) {
+    console.error('Register error:', err);
+  }
+};
 
   return (
     <div className="auth-container">
