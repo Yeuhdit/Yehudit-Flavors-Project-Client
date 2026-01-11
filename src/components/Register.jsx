@@ -21,31 +21,6 @@ const Register = () => {
     return newErrors;
   };
 
-//   const handleRegister = async (e) => {
-//     consloe.log('handleRegister called');
-//     e.preventDefault();
-//     const validationErrors = validate();
-//     if (Object.keys(validationErrors).length > 0) {
-//       setErrors(validationErrors);
-//       console.log('Validation errors:', validationErrors);
-//       console.log('Form data: errors', form);
-//       return;
-//     }
-// //ולידציה עברה בהצלחה
-// //לשים הערות  ב שיהיה לי ולידציה עם
-//     try {
-//       conlsole.log('Submitting form:', form);
-//       const response = await userService.register(form);
-//      // const response = await instance.post('/api/users/signup', form);
-//       const data = response.data;
-//       localStorage.setItem('token', data.token);
-//       alert('נרשמת בהצלחה! 🎉');
-//       navigate('/');
-//     } catch (err) {
-//       // הטיפול בשגיאות יתבצע בהגדרות Axios שכבר הוגדרו
-//       // אין צורך לשים כאן קוד נוסף
-//     }
-//   };
 const handleRegister = async (e) => {
   console.log('handleRegister called');
   e.preventDefault();
@@ -60,7 +35,12 @@ const handleRegister = async (e) => {
 
   try {
     console.log('Submitting form:', form);
-    const response = await userService.register(form);
+    const response = await userService.register({
+      username: form.username,
+      email: form.email,
+      password: form.password,
+      address: form.address
+    });
     const data = response.data;
     localStorage.setItem('token', data.token);
     alert('נרשמת בהצלחה!');

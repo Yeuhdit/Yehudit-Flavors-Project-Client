@@ -6,6 +6,7 @@ class userService {
     register = async (userData) => {
         console.log('Registering user with data:', userData);
         const response = await axios.post(`${API_URL}/signup`, userData);
+        console.log('Register response:', response);
         return response.data;
     };
 
