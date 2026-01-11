@@ -35,13 +35,13 @@ const handleRegister = async (e) => {
 
   try {
     console.log('Submitting form:', form);
-    const response = await userService.register({
+    const data = await userService.register({
       username: form.username,
       email: form.email,
       password: form.password,
       address: form.address
     });
-    const data = response.data;
+    console.log('Registration successful:', data);  
     localStorage.setItem('token', data.token);
     alert('נרשמת בהצלחה!');
     navigate('/');
