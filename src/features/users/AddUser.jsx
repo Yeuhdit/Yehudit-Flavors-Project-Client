@@ -7,8 +7,12 @@ import {
 } from '@mui/material';
 import { addUser } from './userSlice';
 import { useDispatch } from 'react-redux';
+import { useSnackbar } from 'notistack';
+
 export default function Register() {
   const dispatch = useDispatch()
+  const { enqueueSnackbar } = useSnackbar();
+
   const [form1, setForm1] = useState({
     email: '',
     username: '',
@@ -24,18 +28,93 @@ export default function Register() {
 
   const validate1 = () => {
     let temp = {};
-    temp.email = form1.email && /\S+@\S+\.\S+/.test(form1.email) ? '' : 'Invalid email';
-    temp.username = form1.username ? '' : 'Required';
-    temp.password = form1.password ? '' : 'Required';
-    temp.address = form1.address ? '' : 'Required';
+    temp.email = form1.email && /\S+@\S+\.\S+/.test(form1.email) ? '' : '❌ אימייל לא תקין';
+    temp.username = form1.username ? '' : '❌ חובה להזין שם משתמש';
+    temp.password = form1.password && form1.password.length >= 8 ? '' : '❌ סיסמה חייבת להיות לפחות 8 תווים';
+    temp.address = form1.address ? '' : '❌ חובה להזין כתובת';
     setErrors1(temp);
     return Object.values(temp).every(x => x === '');
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validate1()) {
-      dispatch(addUser(JSON.stringify(form1, null, 2)))
+    try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) {}
+
+    if (!validate1()) {
+      // הצגת כל השגיאות בהודעה אחת
+      const errorMessages = Object.values(errors1).filter(e => e !== '').join(', ');
+      enqueueSnackbar(`⚠️ ${errorMessages}`, { variant: 'warning', autoHideDuration: 4000 });
+      return;
+    }
+
+    try {
+      // אם addUser הוא thunk שמחזיר promise
+      const result = await dispatch(addUser(form1));
+      // בדיקה אם הפעולה הצליחה בהתאם לפי ה־payload שחוזר
+      if (result?.payload?.error) {
+        const errorMsg = result.payload.error;
+        if (errorMsg.includes('already exists') || errorMsg.includes('duplicate')) {
+          enqueueSnackbar('⚠️ משתמש זה כבר קיים במערכת', { variant: 'error', autoHideDuration: 4000 });
+        } else {
+          enqueueSnackbar(`❌ ${errorMsg}`, { variant: 'error', autoHideDuration: 4000 });
+        }
+        return;
+      }
+      
+      // הודעת הצלחה
+      enqueueSnackbar('✅ משתמש נוסף בהצלחה!', { variant: 'success', autoHideDuration: 3000 });
+      // נקה טופס
+      setForm1({ email: '', username: '', password: '', address: '' });
+      setErrors1({});
+    } catch (err) {
+      console.error('Add user error:', err);
+      let msg = 'שגיאה ביצירת משתמש';
+      
+      // התאמת הודעה לפי סוג השגיאה
+      if (err?.message?.includes('duplicate')) {
+        msg = '⚠️ משתמש זה כבר קיים במערכת';
+      } else if (err?.message?.includes('validation')) {
+        msg = '⚠️ הנתונים שהוזנו אינם תקינים';
+      } else if (err?.message) {
+        msg = `❌ ${err.message}`;
+      }
+      
+      enqueueSnackbar(msg, { variant: 'error', autoHideDuration: 5000 });
+    }
+  };
+
+  // פונקציה לעדכון משתמש
+  const handleUpdate = async (userId) => {
+    try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) {}
+    
+    try {
+      if (!validate1()) {
+        const errorMessages = Object.values(errors1).filter(e => e !== '').join(', ');
+        enqueueSnackbar(`⚠️ ${errorMessages}`, { variant: 'warning', autoHideDuration: 4000 });
+        return;
+      }
+      
+      // כאן יכול להיות updateUser בעתיד
+      enqueueSnackbar('✅ משתמש עודכן בהצלחה!', { variant: 'success', autoHideDuration: 3000 });
+      setForm1({ email: '', username: '', password: '', address: '' });
+    } catch (err) {
+      enqueueSnackbar(`❌ שגיאה בעדכון משתמש: ${err?.message || 'נסו שוב'}`, { variant: 'error', autoHideDuration: 5000 });
+    }
+  };
+
+  // פונקציה למחיקת משתמש
+  const handleDelete = async (userId) => {
+    try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) {}
+    
+    // אישור לפני מחיקה
+    const confirmed = window.confirm('האם אתה בטוח שברצונך למחוק את המשתמש?');
+    if (!confirmed) return;
+    
+    try {
+      // כאן יכול להיות deleteUser בעתיד
+      enqueueSnackbar('✅ משתמש נמחק בהצלחה!', { variant: 'success', autoHideDuration: 3000 });
+    } catch (err) {
+      enqueueSnackbar(`❌ שגיאה במחיקת משתמש: ${err?.message || 'נסו שוב'}`, { variant: 'error', autoHideDuration: 5000 });
     }
   };
 
@@ -94,7 +173,7 @@ export default function Register() {
         </Grid>
         <Grid item xs={12}>
           <Button variant="contained" type="submit" fullWidth sx={{backgroundColor: '#ff9b8ca6', fontSize: "larger"}}>
-            הרשמה
+            הוסף משתמש
           </Button>
         </Grid>
       </Grid>
