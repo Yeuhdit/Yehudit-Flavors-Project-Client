@@ -1,23 +1,43 @@
-// src/services/userService.js
-import axios from 'axios';
-const API_URL = 'http://localhost:5000/api/users'; // שנו את ה-URL בהתאם לשרת שלכם
-class userService {
+import api from './api'; // משתמשים באינסטנס החכם שהגדרת קודם!
 
-    register = async (userData) => {
-        console.log('Registering user with data:', userData);
-        const response = await axios.post(`${API_URL}/signup`, userData);
-        console.log('Register response:', response);
-        return response.data;
-    };
+class UserService {
+  register = async (userData) => {
+    console.log('Registering user with data:', userData);
+    const response = await api.post('/users/signup', userData);
+    
+    // אם השרת החזיר טוקן, נשמור אותו ואת פרטי המשתמש בדפדפן
+    if (response.data && response.data.token) {
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+    }
+    
+    console.log('Register response:', response.data);
+    return response.data;
+  };
 
-    login = async (userData) => {
-        const response = await axios.post(`${API_URL}/signin`, userData);
-        return response.data;
-    };
+  login = async (userData) => {
+    const response = await api.post('/users/signin', userData);
+    
+    // שמירת הטוקן לאחר התחברות מוצלחת
+    if (response.data && response.data.token) {
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+    }
+    
+    return response.data;
+  };
 
-    getUsers = async () => {
-        const response = await axios.get(API_URL);
-        return response.data;
-    };
+  getUsers = async () => {
+    // נתיב יחסי כי ה-baseURL כבר מוגדר ב-api.js
+    const response = await api.get('/users/getAllUsers'); 
+    return response.data;
+  };
+
+  // פונקציית בונוס קטנה להתנתקות מהמערכת
+  logout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  };
 }
-export default new userService();
+
+export default new UserService();

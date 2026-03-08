@@ -12,8 +12,11 @@ import Recipes from './features/recipes/Recipes' // ודא שהנתיב נכון
 import RecipeDetail from './features/recipes/RecipeDetail'; // ודא שהנתיב נכון
 import Login from './components/Login' // ודא שהנתיב נכון
 import Register from './components/Register' // ודא שהנתיב נכון
+import AddRecipe from './components/AddRecipe'
+import AdminPanel from './components/AdminPanel'
 import { getAllCategories } from './features/categories/categorySlice' // נתיב נכון
 import { getAllRecipes } from './features/recipes/recipeSlice' // נתיב נכון
+import { getAllLevels } from './features/levels/levelSlice'
 
 const cacheRtl = createCache({
   key: 'rtl',
@@ -26,6 +29,7 @@ function App() {
   useEffect(() => {
     dispatch(getAllCategories())
     dispatch(getAllRecipes())
+    dispatch(getAllLevels())
   }, [dispatch])
 
   return (
@@ -37,6 +41,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/recipe/:id" element={<RecipeDetail />} />
+        <Route path="/add-recipe" element={<AddRecipe />} />
+        <Route path="/admin" element={<AdminPanel />} />
       </Routes>
     </CacheProvider>
   )

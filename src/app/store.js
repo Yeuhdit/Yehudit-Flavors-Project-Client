@@ -1,18 +1,19 @@
 // src/app/store.js
 import { configureStore } from '@reduxjs/toolkit';
 
-// יבוא ה-reducers שלך (תתאימי את הנתיבים בדיוק לפי המבנה שלך)
+// יבוא ה-reducers
 import categoryReducer from '../features/categories/categorySlice';
-import recipeReducer from '../features/recipes/recipeSlice';  // אם הקובץ נקרא recipeSlice.js או recipesSlice.js – תשני בהתאם
+import recipeReducer from '../features/recipes/recipeSlice';
+import levelReducer from '../features/levels/levelSlice';
 
 export const store = configureStore({
   reducer: {
     categories: categoryReducer,
     recipes: recipeReducer,
-    // אם יהיו לך בעתיד slices נוספים (משתמשים וכו') – תוסיפי כאן
+    levels: levelReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false,  // מונע אזהרות מיותרות
+      serializableCheck: false,
     }),
 });
