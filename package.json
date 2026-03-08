@@ -6,57 +6,27 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
-    "@mui/icons-material": "^7.3.9",
-    "@mui/material": "^7.3.9",
-    "@mui/stylis-plugin-rtl": "^7.3.6",
-    "@react-oauth/google": "^0.13.4",
-    "@reduxjs/toolkit": "^2.0.1",
-    "axios": "^1.13.6",
-    "framer-motion": "^11.0.0",
-    "notistack": "^3.0.1",
+    "axios": "^1.6.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-masonry-css": "^1.0.16",
-    "react-redux": "^9.1.0",
-    "react-router-dom": "^6.22.0",
-    "redux": "^5.0.1",
-    "stylis": "^4.3.1"
+    "react-router-dom": "^6.22.3",
+    "@mui/material": "^5.15.14",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "notistack": "^3.0.1"
   },
   "devDependencies": {
-<<<<<<< HEAD
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",
-    "autoprefixer": "^10.4.17",
-    "eslint": "^8.56.0",
-    "eslint-plugin-react": "^7.33.2",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.5",
-    "postcss": "^8.4.35",
-    "tailwindcss": "^3.4.1",
-    "vite": "^5.1.0"
-=======
-    "@eslint/js": "^9.39.1",
-    "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.2",
-    "@vitejs/plugin-react": "^5.1.0",
-    "autoprefixer": "^10.4.23",
-    "eslint": "^9.39.1",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.4.24",
-    "globals": "^16.5.0",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.17",
-    "vite": "npm:rolldown-vite@^7.2.2"
-  },
-  "overrides": {
-    "vite": "npm:rolldown-vite@7.2.2"
->>>>>>> 788db54255ac2a3c7387731bb39b9596bbad9ea6
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "vite": "^5.2.2"
   }
 }
