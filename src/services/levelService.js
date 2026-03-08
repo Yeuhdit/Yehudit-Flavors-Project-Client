@@ -1,11 +1,9 @@
 import api from './api';
 
 export const levelService = {
-  // קבלת כל הרמות (עודכן לנתיב שיותר סביר שקיים בשרת שלך)
+  // קבלת כל הרמות
   getAllLevels: async () => {
     try {
-      // הנחתי שהראוט נקרא getalllevels בדומה למתכונים. 
-      // אם זה פשוט '/' בראוטר של השרת, תשנה חזרה ל- '/levels' ותבדוק את השרת
       const response = await api.get('/levels/getalllevels'); 
       return response.data;
     } catch (error) {

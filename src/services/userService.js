@@ -33,11 +33,12 @@ class UserService {
     return response.data;
   };
 
-  // פונקציית בונוס קטנה להתנתקות מהמערכת
+  // פונקציית בונוס להתנתקות מהמערכת
   logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
   };
 }
 
+// שים לב: שיניתי את שם המחלקה ל-UserService (אות גדולה) כדי שיהיה עקבי
 export default new UserService();
