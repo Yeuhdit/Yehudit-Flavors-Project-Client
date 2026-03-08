@@ -49,15 +49,17 @@ const recipeSlice = createSlice({
     recipes: [],
     loading: false,
     error: null,
+    success: false, // הוספנו את הסטייט של ההצלחה
   },
   reducers: {
-    // הוספתי את ה-reducers שייצאת מקודם כדי שלא תהיה שגיאה
     clearError: (state) => {
       state.error = null;
+    },
+    clearSuccess: (state) => { // זה מה שחסר ל-AddRecipe.jsx!
+      state.success = false;
     }
   },
   extraReducers: (builder) => {
-    // ===== GET ALL RECIPES =====
     builder
       .addCase(getAllRecipes.pending, (state) => { 
         state.loading = true; 
@@ -71,16 +73,16 @@ const recipeSlice = createSlice({
         state.loading = false;
         state.error = action.payload?.message || 'Error';
       })
-      // הוספת מתכון
       .addCase(addRecipe.fulfilled, (state, action) => {
         state.recipes.push(action.payload);
+        state.success = true; // סימון הצלחה
       })
-      // מחיקת מתכון
       .addCase(deleteRecipe.fulfilled, (state, action) => {
         state.recipes = state.recipes.filter(r => r._id !== action.payload);
       });
   },
 });
 
-export const { clearError } = recipeSlice.actions;
+// שימי לב שייצאתי כאן את שניהם!
+export const { clearError, clearSuccess } = recipeSlice.actions;
 export default recipeSlice.reducer;
