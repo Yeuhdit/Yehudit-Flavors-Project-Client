@@ -1,38 +1,65 @@
-import React from 'react';
-import { Box, Typography, Button, Container } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import './Home.css';
+
+const foodItems = ['🍗','🥩','🧀','🥦','🥕','🥚','🍞','🥖','🥐','🥟','🍖','🥓','🍕','🌭','🍔'];
+const bgEmojis = ['🥘','🍲','🥣','🥗','🥫','🍳','🥚','🧄','🧈','🥛','🥖','🍞','🫓','🥐','🥯','🫔','🥟','🥩','🍖','🥓','🥗','🥦','🥕','🌶','🫑'];
 
 const Home = () => {
-  const navigate = useNavigate();
+  const [emojiGrid, setEmojiGrid] = useState([]);
+
+  useEffect(() => {
+    // יוצרים מערך של מאות אימוג'ים למלא את המסך
+    const rows = Math.ceil(window.innerHeight / 40);
+    const cols = Math.ceil(window.innerWidth / 40);
+    const grid = [];
+    for (let i = 0; i < rows; i++) {
+      const row = [];
+      for (let j = 0; j < cols; j++) {
+        const emoji = bgEmojis[Math.floor(Math.random() * bgEmojis.length)];
+        row.push({ emoji, left: j * 40, top: i * 40, id: `${i}-${j}-${Date.now()}` });
+      }
+      grid.push(row);
+    }
+    setEmojiGrid(grid);
+  }, []);
 
   return (
-    <Box sx={{ 
-      minHeight: '100vh', 
-      display: 'flex', 
-      flexDirection: 'column', 
-      alignItems: 'center', 
-      justifyContent: 'center',
-      textAlign: 'center',
-      bgcolor: '#f5f5f5',
-      p: 3
-    }}>
-      <Container maxWidth="md">
-        <Typography variant="h2" fontWeight="bold" gutterBottom color="primary">
-          ברוכים הבאים לספר המתכונים שלי
-        </Typography>
-        <Typography variant="h5" color="text.secondary" paragraph>
-          כאן תמצאו את כל המתכונים הכי טעימים, הישר מהמטבח של יהודית.
-        </Typography>
-        <Button 
-          variant="contained" 
-          size="large" 
-          onClick={() => navigate('/recipes')}
-          sx={{ mt: 4, px: 5, py: 1.5, borderRadius: '50px', fontSize: '1.2rem' }}
-        >
-          לכל המתכונים
-        </Button>
-      </Container>
-    </Box>
+    <div className="home-scene">
+      {/* רקע מלא אימוג'ים */}
+      <div className="emoji-background">
+        {emojiGrid.map((row, i) =>
+          row.map(cell => (
+            <div
+              key={cell.id}
+              className="bg-emoji"
+              style={{
+                left: `${cell.left}px`,
+                top: `${cell.top}px`,
+                animationDelay: `${Math.random() * 3}s`
+              }}
+            >
+              {cell.emoji}
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* כותרת במרכז */}
+      <div className="center-title">המטבח של יהודית</div>
+
+      {/* צד שמאל */}
+      <div className="kitchen-left">
+        <div className="spoon"></div>
+        <div className="steam-lines"></div>
+      </div>
+
+      {/* צד ימין */}
+      <div className="kitchen-right">
+        <div className="pot">
+          <div className="lid"></div>
+        </div>
+      </div>
+    </div>
   );
 };
 

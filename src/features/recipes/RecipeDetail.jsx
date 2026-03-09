@@ -1,80 +1,91 @@
 // src/features/recipes/RecipeDetail.jsx
 import { useParams } from 'react-router-dom';
-import { mockRecipes } from './recipesData.js'; // חשוב – אותו קובץ עם כל 35!
-import { Box, Typography, Chip, Divider, List, ListItem, ListItemText, Paper } from '@mui/material';
+import { useSelector } from 'react-redux';
+import './RecipeDetail.css'; 
+import { CircularProgress } from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
 
 const RecipeDetail = () => {
-  const { id } = useParams(); // לוקח את ה-ID מה-URL (כמו /recipe/5)
-  const recipe = mockRecipes.find((r) => r._id === id); // מושך את המתכון הנכון!
+  const { id } = useParams();
+  const { recipes } = useSelector((state) => state.recipes); 
+  const recipe = recipes.find((r) => r._id === id || r._id === Number(id));
+
+  const getImageUrl = () => {
+    if (!recipe) return '';
+    const rawName = recipe.image || recipe.img || recipe.imageUrl || '';
+    if (!rawName) return 'https://images.unsplash.com/photo-1495195134817-a169d2679f03?w=1600';
+    
+    const cleanName = rawName.split('/').pop().split('\\').pop();
+    return `http://localhost:5000/images/${cleanName}`;
+  };
 
   if (!recipe) {
     return (
-      <Typography textAlign="center" variant="h5" mt={10}>
-        מתכון לא נמצא 😔
-      </Typography>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '100px' }}>
+        <CircularProgress />
+      </div>
     );
   }
 
   return (
-    <Box sx={{ maxWidth: '1000px', mx: 'auto', py: 6, px: 4 }}>
-      {/* תמונה גדולה */}
-      <Paper elevation={8} sx={{ borderRadius: 4, overflow: 'hidden', mb: 5 }}>
-        <img
-          src={recipe.imageUrl}
-          alt={recipe.name}
-          style={{ width: '100%', height: '450px', objectFit: 'cover' }}
-        />
-      </Paper>
+    <div className="yael-recipe-container">
+      
+      {/* אזור הבאנר בדיוק כמו בתמונה */}
+      <div className="yael-hero-banner" style={{ backgroundImage: `url(${getImageUrl()})` }}>
+        <div className="yael-hero-overlay">
+          <h1 className="yael-recipe-title">{recipe.name}</h1>
+          
+          <p className="yael-recipe-subtitle">
+            {recipe.servings ? `מס' מנות: ${recipe.servings}` : 'מושלם לכל המשפחה'}
+          </p>
 
-      {/* כותרת */}
-      <Typography variant="h3" textAlign="center" mb={3} fontWeight="bold">
-        {recipe.name}
-      </Typography>
+          <div className="yael-chips">
+            {recipe.category && <span className="yael-chip">{recipe.category}</span>}
+            {recipe.preparationTime && <span className="yael-chip">{recipe.preparationTime} דקות</span>}
+            {recipe.difficulty && <span className="yael-chip">{recipe.difficulty}</span>}
+          </div>
+        </div>
+      </div>
 
-      {/* צ'יפים */}
-      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 5, flexWrap: 'wrap' }}>
-        <Chip label={recipe.category} color="primary" />
-        <Chip label={recipe.difficulty} color="secondary" />
-        <Chip label={`הכנה: ${recipe.prepTime}`} />
-        <Chip label={`בישול: ${recipe.cookTime}`} />
-        <Chip label={`מנות: ${recipe.servings}`} />
-      </Box>
+      {/* אזור התוכן הלבן והנקי */}
+      <div className="yael-content-area">
+        
+        {/* מצרכים */}
+        {recipe.ingredients && recipe.ingredients.length > 0 && (
+          <div>
+            <h2 className="yael-section-title">אז מה צריך בשביל להתחיל?</h2>
+            <ul className="yael-list">
+              {recipe.ingredients.map((ing, i) => (
+                <li key={i} className="yael-list-item">
+                  <CheckIcon className="yael-check-icon" />
+                  <span>{ing}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
-      <Divider sx={{ my: 5 }} />
+        {/* הוראות הכנה */}
+        {recipe.instructions && recipe.instructions.length > 0 && (
+          <div>
+            <h2 className="yael-section-title">איך מכינים?</h2>
+            <ul className="yael-list">
+              {recipe.instructions.map((step, i) => (
+                <li key={i} className="yael-list-item">
+                  <span className="yael-step-number">{i + 1}.</span>
+                  <span>{step}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
-      {/* מצרכים */}
-      <Typography variant="h4" mb={3} fontWeight="bold">
-        מצרכים
-      </Typography>
-      <List>
-        {recipe.ingredients.map((ing, i) => (
-          <ListItem key={i}>
-            <ListItemText primary={`• ${ing}`} sx={{ fontSize: '1.1rem' }} />
-          </ListItem>
-        ))}
-      </List>
+        <div className="clean-footer">
+          בתיאבון!
+        </div>
 
-      <Divider sx={{ my: 5 }} />
-
-      {/* הוראות */}
-      <Typography variant="h4" mb={3} fontWeight="bold">
-        הוראות הכנה
-      </Typography>
-      <List>
-        {recipe.instructions.map((step, i) => (
-          <ListItem key={i}>
-            <ListItemText primary={`${i + 1}. ${step}`} sx={{ fontSize: '1.1rem' }} />
-          </ListItem>
-        ))}
-      </List>
-
-      {/* בתאבון חמוד */}
-      <Box sx={{ textAlign: 'center', my: 8 }}>
-        <Typography variant="h3" fontWeight="bold" color="error.main" sx={{ fontFamily: 'cursive' }}>
-          בתאבון!!! 🍴✨😋
-        </Typography>
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

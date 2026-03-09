@@ -1,0 +1,112 @@
+/* src/features/recipes/RecipeDetail.css */
+
+.yael-recipe-container {
+  direction: rtl;
+  background-color: #fff; /* רקע לבן ונקי לגמרי */
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+/* באנר עליון */
+.yael-hero-banner {
+  width: 100%;
+  height: 280px; /* גובה מדויק כמו בתמונה */
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+/* השכבה הלבנה-שקופה שיושבת על התמונה */
+.yael-hero-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(255, 255, 255, 0.75); /* שקיפות לבנה שעושה את המראה האלגנטי */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.yael-recipe-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #111;
+  margin: 0 0 10px 0;
+}
+
+.yael-recipe-subtitle {
+  font-size: 1.1rem;
+  color: #444;
+  margin: 0 0 20px 0;
+}
+
+/* הצ'יפים (כפתורים עגולים קטנים) */
+.yael-chips {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.yael-chip {
+  border: 1px solid #aaa;
+  border-radius: 50px;
+  padding: 4px 18px;
+  font-size: 0.9rem;
+  color: #333;
+  background-color: transparent;
+}
+
+/* אזור התוכן המרכזי למטה */
+.yael-content-area {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.yael-section-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 25px;
+}
+
+/* עיצוב רשימת המצרכים וההוראות */
+.yael-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 50px 0;
+}
+
+.yael-list-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  font-size: 1.05rem;
+  color: #222;
+  line-height: 1.5;
+}
+
+/* ה-V השחור הקטן */
+.yael-check-icon {
+  font-size: 1.1rem !important;
+  margin-left: 12px;
+  margin-top: 3px;
+  color: #111;
+}
+
+.yael-step-number {
+  font-weight: bold;
+  margin-left: 10px;
+  min-width: 20px;
+  color: #111;
+}
+
+.clean-footer {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-top: 60px;
+  color: #333;
+}

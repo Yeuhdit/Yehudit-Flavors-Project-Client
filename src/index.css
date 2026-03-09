@@ -1,4 +1,8 @@
 /* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --primary-color: #ff9a8b;
 }
@@ -6,15 +10,15 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-}
-
-
-
-
-:root {
-  --primary-color: #ff9a8b;
-}
-
-body {
   @apply bg-gradient-to-br from-secondary to-white min-h-screen;
+}
+
+/* =========================================
+   פתרון הקסם: פתיחת נעילת הגלילה לכל האתר!
+   ========================================= */
+html, body, #root {
+  height: auto !important;
+  min-height: 100vh !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
 }
