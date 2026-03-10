@@ -1,11 +1,24 @@
-//src/features/common/Gallery.jsx
-import './Gallery.css'
-
-// ייבוא כל התמונות מהתיקייה
-const importAll = (r) => r.keys().map(r);
-const images = importAll(require.context('../../images', false, /\.(png|jpe?g|svg)$/));
+// src/features/common/Gallery.jsx
+import { useEffect, useState } from "react";
+import api from "../../services/api"; // לוודא שה־api.js נכון
+import './Gallery.css';
 
 const Gallery = () => {
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    // שליפת כל המתכונים מהשרת
+    api.get("/recipes") // endpoint של המתכונים שלך
+      .then(res => {
+        // יוצרים מערך של URL של התמונות
+        const imgs = res.data
+          .filter(recipe => recipe.imagUrl) // רק מתכונים עם תמונה
+          .map(recipe => recipe.imagUrl);
+        setImages(imgs);
+      })
+      .catch(err => console.error("Error fetching images:", err));
+  }, []);
+
   return (
     <div className="gallery">
       <h1>גלריה</h1>
@@ -15,7 +28,7 @@ const Gallery = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Gallery
+export default Gallery;

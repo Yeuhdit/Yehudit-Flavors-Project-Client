@@ -1,44 +1,35 @@
 // src/features/common/axiosConfig.js
 import axios from "axios";
 
-const instance = axios.create({ baseURL: 'http://localhost:5000' });
+// הוספתי /api כדי שזה יתאים להגדרות השרת שלך
+const instance = axios.create({ baseURL: 'http://localhost:5000/api' });
 
 instance.interceptors.request.use((value) => {
-    if (localStorage.myToken) {
-        value.headers.Authorization = `Bearer ${localStorage.myToken}`;
+    // התיקון הקריטי: חיפוש של 'token' (איך ששמרת אותו ב-Login) ולא 'myToken'
+    const token = localStorage.getItem('token'); 
+    if (token) {
+        value.headers.Authorization = `Bearer ${token}`;
     }
     return value;
 });
 
-
 instance.interceptors.response.use(
     (response) => {
-        // For successful responses, simply return the response
         return response;
     },
     (error) => {
-        // Handle error responses
         if (error.response) {
-            // Server responded with a status other than 2xx
             const status = error.response.status;
             const message = error.response.data?.message || 'An unexpected error occurred.';
-
-            alert(`Error ${status}: ${message}`);
-
-            // Optionally, handle specific status codes
+            
+            // הורדתי פה את ה-alert המציק שיקפוץ על כל שגיאה, הטיפול יתבצע בקומפוננטה
+            console.error(`Error ${status}: ${message}`); 
+            
             if (status === 401) {
-                // Redirect to login page, clear token, etc.
                 console.log('Unauthorized request, redirecting to login...');
-                // window.location.href = '/login';
+                // אפשר להוסיף פה התנתקות אוטומטית אם רוצים
             }
-        } else if (error.request) {
-            // Request was made but no response was received
-            alert('No response received from the server. Please check your network connection.');
-        } else {
-            // Something else happened while setting up the request
-            alert('An error occurred while setting up the request.');
         }
-
         return Promise.reject(error);
     }
 );

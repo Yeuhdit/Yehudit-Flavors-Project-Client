@@ -1,76 +1,114 @@
 .navbar {
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.5);
+  height: 90px; /* גבוה ומרשים */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+/* שינוי קל ב-scroll */
+.navbar.scrolled {
+  height: 70px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
   background: linear-gradient(135deg, #f97316, #fb923c);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
 .navbar-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 50px;
+  padding: 0 60px;
+  height: 100%;
 }
 
 .navbar-logo h5 {
   font-weight: 900;
-  font-size: 1.9rem;
+  font-size: 2.8rem;
   color: white;
   cursor: pointer;
-  transition: transform 0.3s;
+  transition: transform 0.3s, text-shadow 0.3s;
 }
 
 .navbar-logo h5:hover {
-  transform: scale(1.1) rotate(-3deg);
+  transform: scale(1.15) rotate(-3deg);
+  text-shadow: 2px 2px 15px rgba(0,0,0,0.6);
 }
 
+/* כפתורים גדולים ו-stylish */
 .navbar-links button {
   color: white;
-  font-weight: 600;
-  margin: 0 10px;
-  transition: all 0.3s;
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin: 0 15px;
+  padding: 10px 25px;
+  border-radius: 15px;
+  transition: all 0.4s ease;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(4px);
 }
 
 .navbar-links button:hover {
-  background: rgba(255,255,255,0.2);
-  transform: scale(1.1);
+  background: rgba(255,255,255,0.3);
+  transform: scale(1.2) translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.4);
 }
 
+/* משתמש */
 .navbar-user {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 25px;
 }
 
 .user-btn {
   color: white;
   text-transform: none;
-  font-weight: 600;
+  font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 10px;
-  transition: transform 0.3s;
+  gap: 15px;
+  padding: 8px 15px;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
 }
 
 .user-btn:hover {
-  transform: scale(1.05);
+  transform: scale(1.15) translateY(-2px);
+  background: rgba(255,255,255,0.3);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.4);
 }
 
 .user-btn .MuiAvatar-root {
   background: rgba(255,255,255,0.3);
   font-weight: 700;
+  width: 40px;
+  height: 40px;
 }
 
+/* כפתור התנתקות */
 .logout {
-  color: red;
+  color: #ff4d4d;
+  font-weight: 700;
 }
 
+/* הרשמה */
 .register-btn {
   background: white;
-  color: #f97316;
+  color: #ff7e5f;
   font-weight: 700;
-  transition: all 0.3s;
+  padding: 10px 25px;
+  border-radius: 20px;
+  transition: all 0.4s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 .register-btn:hover {
-  background: #f0f0f0;
-  transform: scale(1.05);
+  background: #fff1eb;
+  transform: scale(1.2) translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }

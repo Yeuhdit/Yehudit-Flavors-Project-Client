@@ -1,42 +1,46 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSnackbar } from 'notistack';
-import userService from '../services/userService';
-import './AuthStyles.css'; 
+// src/components/Register.jsx
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import userService from "../services/userService";
+import { AuthContext } from '../context/AuthContext';
+import "./AuthStyles.css";
 
 const Register = () => {
-  const [form, setForm] = useState({ username: '', email: '', password: '', confirmPassword: '', address: '' });
-  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const { enqueueSnackbar } = useSnackbar();
+  const { loginContext } = useContext(AuthContext);
+
+  const [form, setForm] = useState({ username: "", email: "", password: "", confirmPassword: "", address: "" });
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  // משתנים להודעות על המסך
+  const [serverError, setServerError] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: '' }); // נקה שגיאה בעת שינוי
+    setErrors({ ...errors, [e.target.name]: "" });
+    setServerError('');
   };
 
   const validate = () => {
     const newErrors = {};
-    if (!form.username) newErrors.username = 'שם משתמש חובה';
-    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(form.email)) {
-      newErrors.email = 'אימייל לא תקין (דוגמה: user@example.com)';
+    if (!form.username) newErrors.username = "שם משתמש חובה";
+    
+    if (!form.email) {
+      newErrors.email = "אימייל חובה";
+    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(form.email)) {
+      newErrors.email = "אימייל לא תקין";
     }
     
-    // ולידציית סיסמה מפורטת (6-12 תווים, אות גדולה, קטנה, מספר ותו מיוחד)
-    if (form.password.length < 6 || form.password.length > 12) {
-      newErrors.password = 'אורך סיסמה חייב להיות בין 6 ל-12 תווים';
-    } else if (!/[A-Z]/.test(form.password)) {
-      newErrors.password = 'חובה אות גדולה אחת לפחות (A-Z)';
-    } else if (!/[a-z]/.test(form.password)) {
-      newErrors.password = 'חובה אות קטנה אחת לפחות (a-z)';
-    } else if (!/[0-9]/.test(form.password)) {
-      newErrors.password = 'חובה מספר אחד לפחות (0-9)';
-    } else if (!/[^A-Za-z0-9]/.test(form.password)) {
-      newErrors.password = 'חובה תו מיוחד אחד לפחות (כמו !@#$)';
+    if (!form.password) {
+      newErrors.password = "סיסמה חובה";
+    } else if (form.password.length < 6) {
+      newErrors.password = "חובה לפחות 6 תווים";
     }
-    
+
     if (form.password !== form.confirmPassword) {
-      newErrors.confirmPassword = 'הסיסמאות אינן תואמות';
+      newErrors.confirmPassword = "הסיסמאות אינן תואמות";
     }
     
     return newErrors;
@@ -44,78 +48,82 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setServerError('');
+    setSuccessMsg('');
 
     const validationErrors = validate();
     setErrors(validationErrors);
-
+    
     if (Object.keys(validationErrors).length > 0) {
-      enqueueSnackbar('⚠️ אנא תקני את השגיאות ונסי שוב', { variant: 'warning' });
+      setServerError('יש לתקן את השגיאות בטופס');
       return;
     }
 
     try {
+      setLoading(true);
       const data = await userService.register({
-        username: form.username,
-        email: form.email,
+        username: form.username.trim(),
+        email: form.email.trim().toLowerCase(),
         password: form.password,
-        address: form.address
+        address: form.address.trim(),
       });
-      localStorage.setItem('token', data.token);
-      enqueueSnackbar('🎉 נרשמת בהצלחה! ברוכה הבאה למשפחת המתכונים! 🌟', { variant: 'success' });
-      setTimeout(() => navigate('/'), 1400);
-    } catch (err) {
-      let msg = '❌ שגיאה בהרשמה. נסי שוב מאוחר יותר.';
-      if (err?.response?.status === 409) {
-        msg = '⚠️ משתמש עם אימייל זה כבר קיים.';
-      } else if (err?.response?.status === 400) {
-        msg = `⚠️ ${err.response.data.message || 'נתונים לא תקינים'}`;
-      }
-      enqueueSnackbar(msg, { variant: 'error' });
 
-      // הצגת שגיאות ספציפיות מהשרת תחת השדות המתאימים
-      if (err?.response?.data?.field === 'password') {
-        setErrors(prev => ({ ...prev, password: err.response.data.message }));
-      } else if (err?.response?.data?.field === 'email') {
-        setErrors(prev => ({ ...prev, email: err.response.data.message }));
+      if (data?.user) {
+        loginContext(data.user);
       }
+
+      setSuccessMsg("🎉 נרשמת בהצלחה! מעביר לדף הבית...");
+      setTimeout(() => navigate("/"), 1200);
+    } catch (err) {
+      if (err?.response?.status === 409) {
+        setErrors({ email: "האימייל הזה כבר קיים במערכת" });
+        setServerError("האימייל הזה כבר קיים במערכת, נסי להתחבר");
+      } else {
+        setServerError("❌ שגיאה בהרשמה");
+      }
+    } finally {
+      setLoading(false);
     }
   };
+
+  const errorStyle = { color: '#d32f2f', fontSize: '13px', marginTop: '4px', fontWeight: 'bold' };
 
   return (
     <div className="auth-container">
       <div className="auth-card">
         <div className="auth-header">
           <h1>הרשמה</h1>
-          <p>הצטרפי למשפחת המתכונים! 🍳</p>
         </div>
-        <div className="auth-form">
-          <form onSubmit={handleRegister}>
-            <div className="input-group">
-              <input type="text" name="username" placeholder="שם משתמש" value={form.username} onChange={handleChange} className="auth-input" />
-              {errors.username && <p className="error-text shake">{errors.username}</p>}
-            </div>
-            <div className="input-group">
-              <input type="email" name="email" placeholder="אימייל" value={form.email} onChange={handleChange} className="auth-input" />
-              {errors.email && <p className="error-text shake">{errors.email}</p>}
-            </div>
-            <div className="input-group">
-              <input type="password" name="password" placeholder="סיסמה" value={form.password} onChange={handleChange} className="auth-input" />
-              <p className="password-rules">6-12 תווים, אות גדולה, קטנה, מספר ותו מיוחד.</p>
-              {errors.password && <p className="error-text shake">{errors.password}</p>}
-            </div>
-            <div className="input-group">
-              <input type="password" name="confirmPassword" placeholder="אימות סיסמה" value={form.confirmPassword} onChange={handleChange} className="auth-input" />
-              {errors.confirmPassword && <p className="error-text shake">{errors.confirmPassword}</p>}
-            </div>
-            <div className="input-group">
-              <input type="text" name="address" placeholder="כתובת (אופציונלי)" value={form.address} onChange={handleChange} className="auth-input" />
-            </div>
-            <button type="submit" className="auth-button">הרשמי</button>
-          </form>
-          <div className="auth-link">
-            <p>כבר רשומה? <span onClick={() => navigate('/login')} style={{cursor: 'pointer', color: '#ff9b8c'}}>התחברי כאן</span></p>
+
+        {/* תצוגת הודעות שרת / הצלחה ישר בתוך המסך */}
+        {serverError && <div style={{ backgroundColor: '#ffebee', color: '#c62828', padding: '10px', borderRadius: '5px', marginBottom: '15px', textAlign: 'center', fontWeight: 'bold' }}>{serverError}</div>}
+        {successMsg && <div style={{ backgroundColor: '#e8f5e9', color: '#2e7d32', padding: '10px', borderRadius: '5px', marginBottom: '15px', textAlign: 'center', fontWeight: 'bold' }}>{successMsg}</div>}
+
+        <form onSubmit={handleRegister}>
+          <div className="input-group">
+            <input type="text" name="username" placeholder="שם משתמש" value={form.username} onChange={handleChange} className="auth-input" style={errors.username ? { borderColor: 'red' } : {}} />
+            {errors.username && <div style={errorStyle}>{errors.username}</div>}
           </div>
+          <div className="input-group">
+            <input type="email" name="email" placeholder="אימייל" value={form.email} onChange={handleChange} className="auth-input" style={errors.email ? { borderColor: 'red' } : {}} />
+            {errors.email && <div style={errorStyle}>{errors.email}</div>}
+          </div>
+          <div className="input-group">
+            <input type="password" name="password" placeholder="סיסמה (לפחות 6 תווים)" value={form.password} onChange={handleChange} className="auth-input" style={errors.password ? { borderColor: 'red' } : {}} />
+            {errors.password && <div style={errorStyle}>{errors.password}</div>}
+          </div>
+          <div className="input-group">
+            <input type="password" name="confirmPassword" placeholder="אימות סיסמה" value={form.confirmPassword} onChange={handleChange} className="auth-input" style={errors.confirmPassword ? { borderColor: 'red' } : {}} />
+            {errors.confirmPassword && <div style={errorStyle}>{errors.confirmPassword}</div>}
+          </div>
+          <div className="input-group">
+            <input type="text" name="address" placeholder="כתובת (אופציונלי)" value={form.address} onChange={handleChange} className="auth-input" />
+          </div>
+          
+          <button type="submit" className="auth-button" disabled={loading}>{loading ? "נרשם..." : "הרשמי"}</button>
+        </form>
+        <div className="auth-link">
+          <p>כבר רשומה? <span onClick={() => navigate("/login")} style={{ cursor: "pointer", color: "#ff9b8c", fontWeight: "bold" }}>התחברי כאן</span></p>
         </div>
       </div>
     </div>

@@ -1,26 +1,25 @@
 /* src/features/recipes/RecipeDetail.css */
 
-.yael-recipe-container {
+.yehudit-recipe-container {
   direction: rtl;
-  background-color: #fff; /* רקע לבן ונקי לגמרי */
+  background-color: #fff;
   min-height: 100vh;
   padding-bottom: 50px;
 }
 
-/* באנר עליון */
-.yael-hero-banner {
+.yehudit-hero-banner {
   width: 100%;
-  height: 280px; /* גובה מדויק כמו בתמונה */
+  height: 280px;
   background-size: cover;
   background-position: center;
   position: relative;
 }
 
-/* השכבה הלבנה-שקופה שיושבת על התמונה */
-.yael-hero-overlay {
+.yehudit-hero-overlay {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(255, 255, 255, 0.75); /* שקיפות לבנה שעושה את המראה האלגנטי */
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.75);
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,82 +27,92 @@
   text-align: center;
 }
 
-.yael-recipe-title {
+.yehudit-recipe-title {
   font-size: 2.2rem;
   font-weight: 800;
   color: #111;
-  margin: 0 0 10px 0;
+  margin-bottom: 10px;
 }
 
-.yael-recipe-subtitle {
+.yehudit-recipe-subtitle {
   font-size: 1.1rem;
   color: #444;
-  margin: 0 0 20px 0;
+  margin-bottom: 20px;
 }
 
-/* הצ'יפים (כפתורים עגולים קטנים) */
-.yael-chips {
+.yehudit-chips {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
   justify-content: center;
 }
 
-.yael-chip {
+.yehudit-chip {
   border: 1px solid #aaa;
   border-radius: 50px;
   padding: 4px 18px;
   font-size: 0.9rem;
   color: #333;
-  background-color: transparent;
 }
 
-/* אזור התוכן המרכזי למטה */
-.yael-content-area {
+.yehudit-content-area {
   max-width: 800px;
   margin: 50px auto;
   padding: 0 20px;
 }
 
-.yael-section-title {
+.yehudit-section-title {
   font-size: 1.4rem;
   font-weight: bold;
   color: #000;
   margin-bottom: 25px;
 }
 
-/* עיצוב רשימת המצרכים וההוראות */
-.yael-list {
+.yehudit-list {
   list-style: none;
   padding: 0;
-  margin: 0 0 50px 0;
+  margin-bottom: 50px;
 }
 
-.yael-list-item {
+.yehudit-list-item {
   display: flex;
   align-items: flex-start;
   margin-bottom: 16px;
   font-size: 1.05rem;
   color: #222;
   line-height: 1.5;
+  cursor: pointer;
+  transition: 0.25s;
 }
 
-/* ה-V השחור הקטן */
-.yael-check-icon {
+.yehudit-list-item span {
+  transition: 0.25s;
+}
+
+.yehudit-list-item.checked span {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.yehudit-check-icon {
   font-size: 1.1rem !important;
   margin-left: 12px;
   margin-top: 3px;
   color: #111;
 }
 
-.yael-step-number {
+.yehudit-list-item.checked .yehudit-check-icon {
+  color: #2ecc71;
+}
+
+.yehudit-step-number {
   font-weight: bold;
   margin-left: 10px;
   min-width: 20px;
   color: #111;
 }
 
-.clean-footer {
+.yehudit-footer {
   text-align: center;
   font-weight: bold;
   font-size: 1.5rem;

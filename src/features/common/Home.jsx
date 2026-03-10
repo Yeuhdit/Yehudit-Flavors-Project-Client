@@ -43,7 +43,12 @@ const Home = () => {
           ))
         )}
       </div>
-
+<div className="kitchen-right">
+  <div className="pot">
+    <div className="lid"></div>
+  </div>
+  <div className="fire"></div>
+</div>
       {/* כותרת במרכז */}
       <div className="center-title">המטבח של יהודית</div>
 
