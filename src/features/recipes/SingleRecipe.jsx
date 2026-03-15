@@ -1,4 +1,4 @@
-//src/features/recipes/SingleRecipe.jsx
+//react-client/src/features/recipes/SingleRecipe.jsx
 import { Card, CardMedia, CardContent, Typography } from '@mui/material';
 
 const SingleRecipe = ({ recipe }) => {

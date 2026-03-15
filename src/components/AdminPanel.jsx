@@ -1,4 +1,4 @@
-// src/components/AdminPanel.jsx
+// react-client/src/components/AdminPanel.jsx
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllCategories, addCategory, updateCategory, deleteCategory } from '../features/categories/categorySlice';

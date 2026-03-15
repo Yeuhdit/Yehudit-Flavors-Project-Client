@@ -1,4 +1,4 @@
-// src/features/recipes/RecipeDetail.jsx
+// react-client/src/features/recipes/RecipeDetail.jsx
 
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";

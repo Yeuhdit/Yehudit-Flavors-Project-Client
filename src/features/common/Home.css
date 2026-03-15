@@ -1,100 +1,113 @@
+/* // react-client/src/features/common/Home.css */
 .home-wrapper {
-min-height: 100vh;
-background: #fdfbfb;
-overflow-x: hidden;
+  min-height: 100vh;
+  background: #fdfbfb;
+  overflow-x: hidden;
+  direction: rtl;
 }
 
 .hero-section {
-height: 100vh;
-display: flex;
-align-items: center;
-justify-content: center;
-position: relative;
-background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
-text-align: center;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+  text-align: center;
 }
 
 .hero-content {
-position: relative;
-z-index: 2;
+  position: relative;
+  z-index: 2;
 }
 
 .hero-subtitle {
-color: #ff7e5f;
-font-weight: 700 !important;
-letter-spacing: 3px !important;
-margin-bottom: 20px !important;
-display: block;
+  color: #ff7e5f;
+  font-weight: 700 !important;
+  letter-spacing: 3px !important;
+  margin-bottom: 20px !important;
+  display: block;
 }
 
 .hero-title {
-font-size: clamp(3rem, 8vw, 6rem) !important;
-font-weight: 900 !important;
-color: #1a1a1a;
-line-height: 1.1 !important;
-margin-bottom: 25px !important;
+  font-size: clamp(3rem, 8vw, 6rem) !important;
+  font-weight: 900 !important;
+  color: #1a1a1a;
+  line-height: 1.1 !important;
+  margin-bottom: 25px !important;
 }
 
 .hero-title .highlight {
-background: linear-gradient(to right, #ff7e5f, #feb47b);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .hero-description {
-color: #666;
-max-width: 600px;
-margin: 0 auto 40px !important;
-font-weight: 400 !important;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto 40px !important;
+  font-weight: 400 !important;
 }
 
 .hero-actions {
-display: flex;
-gap: 20px;
-justify-content: center;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
 }
 
 .main-btn {
-background: #1a1a1a !important;
-padding: 15px 40px !important;
-border-radius: 12px !important;
-font-size: 1.1rem !important;
-text-transform: none !important;
+  background: #1a1a1a !important;
+  padding: 15px 40px !important;
+  border-radius: 14px !important;
+  font-size: 1.1rem !important;
+  text-transform: none !important;
+}
+
+.main-btn:hover {
+  background: #333 !important;
 }
 
 .secondary-btn {
-border: 2px solid #1a1a1a !important;
-color: #1a1a1a !important;
-padding: 15px 40px !important;
-border-radius: 12px !important;
-font-size: 1.1rem !important;
-text-transform: none !important;
+  border: 2px solid #1a1a1a !important;
+  color: #1a1a1a !important;
+  padding: 15px 40px !important;
+  border-radius: 14px !important;
+  font-size: 1.1rem !important;
+  text-transform: none !important;
 }
 
-/* אלמנטים עיצוביים ברקע */
+.secondary-btn:hover {
+  background: #1a1a1a !important;
+  color: white !important;
+}
+
+/* עיגולים ברקע */
 .overlay-shapes .shape {
-position: absolute;
-filter: blur(80px);
-z-index: 1;
-border-radius: 50%;
+  position: absolute;
+  filter: blur(80px);
+  z-index: 1;
+  border-radius: 50%;
 }
 
 .s1 {
-width: 400px;
-height: 400px;
-background: rgba(255, 126, 95, 0.2);
-top: -100px;
-right: -100px;
+  width: 400px;
+  height: 400px;
+  background: rgba(255, 126, 95, 0.2);
+  top: -100px;
+  right: -100px;
 }
 
 .s2 {
-width: 300px;
-height: 300px;
-background: rgba(254, 180, 123, 0.2);
-bottom: -50px;
-left: -50px;
+  width: 300px;
+  height: 300px;
+  background: rgba(254, 180, 123, 0.2);
+  bottom: -50px;
+  left: -50px;
 }
 
 @media (max-width: 600px) {
-.hero-actions { flex-direction: column; }
+  .hero-actions {
+    flex-direction: column;
+  }
 }

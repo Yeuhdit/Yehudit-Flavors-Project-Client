@@ -1,4 +1,4 @@
-// src/features/levels/levelSlice.js
+// react-client/src/features/levels/levelSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { levelService } from '../../services/levelService';
 

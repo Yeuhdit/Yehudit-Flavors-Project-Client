@@ -1,3 +1,4 @@
+// react-client/src/features/recipes/Recipes.jsx
 import { useNavigate } from 'react-router-dom';
 import Masonry from 'react-masonry-css';
 import { useState } from 'react';

@@ -1,4 +1,4 @@
-// src/features/common/Gallery.jsx
+// react-client/src/features/common/Gallery.jsx
 import { useEffect, useState } from "react";
 import api from "../../services/api"; // לוודא שה־api.js נכון
 import './Gallery.css';

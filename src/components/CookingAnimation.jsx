@@ -1,4 +1,4 @@
-// src/components/CookingAnimation.jsx
+// react-client/src/components/CookingAnimation.jsx
 import './CookingAnimation.css';
 
 const CookingAnimation = ({ active }) => {

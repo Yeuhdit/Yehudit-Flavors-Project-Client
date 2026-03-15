@@ -1,4 +1,4 @@
-// src/components/Register.jsx
+// react-client/src/components/Register.jsx
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import userService from "../services/userService";

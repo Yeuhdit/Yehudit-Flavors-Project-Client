@@ -1,4 +1,4 @@
-//src/features/common/Header.jsx
+//react-client/src/features/common/Header.jsx
 import { TextField, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useSelector } from 'react-redux';

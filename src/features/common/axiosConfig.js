@@ -1,4 +1,4 @@
-// src/features/common/axiosConfig.js
+// react-client/src/features/common/axiosConfig.js
 import axios from "axios";
 
 // הוספתי /api כדי שזה יתאים להגדרות השרת שלך

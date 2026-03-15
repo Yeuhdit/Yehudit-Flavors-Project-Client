@@ -1,3 +1,4 @@
+/* // react-client/src/features/common/Navbar.css */
 .navbar {
 background: transparent !important;
 box-shadow: none !important;
@@ -22,6 +23,7 @@ font-weight: 800 !important;
 color: #333;
 cursor: pointer;
 letter-spacing: -1px;
+font-size: 1.9rem; /* גדל קצת */
 }
 
 .navbar-logo span {
@@ -36,6 +38,8 @@ font-weight: 600;
 margin: 0 10px;
 border-radius: 8px;
 transition: 0.3s;
+font-size: 1.05rem; /* הגדלת גופן לכפתורים */
+padding: 10px 16px;
 }
 
 .navbar-links button:hover {
@@ -46,11 +50,12 @@ background: rgba(255, 126, 95, 0.05);
 .register-btn {
 background: #ff7e5f !important;
 color: white !important;
-padding: 8px 25px !important;
+padding: 10px 26px !important; /* קצת רחב יותר */
 border-radius: 50px !important;
 text-transform: none;
 font-weight: 700 !important;
 box-shadow: 0 4px 15px rgba(255, 126, 95, 0.3);
+font-size: 1.05rem;
 }
 
 .user-btn {
@@ -58,6 +63,42 @@ text-transform: none !important;
 color: #333 !important;
 font-weight: 600 !important;
 gap: 10px;
+font-size: 1rem; /* קצת גדול יותר */
+}
+
+/* הדגשה לפי דף: הוספת מחלקות "home" ו-"recipes" ל-nav כדי להבליט */
+.navbar.home {
+  background: linear-gradient(90deg, rgba(255,243,236,0.95), rgba(255,250,240,0.95)) !important;
+  box-shadow: 0 12px 40px rgba(255,126,95,0.08) !important;
+}
+
+.navbar.home .navbar-logo h1,
+.navbar.home .navbar-links a,
+.navbar.home .navbar-links button {
+  color: #ff5e3a !important;
+}
+
+/* דף מתכונים - להדגיש את הקישור של מתכונים */
+.navbar.recipes {
+  background: linear-gradient(90deg, rgba(240,249,255,0.95), rgba(245,253,255,0.95)) !important;
+  box-shadow: 0 12px 40px rgba(59,130,246,0.06) !important;
+}
+
+/* קלאס להדגשת קישור ספציפי (למשל על ה-link של מתכונים תן לו class="recipes-link") */
+.navbar .navbar-links .active {
+  background: rgba(255,126,95,0.12);
+  color: #b23f2a !important;
+  box-shadow: 0 8px 24px rgba(255,126,95,0.08);
+  transform: translateY(-3px);
+}
+
+/* כאשר ה-navbar הוא recipes וברצונך להדגיש את קישור המתכונים */
+.navbar.recipes .navbar-links .recipes-link,
+.navbar.recipes .navbar-links .recipes-link.active {
+  background: rgba(59,130,246,0.12);
+  color: #1e40af !important;
+  box-shadow: 0 8px 24px rgba(59,130,246,0.08);
+  transform: translateY(-3px);
 }
 
 @media (max-width: 768px) {

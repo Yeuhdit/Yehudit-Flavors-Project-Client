@@ -1,4 +1,4 @@
-// src/app/store.js
+// react-client/src/app/store.js
 import { configureStore } from '@reduxjs/toolkit';
 import recipeReducer from '../features/recipes/recipeSlice';
 import levelReducer from '../features/levels/levelSlice';
