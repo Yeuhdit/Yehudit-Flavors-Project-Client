@@ -1,3 +1,4 @@
+// src/Router.jsx
 import { createBrowserRouter } from "react-router-dom";
 import Login from "/components/Login";
 import AddRecipe from "/components/AddRecipe";

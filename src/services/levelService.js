@@ -5,7 +5,9 @@ export const levelService = {
   // קבלת כל הרמות
   getAllLevels: async () => {
     try {
-      const response = await api.get('/levels'); // ✅ זה עובד עם baseURL של api.js
+      // אם ב-api.js ה-baseURL הוא http://localhost:5000/api
+      // אז כאן צריך רק 'levels' (בלי לוכסן בהתחלה לפעמים זה פותר בעיות)
+      const response = await api.get('/levels'); 
       return response.data;
     } catch (error) {
       console.error("שגיאה במשיכת רמות:", error);
@@ -13,44 +15,21 @@ export const levelService = {
     }
   },
 
-  // קבלת רמה בודדת לפי ID
-  getLevelById: async (id) => {
-    try {
-      const response = await api.get(`/levels/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error(`שגיאה במשיכת רמה ${id}:`, error);
-      throw error;
-    }
-  },
-
-  // הוספת רמה (רק admin)
+  // הוספת רמה
   addLevel: async (levelData) => {
-    try {
-      const response = await api.post('/levels', levelData);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await api.post('/levels', levelData);
+    return response.data;
   },
 
-  // עדכון רמה (רק admin)
+  // עדכון רמה
   updateLevel: async (id, levelData) => {
-    try {
-      const response = await api.put(`/levels/${id}`, levelData);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await api.put(`/levels/${id}`, levelData);
+    return response.data;
   },
 
-  // מחיקת רמה (רק admin)
+  // מחיקת רמה
   deleteLevel: async (id) => {
-    try {
-      const response = await api.delete(`/levels/${id}`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await api.delete(`/levels/${id}`);
+    return response.data;
   }
 };

@@ -106,3 +106,12 @@ body {
   margin-bottom: 10px;
   font-weight: 600;
 }
+
+
+html, body, #root {
+  height: auto !important;
+  min-height: 100vh !important;
+  overflow: visible !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}

@@ -1,8 +1,7 @@
-// src/features/recipes/Recipes.jsx
 import { useNavigate } from 'react-router-dom';
 import Masonry from 'react-masonry-css';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import './Recipes.css';
 
 import {
@@ -11,11 +10,9 @@ import {
   CardContent,
   Typography,
   Box,
-  Chip,
   TextField,
   CircularProgress
 } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
 
 const breakpointColumnsObj = {
   default: 5,
@@ -28,7 +25,7 @@ const SingleRecipe = ({ recipe }) => {
   const navigate = useNavigate();
   
   const getImageUrl = () => {
-    const rawName = recipe.image || recipe.img || recipe.imageUrl || '';
+    const rawName = recipe.image || recipe.img || recipe.imagUrl || recipe.imageUrl || '';
     if (!rawName) return 'https://via.placeholder.com/300?text=No+Image';
     const cleanName = rawName.split('/').pop().split('\\').pop();
     return `http://localhost:5000/images/${cleanName}`;
@@ -54,35 +51,13 @@ const SingleRecipe = ({ recipe }) => {
 };
 
 const Recipes = () => {
-  const [recipes, setRecipes] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [errorMsg, setErrorMsg] = useState('');
+  
+  const { recipes, loading, error } = useSelector((state) => state.recipes || {});
 
-  useEffect(() => {
-    const fetchRecipes = async () => {
-      try {
-        console.log("Calling server: http://localhost:5000/api/recipes/getallrecipes");
-        const response = await axios.get('http://localhost:5000/api/recipes/getallrecipes');
-        
-        console.log("Server response data:", response.data);
+  const safeRecipes = Array.isArray(recipes) ? recipes : [];
 
-        // בדיקה: האם הנתונים הם מערך? אם לא, אולי הם בתוך response.data.recipes?
-        const data = Array.isArray(response.data) ? response.data : (response.data.recipes || []);
-        
-        setRecipes(data);
-        if (data.length === 0) setErrorMsg("השרת ענה, אבל רשימת המתכונים ריקה ב-Database");
-      } catch (error) {
-        console.error("Axios Error:", error);
-        setErrorMsg("שגיאה בתקשורת: השרת לא מצא את הנתיב (404)");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchRecipes();
-  }, []);
-
-  const filteredRecipes = recipes.filter((recipe) =>
+  const filteredRecipes = safeRecipes.filter((recipe) =>
     recipe.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -92,7 +67,7 @@ const Recipes = () => {
     <Box sx={{ py: 6, px: 3, direction: 'rtl' }}>
       <Typography variant="h3" textAlign="center" mb={1} fontWeight="bold">ספר המתכונים 🍳</Typography>
       
-      {errorMsg && <Typography color="error" textAlign="center" mb={2}>{errorMsg}</Typography>}
+      {error && <Typography color="error" textAlign="center" mb={2}>{typeof error === 'string' ? error : 'שגיאה בטעינת הנתונים'}</Typography>}
 
       <Box sx={{ maxWidth: '600px', mx: 'auto', mb: 7 }}>
         <TextField
@@ -109,7 +84,7 @@ const Recipes = () => {
           {filteredRecipes.map((recipe) => <SingleRecipe key={recipe._id} recipe={recipe} />)}
         </Masonry>
       ) : (
-        !errorMsg && <Typography textAlign="center">אין מתכונים להצגה.</Typography>
+        !error && <Typography textAlign="center">אין מתכונים להצגה.</Typography>
       )}
     </Box>
   );

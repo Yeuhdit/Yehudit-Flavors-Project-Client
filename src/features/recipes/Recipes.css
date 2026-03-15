@@ -1,14 +1,16 @@
-/* //src/features/recipes/Recipes.css */
+/* // src/features/recipes/Recipes.css */
 .recipes {
   display: grid;
   gap: 16px;
   padding: 20px;
 }
+
 .my-masonry-grid {
   display: flex;
   margin-left: -20px; /* gutter */
   width: auto;
 }
+
 .my-masonry-grid_column {
   padding-left: 20px;
   background-clip: padding-box;

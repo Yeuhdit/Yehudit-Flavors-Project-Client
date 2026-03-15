@@ -2,13 +2,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { levelService } from '../../services/levelService';
 
+// ===== THUNKS =====
+
 export const getAllLevels = createAsyncThunk(
   'levels/getAll',
   async (_, { rejectWithValue }) => {
     try {
       return await levelService.getAllLevels();
     } catch (err) {
-      return rejectWithValue(err.response?.data || 'שגיאה בקבלת רמות');
+      return rejectWithValue(err.response?.data || 'שגיאה בטעינת רמות');
     }
   }
 );
@@ -47,6 +49,8 @@ export const deleteLevel = createAsyncThunk(
   }
 );
 
+// ===== SLICE =====
+
 const levelSlice = createSlice({
   name: 'levels',
   initialState: {
@@ -56,16 +60,12 @@ const levelSlice = createSlice({
     success: false,
   },
   reducers: {
-    clearError: (state) => {
-      state.error = null;
-    },
-    clearSuccess: (state) => {
-      state.success = false;
-    },
+    clearError: (state) => { state.error = null; },
+    clearSuccess: (state) => { state.success = false; },
   },
   extraReducers: (builder) => {
     builder
-      // Get All Levels
+      // Get All
       .addCase(getAllLevels.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -76,52 +76,23 @@ const levelSlice = createSlice({
       })
       .addCase(getAllLevels.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload?.message || 'שגיאה בקבלת רמות';
+        state.error = action.payload;
       })
-      // Add Level
-      .addCase(addLevel.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
+      // Add
       .addCase(addLevel.fulfilled, (state, action) => {
-        state.loading = false;
         state.allLevels.push(action.payload);
         state.success = true;
       })
-      .addCase(addLevel.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload?.message || 'שגיאה בהוספת רמה';
-      })
-      // Update Level
-      .addCase(updateLevel.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
+      // Update
       .addCase(updateLevel.fulfilled, (state, action) => {
-        state.loading = false;
         const index = state.allLevels.findIndex(l => l._id === action.payload._id);
-        if (index !== -1) {
-          state.allLevels[index] = action.payload;
-        }
+        if (index !== -1) state.allLevels[index] = action.payload;
         state.success = true;
       })
-      .addCase(updateLevel.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload?.message || 'שגיאה בעדכון רמה';
-      })
-      // Delete Level
-      .addCase(deleteLevel.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
+      // Delete
       .addCase(deleteLevel.fulfilled, (state, action) => {
-        state.loading = false;
         state.allLevels = state.allLevels.filter(l => l._id !== action.payload);
         state.success = true;
-      })
-      .addCase(deleteLevel.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload?.message || 'שגיאה במחיקת רמה';
       });
   },
 });
