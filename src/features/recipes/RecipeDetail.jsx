@@ -1,4 +1,4 @@
-// src/features/recipes/RecipeDetail.jsx
+// react-client/src/features/recipes/RecipeDetail.jsx
 
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -24,16 +24,17 @@ const RecipeDetail = () => {
   };
 
   const getImageUrl = () => {
-    if (!recipe) return "";
+    if (!recipe) return null;
 
-    const rawName = recipe.image || recipe.img || recipe.imageUrl || "";
+    const rawName = recipe.image || recipe.img || recipe.imagUrl || recipe.imageUrl || "";
 
-    if (!rawName)
-      return "https://images.unsplash.com/photo-1495195134817-a169d2679f03?w=1600";
+    // אם אין תמונה, מחזירים null ולא מחפשים באינטרנט!
+    if (!rawName) return null;
 
     const cleanName = rawName.split("/").pop().split("\\").pop();
 
-    return `http://localhost:5000/images/${cleanName}`;
+    // פונים אך ורק לשרת האמיתי שלך
+    return `http://localhost:5005/images/${cleanName}`;
   };
 
   if (!recipe) {
@@ -44,12 +45,18 @@ const RecipeDetail = () => {
     );
   }
 
+  const bgImage = getImageUrl();
+
   return (
     <div className="yehudit-recipe-container">
       
       <div
         className="yehudit-hero-banner"
-        style={{ backgroundImage: `url(${getImageUrl()})` }}
+        // מציגים רקע עדין במקום תמונה שבורה אם לא העלית תמונה
+        style={{ 
+          backgroundImage: bgImage ? `url(${bgImage})` : 'none',
+          backgroundColor: bgImage ? 'transparent' : '#ffe8e0'
+        }}
       >
         <div className="yehudit-hero-overlay">
           <h1 className="yehudit-recipe-title">{recipe.name}</h1>

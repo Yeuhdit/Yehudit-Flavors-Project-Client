@@ -1,4 +1,4 @@
-//src/features/categories/categorySlice.js
+//react-client/src/features/categories/categorySlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { categoryService } from '../../services/categoryService';
 

@@ -1,4 +1,4 @@
-// src/components/RecipeList.js
+// react-client/src/components/RecipeList.js
 
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

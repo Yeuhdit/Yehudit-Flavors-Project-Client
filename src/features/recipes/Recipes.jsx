@@ -3,48 +3,40 @@ import Masonry from 'react-masonry-css';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import './Recipes.css';
-
 import {
-  Card,
-  CardMedia,
-  CardContent,
-  Typography,
-  Box,
-  TextField,
-  CircularProgress
+  Card, CardMedia, CardContent,
+  Typography, Box, TextField, CircularProgress
 } from '@mui/material';
 
-const breakpointColumnsObj = {
-  default: 5,
-  1100: 4,
-  700: 3,
-  500: 2,
-};
+const breakpointColumnsObj = { default: 5, 1100: 4, 700: 3, 500: 2 };
 
 const SingleRecipe = ({ recipe }) => {
   const navigate = useNavigate();
-  
+
   const getImageUrl = () => {
     const rawName = recipe.image || recipe.img || recipe.imagUrl || recipe.imageUrl || '';
-    if (!rawName) return 'https://via.placeholder.com/300?text=No+Image';
+    if (!rawName) return null;
     const cleanName = rawName.split('/').pop().split('\\').pop();
-    return `http://localhost:5000/images/${cleanName}`;
+    return `http://localhost:5005/images/${cleanName}`;
   };
+
+  const imageUrl = getImageUrl();
 
   return (
     <Card
       onClick={() => navigate(`/recipe/${recipe._id}`)}
-      sx={{ borderRadius: 4, boxShadow: 3, cursor: 'pointer', mb: 2 }}
+      className={!imageUrl ? "shimmer" : ""}
+      sx={{ borderRadius: 4, mb: 2, cursor: 'pointer', transition: '0.45s', '&:hover': { transform: 'scale(1.05)' } }}
     >
-      <CardMedia
-        component="img"
-        height="230"
-        image={getImageUrl()}
-        sx={{ objectFit: 'cover' }}
-        onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500'; }}
-      />
-      <CardContent sx={{ textAlign: 'right' }}>
-        <Typography variant="h6" fontWeight="bold">{recipe.name}</Typography>
+      {imageUrl ? (
+        <CardMedia component="img" height="230" image={imageUrl} sx={{ objectFit: 'cover' }} alt={recipe.name}/>
+      ) : (
+        <Box sx={{ height: 230, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: '#ffe8e0', color: '#d35400' }}>
+          <Typography fontWeight="bold">אין תמונה 📷</Typography>
+        </Box>
+      )}
+      <CardContent>
+        <Typography variant="h6">{recipe.name}</Typography>
       </CardContent>
     </Card>
   );
@@ -52,36 +44,29 @@ const SingleRecipe = ({ recipe }) => {
 
 const Recipes = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  
-  const { recipes, loading, error } = useSelector((state) => state.recipes || {});
-
+  const { recipes, loading, error } = useSelector(state => state.recipes || {});
   const safeRecipes = Array.isArray(recipes) ? recipes : [];
+  const filteredRecipes = safeRecipes.filter(r => r.name?.toLowerCase().includes(searchTerm.toLowerCase()));
 
-  const filteredRecipes = safeRecipes.filter((recipe) =>
-    recipe.name?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 20 }}><CircularProgress /></Box>;
+  if (loading) return <Box sx={{ display:'flex', justifyContent:'center', mt:20 }}><CircularProgress /></Box>;
 
   return (
-    <Box sx={{ py: 6, px: 3, direction: 'rtl' }}>
-      <Typography variant="h3" textAlign="center" mb={1} fontWeight="bold">ספר המתכונים 🍳</Typography>
-      
-      {error && <Typography color="error" textAlign="center" mb={2}>{typeof error === 'string' ? error : 'שגיאה בטעינת הנתונים'}</Typography>}
+    <Box sx={{ py:6, px:3, direction:'rtl' }}>
+      <Typography variant="h3" textAlign="center" mb={1}>ספר המתכונים 🍳</Typography>
 
-      <Box sx={{ maxWidth: '600px', mx: 'auto', mb: 7 }}>
+      {error && <Typography color="error" textAlign="center" mb={2}>{typeof error==='string'?error:'שגיאה בטעינת הנתונים'}</Typography>}
+
+      <Box sx={{ maxWidth:'650px', mx:'auto', mb:7 }}>
         <TextField
-          fullWidth
-          placeholder="חפשי מתכון..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          sx={{ bgcolor: 'white', borderRadius: '30px', '& fieldset': { borderRadius: '30px' } }}
+          fullWidth placeholder="חפשי מתכון..."
+          value={searchTerm} onChange={e=>setSearchTerm(e.target.value)}
+          sx={{ bgcolor:'white', borderRadius:'50px', '& fieldset':{borderRadius:'50px'} }}
         />
       </Box>
 
-      {filteredRecipes.length > 0 ? (
+      {filteredRecipes.length>0 ? (
         <Masonry breakpointCols={breakpointColumnsObj} className="my-masonry-grid" columnClassName="my-masonry-grid_column">
-          {filteredRecipes.map((recipe) => <SingleRecipe key={recipe._id} recipe={recipe} />)}
+          {filteredRecipes.map(recipe => <SingleRecipe key={recipe._id} recipe={recipe} />)}
         </Masonry>
       ) : (
         !error && <Typography textAlign="center">אין מתכונים להצגה.</Typography>

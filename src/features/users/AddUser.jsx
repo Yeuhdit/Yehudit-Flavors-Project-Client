@@ -1,4 +1,4 @@
-// src/features/users/AddUser.jsx
+// react-client/src/features/users/AddUser.jsx
 import React, { useState } from 'react';
 import {
   Box, TextField, Button, MenuItem, Typography, Grid

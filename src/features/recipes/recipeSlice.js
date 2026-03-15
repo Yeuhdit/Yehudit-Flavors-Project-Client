@@ -1,8 +1,6 @@
-// src/features/recipes/recipeSlice.js
+// react-client/src/features/recipes/recipeSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../services/api';
-
-// ===== THUNKS =====
 
 export const getAllRecipes = createAsyncThunk(
   'recipes/getAll',
@@ -20,9 +18,7 @@ export const addRecipe = createAsyncThunk(
   'recipes/add',
   async (recipeData, { rejectWithValue }) => {
     try {
-      const res = await api.post('/recipes', recipeData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      const res = await api.post('/recipes', recipeData);
       return res.data;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'שגיאה בהוספת מתכון');
@@ -42,21 +38,19 @@ export const deleteRecipe = createAsyncThunk(
   }
 );
 
-// ===== SLICE =====
-
 const recipeSlice = createSlice({
   name: 'recipes',
   initialState: {
     recipes: [],
     loading: false,
     error: null,
-    success: false, // הוספנו את הסטייט של ההצלחה
+    success: false,
   },
   reducers: {
     clearError: (state) => {
       state.error = null;
     },
-    clearSuccess: (state) => { // זה מה שחסר ל-AddRecipe.jsx!
+    clearSuccess: (state) => {
       state.success = false;
     }
   },
@@ -72,18 +66,29 @@ const recipeSlice = createSlice({
       })
       .addCase(getAllRecipes.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload?.message || 'Error';
+        state.error = action.payload?.message || 'Error fetching recipes';
+      })
+      
+      .addCase(addRecipe.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
       })
       .addCase(addRecipe.fulfilled, (state, action) => {
+        state.loading = false;
         state.recipes.push(action.payload);
-        state.success = true; // סימון הצלחה
+        state.success = true;
       })
+      .addCase(addRecipe.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload?.message || 'שגיאה לא ידועה בהוספת מתכון';
+      })
+
       .addCase(deleteRecipe.fulfilled, (state, action) => {
         state.recipes = state.recipes.filter(r => r._id !== action.payload);
       });
   },
 });
 
-// שימי לב שייצאתי כאן את שניהם!
 export const { clearError, clearSuccess } = recipeSlice.actions;
 export default recipeSlice.reducer;
