@@ -13,7 +13,6 @@ const Register = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // משתנים להודעות על המסך
   const [serverError, setServerError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
@@ -25,22 +24,22 @@ const Register = () => {
 
   const validate = () => {
     const newErrors = {};
-    if (!form.username) newErrors.username = "שם משתמש חובה";
+    if (!form.username) newErrors.username = "איך קוראים לך?";
     
     if (!form.email) {
       newErrors.email = "אימייל חובה";
     } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(form.email)) {
-      newErrors.email = "אימייל לא תקין";
+      newErrors.email = "כתובת אימייל לא תקינה";
     }
     
     if (!form.password) {
       newErrors.password = "סיסמה חובה";
     } else if (form.password.length < 6) {
-      newErrors.password = "חובה לפחות 6 תווים";
+      newErrors.password = "הסיסמה חייבת להכיל לפחות 6 תווים";
     }
 
     if (form.password !== form.confirmPassword) {
-      newErrors.confirmPassword = "הסיסמאות אינן תואמות";
+      newErrors.confirmPassword = "הסיסמאות לא תואמות";
     }
     
     return newErrors;
@@ -55,7 +54,7 @@ const Register = () => {
     setErrors(validationErrors);
     
     if (Object.keys(validationErrors).length > 0) {
-      setServerError('יש לתקן את השגיאות בטופס');
+      setServerError('נא לתקן את השגיאות בטופס');
       return;
     }
 
@@ -72,58 +71,104 @@ const Register = () => {
         loginContext(data.user);
       }
 
-      setSuccessMsg("🎉 נרשמת בהצלחה! מעביר לדף הבית...");
+      setSuccessMsg("איזה כיף שהצטרפת! מעביר אותך פנימה...");
       setTimeout(() => navigate("/"), 1200);
     } catch (err) {
       if (err?.response?.status === 409) {
-        setErrors({ email: "האימייל הזה כבר קיים במערכת" });
-        setServerError("האימייל הזה כבר קיים במערכת, נסי להתחבר");
+        setErrors({ email: "האימייל הזה כבר רשום" });
+        setServerError("האימייל הזה כבר רשום במערכת, נסי להתחבר.");
       } else {
-        setServerError("❌ שגיאה בהרשמה");
+        setServerError("אירעה שגיאה בהרשמה. נסי שוב מאוחר יותר.");
       }
     } finally {
       setLoading(false);
     }
   };
 
-  const errorStyle = { color: '#d32f2f', fontSize: '13px', marginTop: '4px', fontWeight: 'bold' };
-
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <div className="auth-header">
-          <h1>הרשמה</h1>
-        </div>
-
-        {/* תצוגת הודעות שרת / הצלחה ישר בתוך המסך */}
-        {serverError && <div style={{ backgroundColor: '#ffebee', color: '#c62828', padding: '10px', borderRadius: '5px', marginBottom: '15px', textAlign: 'center', fontWeight: 'bold' }}>{serverError}</div>}
-        {successMsg && <div style={{ backgroundColor: '#e8f5e9', color: '#2e7d32', padding: '10px', borderRadius: '5px', marginBottom: '15px', textAlign: 'center', fontWeight: 'bold' }}>{successMsg}</div>}
-
-        <form onSubmit={handleRegister}>
-          <div className="input-group">
-            <input type="text" name="username" placeholder="שם משתמש" value={form.username} onChange={handleChange} className="auth-input" style={errors.username ? { borderColor: 'red' } : {}} />
-            {errors.username && <div style={errorStyle}>{errors.username}</div>}
-          </div>
-          <div className="input-group">
-            <input type="email" name="email" placeholder="אימייל" value={form.email} onChange={handleChange} className="auth-input" style={errors.email ? { borderColor: 'red' } : {}} />
-            {errors.email && <div style={errorStyle}>{errors.email}</div>}
-          </div>
-          <div className="input-group">
-            <input type="password" name="password" placeholder="סיסמה (לפחות 6 תווים)" value={form.password} onChange={handleChange} className="auth-input" style={errors.password ? { borderColor: 'red' } : {}} />
-            {errors.password && <div style={errorStyle}>{errors.password}</div>}
-          </div>
-          <div className="input-group">
-            <input type="password" name="confirmPassword" placeholder="אימות סיסמה" value={form.confirmPassword} onChange={handleChange} className="auth-input" style={errors.confirmPassword ? { borderColor: 'red' } : {}} />
-            {errors.confirmPassword && <div style={errorStyle}>{errors.confirmPassword}</div>}
-          </div>
-          <div className="input-group">
-            <input type="text" name="address" placeholder="כתובת (אופציונלי)" value={form.address} onChange={handleChange} className="auth-input" />
-          </div>
+    <div className="auth-wrapper">
+      <div className="auth-container">
+        <div className="auth-card">
           
-          <button type="submit" className="auth-button" disabled={loading}>{loading ? "נרשם..." : "הרשמי"}</button>
-        </form>
-        <div className="auth-link">
-          <p>כבר רשומה? <span onClick={() => navigate("/login")} style={{ cursor: "pointer", color: "#ff9b8c", fontWeight: "bold" }}>התחברי כאן</span></p>
+          <div className="auth-header">
+            <h1 className="auth-title">יצירת <span className="auth-highlight">חשבון.</span></h1>
+            <p className="auth-subtitle">הצטרפי לקהילת הטעמים שלנו</p>
+          </div>
+
+          {serverError && <div className="auth-alert error">{serverError}</div>}
+          {successMsg && <div className="auth-alert success">{successMsg}</div>}
+
+          <form onSubmit={handleRegister} noValidate>
+            
+            <div className="input-group">
+              <input 
+                type="text" 
+                name="username" 
+                placeholder="שם משתמש *" 
+                value={form.username} 
+                onChange={handleChange} 
+                className={`auth-input ${errors.username ? 'has-error' : ''}`} 
+              />
+              {errors.username && <span className="error-text">{errors.username}</span>}
+            </div>
+
+            <div className="input-group">
+              <input 
+                type="email" 
+                name="email" 
+                placeholder="כתובת אימייל *" 
+                value={form.email} 
+                onChange={handleChange} 
+                className={`auth-input ${errors.email ? 'has-error' : ''}`} 
+              />
+              {errors.email && <span className="error-text">{errors.email}</span>}
+            </div>
+
+            <div className="input-group">
+              <input 
+                type="password" 
+                name="password" 
+                placeholder="סיסמה (לפחות 6 תווים) *" 
+                value={form.password} 
+                onChange={handleChange} 
+                className={`auth-input ${errors.password ? 'has-error' : ''}`} 
+              />
+              {errors.password && <span className="error-text">{errors.password}</span>}
+            </div>
+
+            <div className="input-group">
+              <input 
+                type="password" 
+                name="confirmPassword" 
+                placeholder="אימות סיסמה *" 
+                value={form.confirmPassword} 
+                onChange={handleChange} 
+                className={`auth-input ${errors.confirmPassword ? 'has-error' : ''}`} 
+              />
+              {errors.confirmPassword && <span className="error-text">{errors.confirmPassword}</span>}
+            </div>
+
+            <div className="input-group">
+              <input 
+                type="text" 
+                name="address" 
+                placeholder="כתובת (אופציונלי)" 
+                value={form.address} 
+                onChange={handleChange} 
+                className="auth-input" 
+              />
+            </div>
+            
+            <button type="submit" className="auth-button" disabled={loading}>
+              {loading ? "יוצר חשבון..." : "הצטרפות עכשיו"}
+            </button>
+
+          </form>
+
+          <div className="auth-footer-link">
+            כבר רשומה? <span onClick={() => navigate("/login")}>התחברי כאן</span>
+          </div>
+
         </div>
       </div>
     </div>

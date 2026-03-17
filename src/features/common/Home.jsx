@@ -1,55 +1,58 @@
 // react-client/src/features/common/Home.jsx
 import React from "react";
-import { Container, Typography, Button, Box } from "@mui/material";
+import { Container, Typography, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import "./Home.css";
 
 const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="home-wrapper">
+    <div className="home-wrapper" dir="rtl">
+      
+      {/* רקע חי ונושם */}
+      <div className="ambient-background">
+        <div className="glow-orb orb-primary"></div>
+        <div className="glow-orb orb-secondary"></div>
+      </div>
+
       <section className="hero-section">
-
-        {/* אלמנטים ברקע */}
-        <div className="overlay-shapes">
-          <div className="shape s1"></div>
-          <div className="shape s2"></div>
-        </div>
-
         <Container maxWidth="md" className="hero-content">
+          
+          <div className="reveal-stagger-1">
+            <Typography className="hero-subtitle">
+              הבית של האוכל הטוב
+            </Typography>
+          </div>
 
-          <Typography className="hero-subtitle">
-            הבית של האוכל הטוב
-          </Typography>
+          <div className="reveal-stagger-2">
+            <Typography component="h1" className="hero-title">
+              לבשל עם <span className="text-highlight">נשמה</span>,<br />
+              לאכול עם חיוך.
+            </Typography>
+          </div>
 
-          <Typography component="h1" className="hero-title">
-            לבשל עם <span className="highlight">נשמה</span>,<br />
-            לאכול עם חיוך.
-          </Typography>
+          <div className="reveal-stagger-3">
+            <Typography className="hero-description">
+              מתכונים שנבחרו בקפידה, טיפים מהמטבח של יהודית וקהילה שלמה של טעמים.
+            </Typography>
+          </div>
 
-          <Typography variant="h6" className="hero-description">
-            מתכונים שנבחרו בקפידה, טיפים מהמטבח של יהודית וקהילה שלמה של טעמים.
-          </Typography>
-
-          <Box className="hero-actions">
-
-            <Button
-              variant="contained"
-              className="main-btn"
+          <Box className="hero-actions reveal-stagger-4">
+            <button
+              className="btn-premium btn-primary"
               onClick={() => navigate("/recipes")}
             >
-              לכל המתכונים
-            </Button>
+              לכל המתכונים <ArrowBackRoundedIcon className="btn-icon" />
+            </button>
 
-            <Button
-              variant="outlined"
-              className="secondary-btn"
+            <button
+              className="btn-premium btn-outline"
               onClick={() => navigate("/register")}
             >
               הצטרפות לקהילה
-            </Button>
-
+            </button>
           </Box>
 
         </Container>

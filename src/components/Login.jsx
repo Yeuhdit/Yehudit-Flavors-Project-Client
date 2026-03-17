@@ -1,7 +1,6 @@
 // react-client/src/components/Login.jsx
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, Typography, TextField, Button, CircularProgress, Box } from '@mui/material';
 import userService from '../services/userService';
 import { AuthContext } from '../context/AuthContext';
 import './AuthStyles.css';
@@ -13,14 +12,13 @@ const Login = () => {
   const navigate = useNavigate();
   const { loginContext } = useContext(AuthContext);
 
-  // משתנים להודעות על המסך
   const [serverError, setServerError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: '' });
-    setServerError(''); // מנקה שגיאה כשמתחילים להקליד שוב
+    setServerError(''); 
   };
 
   const validate = () => {
@@ -50,10 +48,10 @@ const Login = () => {
 
       loginContext(data.user);
 
-      setSuccessMsg('🎉 התחברת בהצלחה! מעביר לדף הבית...');
+      setSuccessMsg('התחברת בהצלחה! מעביר אותך פנימה...');
       setTimeout(() => navigate('/'), 1200);
     } catch (err) {
-      const msg = err?.response?.status === 401 ? '❌ אימייל או סיסמה שגויים' : '❌ שגיאה בהתחברות';
+      const msg = err?.response?.status === 401 ? 'אימייל או סיסמה שגויים' : 'אירעה שגיאה בהתחברות';
       setServerError(msg);
     } finally {
       setLoading(false);
@@ -61,43 +59,57 @@ const Login = () => {
   };
 
   return (
-    <Card sx={{ maxWidth: 420, mx: 'auto', mt: 8, p: 3, borderRadius: 4, boxShadow: '0 12px 40px rgba(0,0,0,0.15)' }}>
-      <CardContent>
-        <Typography variant="h4" align="center" mb={1} fontWeight="bold">ברוכה הבאה 🍳</Typography>
-        <Typography align="center" mb={3} color="text.secondary">התחברי לחשבון שלך</Typography>
+    <div className="auth-wrapper">
+      <div className="auth-container">
+        <div className="auth-card">
+          
+          <div className="auth-header">
+            <h1 className="auth-title">ברוכה <span className="auth-highlight">השבה.</span></h1>
+            <p className="auth-subtitle">התחברי לחשבון שלך כדי להמשיך</p>
+          </div>
 
-        {/* תצוגת הודעות שרת / הצלחה ישר בתוך המסך */}
-        {serverError && (
-          <Box sx={{ bgcolor: '#ffebee', color: '#c62828', p: 1.5, borderRadius: 1, mb: 2, textAlign: 'center', fontWeight: 'bold' }}>
-            {serverError}
-          </Box>
-        )}
-        {successMsg && (
-          <Box sx={{ bgcolor: '#e8f5e9', color: '#2e7d32', p: 1.5, borderRadius: 1, mb: 2, textAlign: 'center', fontWeight: 'bold' }}>
-            {successMsg}
-          </Box>
-        )}
+          {serverError && <div className="auth-alert error">{serverError}</div>}
+          {successMsg && <div className="auth-alert success">{successMsg}</div>}
 
-        <form onSubmit={handleSubmit} noValidate>
-          <TextField 
-            label="אימייל" name="email" type="email" fullWidth margin="normal" 
-            value={form.email} onChange={handleChange} 
-            error={!!errors.email} helperText={errors.email} 
-          />
-          <TextField 
-            label="סיסמה" name="password" type="password" fullWidth margin="normal" 
-            value={form.password} onChange={handleChange} 
-            error={!!errors.password} helperText={errors.password} 
-          />
-          <Button type="submit" fullWidth variant="contained" disabled={loading} sx={{ mt: 2, py: 1.5, background: 'linear-gradient(45deg, #f97316, #fb923c)' }}>
-            {loading ? <CircularProgress size={26} color="inherit" /> : 'התחברי'}
-          </Button>
-        </form>
-        <Typography align="center" mt={3} color="text.secondary">
-          אין לך חשבון עדיין? <Button onClick={() => navigate('/register')} sx={{ fontWeight: 'bold', color: '#f97316' }}>הרשמה</Button>
-        </Typography>
-      </CardContent>
-    </Card>
+          <form onSubmit={handleSubmit} noValidate>
+            
+            <div className="input-group">
+              <input 
+                type="email" 
+                name="email" 
+                placeholder="כתובת אימייל" 
+                value={form.email} 
+                onChange={handleChange} 
+                className={`auth-input ${errors.email ? 'has-error' : ''}`} 
+              />
+              {errors.email && <span className="error-text">{errors.email}</span>}
+            </div>
+
+            <div className="input-group">
+              <input 
+                type="password" 
+                name="password" 
+                placeholder="סיסמה" 
+                value={form.password} 
+                onChange={handleChange} 
+                className={`auth-input ${errors.password ? 'has-error' : ''}`} 
+              />
+              {errors.password && <span className="error-text">{errors.password}</span>}
+            </div>
+
+            <button type="submit" className="auth-button" disabled={loading}>
+              {loading ? 'מתחבר...' : 'כניסה לחשבון'}
+            </button>
+
+          </form>
+
+          <div className="auth-footer-link">
+            אין לך חשבון עדיין? <span onClick={() => navigate('/register')}>יצירת חשבון חדש</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
   );
 };
 

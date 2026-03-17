@@ -1,9 +1,10 @@
+// react-client/src/features/recipes/RecipeDetail.jsx
+
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import "./RecipeDetail.css";
 import { CircularProgress } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
 
 const RecipeDetail = () => {
   const { id } = useParams();
@@ -23,20 +24,24 @@ const RecipeDetail = () => {
 
   const getImageUrl = () => {
     if (!recipe) return null;
-
     const rawName = recipe.image || recipe.img || recipe.imagUrl || recipe.imageUrl || "";
-
     if (!rawName) return null;
-
     const cleanName = rawName.split("/").pop().split("\\").pop();
-
     return `http://localhost:5005/images/${cleanName}`;
+  };
+
+  // פונקציית ההדפסה עם ההשהיה הקטנה למניעת חסימות דפדפן
+  const handlePrint = (e) => {
+    e.preventDefault(); 
+    setTimeout(() => {
+      window.print();
+    }, 150); 
   };
 
   if (!recipe) {
     return (
-      <div style={{ display: "flex", justifyContent: "center", marginTop: "100px" }}>
-        <CircularProgress />
+      <div className="ydt-lux-loader">
+        <CircularProgress sx={{ color: "#ff8c6b", strokeWidth: 1 }} size={60} />
       </div>
     );
   }
@@ -44,74 +49,97 @@ const RecipeDetail = () => {
   const bgImage = getImageUrl();
 
   return (
-    <div className="yehudit-recipe-container">
-      {/* כפתור הדפסה קבוע למעלה */}
-      <button className="print-button" onClick={() => window.print()}>
-        🖨️ הדפס
-      </button>
-
-      <div
-        className="yehudit-hero-banner"
-        style={{
-          backgroundImage: bgImage ? `url(${bgImage})` : "none",
-          backgroundColor: bgImage ? "transparent" : "#ffe8e0",
-        }}
-      >
-        <div className="yehudit-hero-overlay">
-          <h1 className="yehudit-recipe-title">{recipe.name}</h1>
-
-          <p className="yehudit-recipe-subtitle">
-            {recipe.servings ? `מס' מנות: ${recipe.servings}` : "מושלם לכל המשפחה"}
-          </p>
-
-          <div className="yehudit-chips">
-            {recipe.category && <span className="yehudit-chip">{recipe.category}</span>}
-            {recipe.preparationTime && (
-              <span className="yehudit-chip">{recipe.preparationTime} דקות</span>
-            )}
-            {recipe.difficulty && <span className="yehudit-chip">{recipe.difficulty}</span>}
-          </div>
-        </div>
+    <div className="ydt-lux-wrapper">
+      {/* רקע התואם לדף הבית - צבעים חמים וכתמים זוהרים */}
+      <div className="ydt-lux-ambient-bg">
+        <div className="glow-circle glow-1"></div>
+        <div className="glow-circle glow-2"></div>
       </div>
 
-      <div className="yehudit-content-area">
-        {recipe.ingredients && recipe.ingredients.length > 0 && (
-          <div>
-            <h2 className="yehudit-section-title">אז מה צריך בשביל להתחיל?</h2>
+      {/* כפתור הדפסה */}
+      <button 
+        type="button"
+        className="ydt-lux-print-btn fade-in-up" 
+        style={{ animationDelay: '0.8s' }} 
+        onClick={handlePrint} 
+        title="הדפס מתכון"
+      >
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="1.5" fill="none">
+          <polyline points="6 9 6 2 18 2 18 9"></polyline>
+          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+          <rect x="6" y="14" width="12" height="8"></rect>
+        </svg>
+      </button>
 
-            <ul className="yehudit-list">
-              {recipe.ingredients.map((ing, i) => (
-                <li
-                  key={i}
-                  onClick={() => toggleIngredient(i)}
-                  className={`yehudit-list-item ${
-                    checkedIngredients.includes(i) ? "checked" : ""
-                  }`}
-                >
-                  <CheckIcon className="yehudit-check-icon" />
-                  <span>{ing}</span>
-                </li>
-              ))}
-            </ul>
+      <div className="ydt-lux-container fade-in-up" style={{ animationDelay: '0.1s' }}>
+        
+        {/* אזור עליון - תמונת קפסולה וכותרת צפה */}
+        <section className="ydt-lux-hero">
+          <div className="ydt-lux-image-wrapper fade-in-up" style={{ animationDelay: '0.2s' }}>
+            {bgImage ? (
+              <img src={bgImage} alt={recipe.name} className="ydt-lux-image" />
+            ) : (
+              <div className="ydt-lux-image-placeholder"></div>
+            )}
           </div>
-        )}
-
-        {recipe.instructions && recipe.instructions.length > 0 && (
-          <div>
-            <h2 className="yehudit-section-title">איך מכינים?</h2>
-
-            <ul className="yehudit-list">
-              {recipe.instructions.map((step, i) => (
-                <li key={i} className="yehudit-list-item">
-                  <span className="yehudit-step-number">{i + 1}.</span>
-                  <span>{step}</span>
-                </li>
+          
+          <div className="ydt-lux-title-area fade-in-up" style={{ animationDelay: '0.3s' }}>
+            <h1 className="ydt-lux-title">
+              {/* צביעת המילה הראשונה בצבע המותג */}
+              {recipe.name.split(' ').map((word, index) => (
+                <span key={index} className={index === 0 ? "highlight-word" : ""}>
+                  {word}{" "}
+                </span>
               ))}
-            </ul>
+            </h1>
+            <div className="ydt-lux-meta">
+              {recipe.category && <span className="lux-tag">{recipe.category}</span>}
+              {recipe.preparationTime && <span className="lux-tag">{recipe.preparationTime} דקות</span>}
+              {recipe.difficulty && <span className="lux-tag">{recipe.difficulty}</span>}
+              {recipe.servings && <span className="lux-tag">{recipe.servings} מנות</span>}
+            </div>
+            <p className="ydt-lux-subtitle">
+              רכיבים מדויקים ושלבים ברורים ליצירת מנה בלתי נשכחת. קחו את הזמן, תיהנו מהתהליך.
+            </p>
           </div>
-        )}
+        </section>
 
-        <div className="yehudit-footer">בתיאבון!</div>
+        {/* אזור התוכן */}
+        <section className="ydt-lux-content">
+          
+          <div className="ydt-lux-ingredients fade-in-up" style={{ animationDelay: '0.4s' }}>
+            <h2 className="ydt-lux-heading">מה נצטרך?</h2>
+            <div className="ydt-lux-ingredients-list">
+              {recipe.ingredients?.map((ing, i) => {
+                const isChecked = checkedIngredients.includes(i);
+                return (
+                  <div
+                    key={i}
+                    onClick={() => toggleIngredient(i)}
+                    className={`ydt-lux-ingredient-item ${isChecked ? "checked" : ""}`}
+                    style={{ animationDelay: `${0.4 + (i * 0.05)}s` }}
+                  >
+                    <div className="ydt-lux-radio"></div>
+                    <span className="ydt-lux-ing-text">{ing}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="ydt-lux-instructions fade-in-up" style={{ animationDelay: '0.5s' }}>
+            <h2 className="ydt-lux-heading">שלבי ההכנה</h2>
+            <div className="ydt-lux-steps-container">
+              {recipe.instructions?.map((step, i) => (
+                <div key={i} className="ydt-lux-step" data-step={`0${i + 1}`.slice(-2)}>
+                  <p className="ydt-lux-step-text">{step}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </section>
+
       </div>
     </div>
   );

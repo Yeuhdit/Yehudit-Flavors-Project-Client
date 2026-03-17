@@ -1,12 +1,1038 @@
+
+// // // react-client/src/components/AddRecipe.jsx
+
+// // import React, { useState, useEffect, useRef } from 'react';
+// // import { useDispatch, useSelector } from 'react-redux';
+// // import { addRecipe, updateRecipe, clearSuccess } from '../features/recipes/recipeSlice';
+// // import { getAllCategories } from '../features/categories/categorySlice';
+// // import { getAllLevels } from '../features/levels/levelSlice';
+// // import { useParams, useNavigate } from 'react-router-dom';
+// // import { 
+// //   TextField, 
+// //   Select, 
+// //   MenuItem, 
+// //   InputLabel, 
+// //   FormControl, 
+// //   Checkbox, 
+// //   FormControlLabel, 
+// //   CircularProgress,
+// //   Box,
+// //   Typography,
+// //   Chip,
+// //   OutlinedInput,
+// //   Alert,
+// //   IconButton,
+// //   Button,
+// //   Autocomplete
+// // } from '@mui/material';
+// // import AddRoundedIcon from '@mui/icons-material/AddRounded';
+// // import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
+// // import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'; 
+// // import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded'; 
+// // import InsertPhotoRoundedIcon from '@mui/icons-material/InsertPhotoRounded';
+// // import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+// // import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+// // import './AddRecipe.css';
+
+// // const steps = [
+// //   'שם וזמן',
+// //   'קטגוריות וקושי',
+// //   'מרכיבים',
+// //   'שלבי הכנה',
+// //   'תמונה ופרטיות'
+// // ];
+
+// // function AddRecipe() {
+// //   const dispatch = useDispatch();
+// //   const navigate = useNavigate();
+// //   const { id } = useParams(); 
+// //   const isEditMode = !!id;
+// //   const formRef = useRef(null);
+  
+// //   const recipesState = useSelector(state => state.recipes) || {};
+// //   const categoriesState = useSelector(state => state.categories) || {};
+// //   const levelsState = useSelector(state => state.levels) || {};
+
+// //   const loading = recipesState.loading || false;
+// //   const error = recipesState.error || null;
+// //   const success = recipesState.success || false;
+  
+// //   const allCategories = Array.isArray(categoriesState.allCategories) ? categoriesState.allCategories : [];
+// //   const allLevels = Array.isArray(levelsState.allLevels) ? levelsState.allLevels : [];
+
+// //   const [activeStep, setActiveStep] = useState(0);
+// //   const [formData, setFormData] = useState({
+// //     name: '',
+// //     preparationTime: '',
+// //     difficulty: '',
+// //     categories: [],
+// //     levels: [],
+// //     ingredients: [''], 
+// //     instructions: [''], 
+// //     isPrivate: false,
+// //     image: null,
+// //   });
+
+// //   const [imagePreview, setImagePreview] = useState(null);
+// //   const [serverMsg, setServerMsg] = useState('');
+// //   const [isError, setIsError] = useState(false);
+
+// //   useEffect(() => {
+// //     dispatch(getAllCategories());
+// //     dispatch(getAllLevels());
+// //   }, [dispatch]);
+
+// //   useEffect(() => {
+// //     if (isEditMode && recipesState.recipes?.length > 0) {
+// //       const recipeToEdit = recipesState.recipes.find(r => r._id === id);
+// //       if (recipeToEdit) {
+// //         setFormData({
+// //           name: recipeToEdit.name || '',
+// //           preparationTime: recipeToEdit.preparationTime || '',
+// //           difficulty: recipeToEdit.difficulty || '',
+// //           categories: recipeToEdit.categories?.map(c => c._id || c) || [],
+// //           levels: recipeToEdit.levels?.map(l => l._id || l) || [],
+// //           ingredients: recipeToEdit.ingredients?.length > 0 ? recipeToEdit.ingredients : [''],
+// //           instructions: recipeToEdit.instructions?.length > 0 ? recipeToEdit.instructions : [''],
+// //           isPrivate: recipeToEdit.isPrivate || false,
+// //           image: null
+// //         });
+// //         if (recipeToEdit.imageUrl) {
+// //           const cleanName = recipeToEdit.imageUrl.split("/").pop().split("\\").pop();
+// //           setImagePreview(`http://localhost:5005/images/${cleanName}`);
+// //         }
+// //       }
+// //     }
+// //   }, [id, isEditMode, recipesState.recipes]);
+
+// //   useEffect(() => {
+// //     if (success) {
+// //       dispatch(clearSuccess());
+// //       if (isEditMode) {
+// //         navigate(`/recipes`); 
+// //       } else {
+// //         setFormData({
+// //           name: '', preparationTime: '', difficulty: '', categories: [], levels: [],
+// //           ingredients: [''], instructions: [''], isPrivate: false, image: null,
+// //         });
+// //         setImagePreview(null);
+// //         setIsError(false);
+// //         setServerMsg('היצירה שלך נוספה בהצלחה.');
+// //         setActiveStep(0); 
+// //         window.scrollTo({ top: 0, behavior: 'smooth' });
+// //         setTimeout(() => setServerMsg(''), 5000);
+// //       }
+// //     }
+// //   }, [success, dispatch, isEditMode, navigate, id]);
+
+// //   const handleTextChange = (e) => {
+// //     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+// //     setServerMsg('');
+// //   };
+
+// //   const handleCheckboxChange = (e) => {
+// //     setFormData(prev => ({ ...prev, isPrivate: e.target.checked }));
+// //   };
+
+// //   const handleImageChange = (e) => {
+// //     const file = e.target.files[0];
+// //     if (file) {
+// //       setFormData(prev => ({ ...prev, image: file }));
+// //       setImagePreview(URL.createObjectURL(file));
+// //     }
+// //   };
+
+// //   const handleRemoveImage = (e) => {
+// //     e.preventDefault();
+// //     e.stopPropagation();
+// //     setFormData(prev => ({ ...prev, image: null }));
+// //     setImagePreview(null);
+// //   };
+
+// //   const handleCategoriesChange = (event, newValue) => {
+// //     const newCategories = newValue.map((val) => {
+// //       if (typeof val === 'string') return val;
+// //       if (val && val._id) return val._id;
+// //       return val;
+// //     });
+// //     setFormData(prev => ({ ...prev, categories: newCategories }));
+// //   };
+
+// //   const handleMultiSelectChange = (event) => {
+// //     const { name, value } = event.target;
+// //     setFormData(prev => ({
+// //       ...prev,
+// //       [name]: typeof value === 'string' ? value.split(',') : value,
+// //     }));
+// //   };
+
+// //   const handleArrayChange = (index, field, value) => {
+// //     const newArray = [...formData[field]];
+// //     newArray[index] = value;
+// //     setFormData({ ...formData, [field]: newArray });
+// //   };
+
+// //   const addArrayItem = (field) => {
+// //     setFormData({ ...formData, [field]: [...formData[field], ''] });
+// //   };
+
+// //   const removeArrayItem = (index, field) => {
+// //     const newArray = formData[field].filter((_, i) => i !== index);
+// //     if (newArray.length === 0) newArray.push('');
+// //     setFormData({ ...formData, [field]: newArray });
+// //   };
+
+// //   const handleSubmit = async (e) => {
+// //     e.preventDefault();
+// //     setServerMsg('');
+// //     setIsError(false);
+    
+// //     if (!formData.name || !formData.preparationTime || formData.categories.length === 0 || !formData.difficulty) {
+// //       setIsError(true);
+// //       setServerMsg('נא להשלים את כל שדות החובה בשלבים הקודמים.');
+// //       return;
+// //     }
+
+// //     const filteredIngredients = formData.ingredients.filter(i => i.trim() !== '');
+// //     const filteredInstructions = formData.instructions.filter(i => i.trim() !== '');
+
+// //     if (filteredIngredients.length === 0 || filteredInstructions.length === 0) {
+// //       setIsError(true);
+// //       setServerMsg('יש להזין לפחות מרכיב אחד ושלב הכנה אחד.');
+// //       return;
+// //     }
+
+// //     const data = new FormData();
+// //     data.append('name', formData.name);
+// //     data.append('preparationTime', formData.preparationTime);
+// //     data.append('difficulty', formData.difficulty);
+// //     data.append('isPrivate', formData.isPrivate);
+// //     data.append('categories', JSON.stringify(formData.categories));
+// //     data.append('ingredients', JSON.stringify(filteredIngredients));
+// //     data.append('instructions', JSON.stringify(filteredInstructions));
+    
+// //     if (formData.levels.length > 0) {
+// //       data.append('levels', JSON.stringify(formData.levels));
+// //     }
+// //     if (formData.image) {
+// //       data.append('image', formData.image);
+// //     }
+
+// //     if (isEditMode) {
+// //       dispatch(updateRecipe({ id, data }));
+// //     } else {
+// //       dispatch(addRecipe(data));
+// //     }
+// //   };
+
+// //   const handleNext = () => {
+// //     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+// //   };
+
+// //   const handleBack = () => {
+// //     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+// //   };
+
+// //   const getLevelNames = (selectedIds) => {
+// //     return selectedIds.map(id => allLevels.find(l => l._id === id)?.description || id);
+// //   };
+
+// //   const modernInputProps = {
+// //     sx: {
+// //       '& .MuiOutlinedInput-root': {
+// //         borderRadius: '20px',
+// //         backgroundColor: 'rgba(255, 255, 255, 0.8)',
+// //         backdropFilter: 'blur(10px)',
+// //         transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+// //         '& fieldset': { borderColor: 'rgba(0,0,0,0.03)' },
+// //         '&:hover fieldset': { borderColor: 'rgba(0,0,0,0.08)' },
+// //         '&.Mui-focused fieldset': { borderColor: '#ff7e5f' },
+// //         '&.Mui-focused': { boxShadow: '0 10px 30px rgba(255, 126, 95, 0.15)' }
+// //       },
+// //       '& .MuiInputLabel-root': { color: '#888' },
+// //       '& .MuiInputLabel-root.Mui-focused': { color: '#ff7e5f' }
+// //     }
+// //   };
+
+// //   const renderStepContent = (step) => {
+// //     switch (step) {
+// //       case 0:
+// //         return (
+// //           <Box className="step-content-inner fade-in">
+// //             <Typography variant="h2" className="step-title">איך קוראים לזה?</Typography>
+// //             <TextField 
+// //               label="שם המתכון *" name="name" fullWidth 
+// //               value={formData.name} onChange={handleTextChange} required
+// //               {...modernInputProps} sx={{ mb: 4, ...modernInputProps.sx }}
+// //             />
+// //             <TextField 
+// //               label="זמן הכנה (דקות) *" name="preparationTime" type="number" fullWidth 
+// //               value={formData.preparationTime} onChange={handleTextChange} required
+// //               {...modernInputProps}
+// //             />
+// //           </Box>
+// //         );
+// //       case 1:
+// //         return (
+// //           <Box className="step-content-inner fade-in">
+// //             <Typography variant="h2" className="step-title">קצת הגדרות</Typography>
+// //             <FormControl fullWidth {...modernInputProps} sx={{ mb: 4, ...modernInputProps.sx }}>
+// //               <InputLabel>רמת קושי *</InputLabel>
+// //               <Select name="difficulty" value={formData.difficulty} onChange={handleTextChange} label="רמת קושי *">
+// //                 <MenuItem value="easy">קלי קלות</MenuItem>
+// //                 <MenuItem value="medium">דורש תשומת לב</MenuItem>
+// //                 <MenuItem value="hard">מאתגר ומספק</MenuItem>
+// //               </Select>
+// //             </FormControl>
+            
+// //             <Autocomplete
+// //               multiple
+// //               freeSolo
+// //               options={allCategories}
+// //               getOptionLabel={(option) => {
+// //                 if (typeof option === 'string') return option;
+// //                 return option.description || option.name || '';
+// //               }}
+// //               value={formData.categories.map(cat => {
+// //                 const existing = allCategories.find(c => c._id === cat);
+// //                 return existing ? existing : cat;
+// //               })}
+// //               onChange={handleCategoriesChange}
+// //               renderInput={(params) => (
+// //                 <TextField 
+// //                   {...params} 
+// //                   label="קטגוריות (בחרי או הקלידי משלך!) *" 
+// //                   {...modernInputProps} 
+// //                   sx={{ mb: 4, ...modernInputProps.sx }}
+// //                 />
+// //               )}
+// //               renderTags={(value, getTagProps) =>
+// //                 value.map((option, index) => (
+// //                   <Chip 
+// //                     label={typeof option === 'string' ? option : (option.description || option.name)} 
+// //                     {...getTagProps({ index })} 
+// //                     className="designer-chip" 
+// //                   />
+// //                 ))
+// //               }
+// //             />
+
+// //             <FormControl fullWidth {...modernInputProps}>
+// //               <InputLabel>רמות התאמה (אופציונלי)</InputLabel>
+// //               <Select
+// //                 multiple name="levels" value={formData.levels}
+// //                 onChange={handleMultiSelectChange}
+// //                 input={<OutlinedInput label="רמות התאמה (אופציונלי)" />}
+// //                 renderValue={(selected) => (
+// //                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+// //                     {getLevelNames(selected).map((value) => (
+// //                       <Chip key={value} label={value} className="designer-chip outlined" variant="outlined" />
+// //                     ))}
+// //                   </Box>
+// //                 )}
+// //               >
+// //                 {allLevels.map((level) => (
+// //                   <MenuItem key={level._id} value={level._id}>{level.description || level.name}</MenuItem>
+// //                 ))}
+// //               </Select>
+// //             </FormControl>
+// //           </Box>
+// //         );
+// //       case 2:
+// //         return (
+// //           <Box className="step-content-inner fade-in">
+// //             <Typography variant="h2" className="step-title">מה צריך?</Typography>
+// //             <div className="builder-list ingredients-list">
+// //               {formData.ingredients.map((ingredient, index) => (
+// //                 <div key={index} className="builder-row ingredients-row">
+// //                   <div className="row-indicator"></div>
+// //                   <input 
+// //                     type="text" 
+// //                     className="clean-input" 
+// //                     placeholder="לדוגמא: 2 כוסות קמח מנופה..."
+// //                     value={ingredient}
+// //                     onChange={(e) => handleArrayChange(index, 'ingredients', e.target.value)}
+// //                   />
+// //                   <IconButton type="button" onClick={() => removeArrayItem(index, 'ingredients')} className="delete-icon">
+// //                     <RemoveRoundedIcon fontSize="small" />
+// //                   </IconButton>
+// //                 </div>
+// //               ))}
+// //               <Button type="button" startIcon={<AddRoundedIcon />} onClick={() => addArrayItem('ingredients')} className="text-action-btn">
+// //                 הוספת מרכיב נוסף
+// //               </Button>
+// //             </div>
+// //           </Box>
+// //         );
+// //       case 3:
+// //         return (
+// //           <Box className="step-content-inner fade-in">
+// //             <Typography variant="h2" className="step-title">שלב אחרי שלב</Typography>
+// //             <div className="builder-list instructions-list">
+// //               {formData.instructions.map((instruction, index) => (
+// //                 <div key={index} className="builder-row instructions-row align-top">
+// //                   <div className="step-counter">{index + 1}</div>
+// //                   <textarea 
+// //                     className="clean-textarea" 
+// //                     placeholder="תארי את שלב ההכנה בצורה ברורה..."
+// //                     value={instruction}
+// //                     onChange={(e) => handleArrayChange(index, 'instructions', e.target.value)}
+// //                     rows={3}
+// //                   />
+// //                   <IconButton type="button" onClick={() => removeArrayItem(index, 'instructions')} className="delete-icon">
+// //                     <RemoveRoundedIcon fontSize="small" />
+// //                   </IconButton>
+// //                 </div>
+// //               ))}
+// //               <Button type="button" startIcon={<AddRoundedIcon />} onClick={() => addArrayItem('instructions')} className="text-action-btn">
+// //                 הוספת שלב נוסף
+// //               </Button>
+// //             </div>
+// //           </Box>
+// //         );
+// //       case 4:
+// //         return (
+// //           <Box className="step-content-inner fade-in">
+// //             <Typography variant="h2" className="step-title">תמונה וסיום</Typography>
+// //             <div className="spectacular-upload">
+// //               <input type="file" id="recipe-image-upload" accept="image/*" onChange={handleImageChange} hidden />
+              
+// //               {!imagePreview ? (
+// //                 <label htmlFor="recipe-image-upload" className="upload-empty-state">
+// //                   <div className="icon-circle">
+// //                     <InsertPhotoRoundedIcon />
+// //                   </div>
+// //                   <Typography className="upload-title">העלאת תמונה מגרת חושים</Typography>
+// //                   <Typography className="upload-hint">לחיצה לבחירת קובץ (מומלץ מאוד, אבל אופציונלי!)</Typography>
+// //                 </label>
+// //               ) : (
+// //                 <div className="upload-filled-state">
+// //                   <img src={imagePreview} alt="תצוגה מקדימה" />
+// //                   <IconButton type="button" className="remove-image-btn" onClick={handleRemoveImage} aria-label="הסר תמונה">
+// //                     <CloseRoundedIcon />
+// //                   </IconButton>
+// //                 </div>
+// //               )}
+// //             </div>
+            
+// //             <FormControlLabel 
+// //               control={<Checkbox checked={formData.isPrivate} onChange={handleCheckboxChange} sx={{ color: '#ccc', '&.Mui-checked': { color: '#ff7e5f' } }} />} 
+// //               label={<Typography sx={{ fontSize: '1rem', color: '#666', fontWeight: 500, mt: 3 }}>שמור במחברת הפרטית שלי (לא יפורסם בקהילה)</Typography>} 
+// //               className="privacy-checkbox"
+// //             />
+// //           </Box>
+// //         );
+// //       default:
+// //         return 'שלב לא ידוע';
+// //     }
+// //   };
+
+// //   return (
+// //     <div className="layout-2028-wrapper stepped-form-wrapper" dir="rtl" ref={formRef}>
+      
+// //       <div className="dynamic-bg">
+// //         <div className="glow-orb orb-1"></div>
+// //         <div className="glow-orb orb-2"></div>
+// //       </div>
+
+// //       <div className="stepped-form-container">
+        
+// //         <header className="form-header fade-in">
+// //           <Typography variant="h1" className="super-title">
+// //             {isEditMode ? <><span className="text-highlight">ערכי</span> קסם.</> : <><span className="text-highlight">צרי</span> קסם.</>}
+// //           </Typography>
+// //         </header>
+
+// //         {(serverMsg || error) && (
+// //           <Alert severity={(isError || error) ? "error" : "success"} className="modern-alert fade-in">
+// //             {error || serverMsg}
+// //           </Alert>
+// //         )}
+
+// //         <div className="modern-stepper fade-in delay-1">
+// //           {steps.map((label, index) => (
+// //             <div key={label} className={`stepper-item ${index <= activeStep ? 'active' : ''} ${index < activeStep ? 'completed' : ''}`}>
+// //               <div className="stepper-icon">
+// //                 {index < activeStep ? <CheckCircleRoundedIcon /> : index + 1}
+// //               </div>
+// //               <Typography className="stepper-label">{label}</Typography>
+// //               {index < steps.length - 1 && <div className="stepper-line"></div>}
+// //             </div>
+// //           ))}
+// //         </div>
+
+// //         <div className="avant-garde-form fade-in delay-2">
+          
+// //           <div className="step-content-area">
+// //             {renderStepContent(activeStep)}
+// //           </div>
+
+// //           <div className="form-navigation fade-in delay-3">
+// //             <Button
+// //               type="button"
+// //               disabled={activeStep === 0}
+// //               onClick={handleBack}
+// //               startIcon={<ArrowForwardRoundedIcon />} 
+// //               className="nav-btn back-btn"
+// //               disableRipple
+// //             >
+// //               חזרה
+// //             </Button>
+            
+// //             {activeStep === steps.length - 1 ? (
+// //               <Button 
+// //                 type="button" 
+// //                 onClick={handleSubmit}
+// //                 variant="contained" 
+// //                 disabled={loading} 
+// //                 className="master-submit-btn"
+// //                 endIcon={<CheckCircleRoundedIcon />}
+// //               >
+// //                 {loading ? <CircularProgress size={24} color="inherit" /> : (isEditMode ? 'שמירת שינויים!' : (imagePreview ? 'פרסום המתכון!' : 'פרסום (ללא תמונה)'))}
+// //               </Button>
+// //             ) : (
+// //               <Button
+// //                 type="button"
+// //                 variant="contained"
+// //                 onClick={handleNext}
+// //                 endIcon={<ArrowBackRoundedIcon />} 
+// //                 className="nav-btn next-btn"
+// //               >
+// //                 השלב הבא
+// //               </Button>
+// //             )}
+// //           </div>
+
+// //         </div>
+// //       </div>
+// //     </div>
+// //   );
+// // }
+
+// // export default AddRecipe;
+// // react-client/src/components/AddRecipe.jsx
+
+// import React, { useState, useEffect, useRef } from 'react';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { addRecipe, updateRecipe, clearSuccess, clearError } from '../features/recipes/recipeSlice';
+// import { getAllCategories } from '../features/categories/categorySlice';
+// import { getAllLevels } from '../features/levels/levelSlice';
+// import { useParams, useNavigate } from 'react-router-dom';
+// import { 
+//   TextField, 
+//   Select, 
+//   MenuItem, 
+//   InputLabel, 
+//   FormControl, 
+//   Checkbox, 
+//   FormControlLabel, 
+//   CircularProgress,
+//   Box,
+//   Typography,
+//   Chip,
+//   OutlinedInput,
+//   Alert,
+//   IconButton,
+//   Button,
+//   Autocomplete
+// } from '@mui/material';
+// import AddRoundedIcon from '@mui/icons-material/AddRounded';
+// import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
+// import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'; 
+// import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded'; 
+// import InsertPhotoRoundedIcon from '@mui/icons-material/InsertPhotoRounded';
+// import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+// import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+// import './AddRecipe.css';
+
+// const steps = [
+//   'שם וזמן',
+//   'קטגוריות וקושי',
+//   'מרכיבים',
+//   'שלבי הכנה',
+//   'תמונה ופרטיות'
+// ];
+
+// function AddRecipe() {
+//   const dispatch = useDispatch();
+//   const navigate = useNavigate();
+//   const { id } = useParams(); 
+//   const isEditMode = !!id;
+//   const formRef = useRef(null);
+  
+//   const recipesState = useSelector(state => state.recipes) || {};
+//   const categoriesState = useSelector(state => state.categories) || {};
+//   const levelsState = useSelector(state => state.levels) || {};
+
+//   const loading = recipesState.loading || false;
+//   const error = recipesState.error || null;
+//   const success = recipesState.success || false;
+  
+//   const allCategories = Array.isArray(categoriesState.allCategories) ? categoriesState.allCategories : [];
+//   const allLevels = Array.isArray(levelsState.allLevels) ? levelsState.allLevels : [];
+
+//   const [activeStep, setActiveStep] = useState(0);
+//   const [formData, setFormData] = useState({
+//     name: '',
+//     preparationTime: '',
+//     difficulty: '',
+//     categories: [],
+//     levels: [],
+//     ingredients: [''], 
+//     instructions: [''], 
+//     isPrivate: false,
+//     image: null,
+//   });
+
+//   const [imagePreview, setImagePreview] = useState(null);
+//   const [serverMsg, setServerMsg] = useState('');
+//   const [isError, setIsError] = useState(false);
+
+//   // מנקים שגיאות ישנות ברגע שנכנסים לדף העריכה/הוספה!
+//   useEffect(() => {
+//     dispatch(clearError());
+//     dispatch(getAllCategories());
+//     dispatch(getAllLevels());
+//   }, [dispatch]);
+
+//   useEffect(() => {
+//     if (isEditMode && recipesState.recipes?.length > 0) {
+//       const recipeToEdit = recipesState.recipes.find(r => r._id === id);
+//       if (recipeToEdit) {
+//         setFormData({
+//           name: recipeToEdit.name || '',
+//           preparationTime: recipeToEdit.preparationTime || '',
+//           difficulty: recipeToEdit.difficulty || '',
+//           categories: recipeToEdit.categories?.map(c => c._id || c) || [],
+//           levels: recipeToEdit.levels?.map(l => l._id || l) || [],
+//           ingredients: recipeToEdit.ingredients?.length > 0 ? recipeToEdit.ingredients : [''],
+//           instructions: recipeToEdit.instructions?.length > 0 ? recipeToEdit.instructions : [''],
+//           isPrivate: recipeToEdit.isPrivate || false,
+//           image: null
+//         });
+//         if (recipeToEdit.imageUrl) {
+//           const cleanName = recipeToEdit.imageUrl.split("/").pop().split("\\").pop();
+//           setImagePreview(`http://localhost:5005/images/${cleanName}`);
+//         }
+//       }
+//     }
+//   }, [id, isEditMode, recipesState.recipes]);
+
+//   useEffect(() => {
+//     if (success) {
+//       dispatch(clearSuccess());
+//       if (isEditMode) {
+//         navigate(`/recipes`); 
+//       } else {
+//         setFormData({
+//           name: '', preparationTime: '', difficulty: '', categories: [], levels: [],
+//           ingredients: [''], instructions: [''], isPrivate: false, image: null,
+//         });
+//         setImagePreview(null);
+//         setIsError(false);
+//         setServerMsg('היצירה שלך נוספה בהצלחה.');
+//         setActiveStep(0); 
+//         window.scrollTo({ top: 0, behavior: 'smooth' });
+//         setTimeout(() => setServerMsg(''), 5000);
+//       }
+//     }
+//   }, [success, dispatch, isEditMode, navigate, id]);
+
+//   const handleTextChange = (e) => {
+//     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+//     setServerMsg('');
+//   };
+
+//   const handleCheckboxChange = (e) => {
+//     setFormData(prev => ({ ...prev, isPrivate: e.target.checked }));
+//   };
+
+//   const handleImageChange = (e) => {
+//     const file = e.target.files[0];
+//     if (file) {
+//       setFormData(prev => ({ ...prev, image: file }));
+//       setImagePreview(URL.createObjectURL(file));
+//     }
+//   };
+
+//   const handleRemoveImage = (e) => {
+//     e.preventDefault();
+//     e.stopPropagation();
+//     setFormData(prev => ({ ...prev, image: null }));
+//     setImagePreview(null);
+//   };
+
+//   const handleCategoriesChange = (event, newValue) => {
+//     const newCategories = newValue.map((val) => {
+//       if (typeof val === 'string') return val;
+//       if (val && val._id) return val._id;
+//       return val;
+//     });
+//     setFormData(prev => ({ ...prev, categories: newCategories }));
+//   };
+
+//   const handleMultiSelectChange = (event) => {
+//     const { name, value } = event.target;
+//     setFormData(prev => ({
+//       ...prev,
+//       [name]: typeof value === 'string' ? value.split(',') : value,
+//     }));
+//   };
+
+//   const handleArrayChange = (index, field, value) => {
+//     const newArray = [...formData[field]];
+//     newArray[index] = value;
+//     setFormData({ ...formData, [field]: newArray });
+//   };
+
+//   const addArrayItem = (field) => {
+//     setFormData({ ...formData, [field]: [...formData[field], ''] });
+//   };
+
+//   const removeArrayItem = (index, field) => {
+//     const newArray = formData[field].filter((_, i) => i !== index);
+//     if (newArray.length === 0) newArray.push('');
+//     setFormData({ ...formData, [field]: newArray });
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setServerMsg('');
+//     setIsError(false);
+    
+//     if (!formData.name || !formData.preparationTime || formData.categories.length === 0 || !formData.difficulty) {
+//       setIsError(true);
+//       setServerMsg('נא להשלים את כל שדות החובה בשלבים הקודמים.');
+//       return;
+//     }
+
+//     const filteredIngredients = formData.ingredients.filter(i => i.trim() !== '');
+//     const filteredInstructions = formData.instructions.filter(i => i.trim() !== '');
+
+//     if (filteredIngredients.length === 0 || filteredInstructions.length === 0) {
+//       setIsError(true);
+//       setServerMsg('יש להזין לפחות מרכיב אחד ושלב הכנה אחד.');
+//       return;
+//     }
+
+//     const data = new FormData();
+//     data.append('name', formData.name);
+//     data.append('preparationTime', formData.preparationTime);
+//     data.append('difficulty', formData.difficulty);
+//     data.append('isPrivate', formData.isPrivate);
+//     data.append('categories', JSON.stringify(formData.categories));
+//     data.append('ingredients', JSON.stringify(filteredIngredients));
+//     data.append('instructions', JSON.stringify(filteredInstructions));
+    
+//     if (formData.levels.length > 0) {
+//       data.append('levels', JSON.stringify(formData.levels));
+//     }
+//     if (formData.image) {
+//       data.append('image', formData.image);
+//     }
+
+//     if (isEditMode) {
+//       dispatch(updateRecipe({ id, data }));
+//     } else {
+//       dispatch(addRecipe(data));
+//     }
+//   };
+
+//   const handleNext = () => {
+//     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+//   };
+
+//   const handleBack = () => {
+//     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+//   };
+
+//   const getLevelNames = (selectedIds) => {
+//     return selectedIds.map(id => allLevels.find(l => l._id === id)?.description || id);
+//   };
+
+//   const modernInputProps = {
+//     sx: {
+//       '& .MuiOutlinedInput-root': {
+//         borderRadius: '20px',
+//         backgroundColor: 'rgba(255, 255, 255, 0.8)',
+//         backdropFilter: 'blur(10px)',
+//         transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+//         '& fieldset': { borderColor: 'rgba(0,0,0,0.03)' },
+//         '&:hover fieldset': { borderColor: 'rgba(0,0,0,0.08)' },
+//         '&.Mui-focused fieldset': { borderColor: '#ff7e5f' },
+//         '&.Mui-focused': { boxShadow: '0 10px 30px rgba(255, 126, 95, 0.15)' }
+//       },
+//       '& .MuiInputLabel-root': { color: '#888' },
+//       '& .MuiInputLabel-root.Mui-focused': { color: '#ff7e5f' }
+//     }
+//   };
+
+//   const renderStepContent = (step) => {
+//     switch (step) {
+//       case 0:
+//         return (
+//           <Box className="step-content-inner fade-in">
+//             <Typography variant="h2" className="step-title">איך קוראים לזה?</Typography>
+//             <TextField 
+//               label="שם המתכון *" name="name" fullWidth 
+//               value={formData.name} onChange={handleTextChange} required
+//               {...modernInputProps} sx={{ mb: 4, ...modernInputProps.sx }}
+//             />
+//             <TextField 
+//               label="זמן הכנה (דקות) *" name="preparationTime" type="number" fullWidth 
+//               value={formData.preparationTime} onChange={handleTextChange} required
+//               {...modernInputProps}
+//             />
+//           </Box>
+//         );
+//       case 1:
+//         return (
+//           <Box className="step-content-inner fade-in">
+//             <Typography variant="h2" className="step-title">קצת הגדרות</Typography>
+//             <FormControl fullWidth {...modernInputProps} sx={{ mb: 4, ...modernInputProps.sx }}>
+//               <InputLabel>רמת קושי *</InputLabel>
+//               <Select name="difficulty" value={formData.difficulty} onChange={handleTextChange} label="רמת קושי *">
+//                 <MenuItem value="easy">קלי קלות</MenuItem>
+//                 <MenuItem value="medium">דורש תשומת לב</MenuItem>
+//                 <MenuItem value="hard">מאתגר ומספק</MenuItem>
+//               </Select>
+//             </FormControl>
+            
+//             <Autocomplete
+//               multiple
+//               freeSolo
+//               options={allCategories}
+//               getOptionLabel={(option) => {
+//                 if (typeof option === 'string') return option;
+//                 return option.description || option.name || '';
+//               }}
+//               value={formData.categories.map(cat => {
+//                 const existing = allCategories.find(c => c._id === cat);
+//                 return existing ? existing : cat;
+//               })}
+//               onChange={handleCategoriesChange}
+//               renderInput={(params) => (
+//                 <TextField 
+//                   {...params} 
+//                   label="קטגוריות (בחרי או הקלידי משלך!) *" 
+//                   {...modernInputProps} 
+//                   sx={{ mb: 4, ...modernInputProps.sx }}
+//                 />
+//               )}
+//               renderTags={(value, getTagProps) =>
+//                 value.map((option, index) => (
+//                   <Chip 
+//                     label={typeof option === 'string' ? option : (option.description || option.name)} 
+//                     {...getTagProps({ index })} 
+//                     className="designer-chip" 
+//                   />
+//                 ))
+//               }
+//             />
+
+//             <FormControl fullWidth {...modernInputProps}>
+//               <InputLabel>רמות התאמה (אופציונלי)</InputLabel>
+//               <Select
+//                 multiple name="levels" value={formData.levels}
+//                 onChange={handleMultiSelectChange}
+//                 input={<OutlinedInput label="רמות התאמה (אופציונלי)" />}
+//                 renderValue={(selected) => (
+//                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+//                     {getLevelNames(selected).map((value) => (
+//                       <Chip key={value} label={value} className="designer-chip outlined" variant="outlined" />
+//                     ))}
+//                   </Box>
+//                 )}
+//               >
+//                 {allLevels.map((level) => (
+//                   <MenuItem key={level._id} value={level._id}>{level.description || level.name}</MenuItem>
+//                 ))}
+//               </Select>
+//             </FormControl>
+//           </Box>
+//         );
+//       case 2:
+//         return (
+//           <Box className="step-content-inner fade-in">
+//             <Typography variant="h2" className="step-title">מה צריך?</Typography>
+//             <div className="builder-list ingredients-list">
+//               {formData.ingredients.map((ingredient, index) => (
+//                 <div key={index} className="builder-row ingredients-row">
+//                   <div className="row-indicator"></div>
+//                   <input 
+//                     type="text" 
+//                     className="clean-input" 
+//                     placeholder="לדוגמא: 2 כוסות קמח מנופה..."
+//                     value={ingredient}
+//                     onChange={(e) => handleArrayChange(index, 'ingredients', e.target.value)}
+//                   />
+//                   <IconButton type="button" onClick={() => removeArrayItem(index, 'ingredients')} className="delete-icon">
+//                     <RemoveRoundedIcon fontSize="small" />
+//                   </IconButton>
+//                 </div>
+//               ))}
+//               <Button type="button" startIcon={<AddRoundedIcon />} onClick={() => addArrayItem('ingredients')} className="text-action-btn">
+//                 הוספת מרכיב נוסף
+//               </Button>
+//             </div>
+//           </Box>
+//         );
+//       case 3:
+//         return (
+//           <Box className="step-content-inner fade-in">
+//             <Typography variant="h2" className="step-title">שלב אחרי שלב</Typography>
+//             <div className="builder-list instructions-list">
+//               {formData.instructions.map((instruction, index) => (
+//                 <div key={index} className="builder-row instructions-row align-top">
+//                   <div className="step-counter">{index + 1}</div>
+//                   <textarea 
+//                     className="clean-textarea" 
+//                     placeholder="תארי את שלב ההכנה בצורה ברורה..."
+//                     value={instruction}
+//                     onChange={(e) => handleArrayChange(index, 'instructions', e.target.value)}
+//                     rows={3}
+//                   />
+//                   <IconButton type="button" onClick={() => removeArrayItem(index, 'instructions')} className="delete-icon">
+//                     <RemoveRoundedIcon fontSize="small" />
+//                   </IconButton>
+//                 </div>
+//               ))}
+//               <Button type="button" startIcon={<AddRoundedIcon />} onClick={() => addArrayItem('instructions')} className="text-action-btn">
+//                 הוספת שלב נוסף
+//               </Button>
+//             </div>
+//           </Box>
+//         );
+//       case 4:
+//         return (
+//           <Box className="step-content-inner fade-in">
+//             <Typography variant="h2" className="step-title">תמונה וסיום</Typography>
+//             <div className="spectacular-upload">
+//               <input type="file" id="recipe-image-upload" accept="image/*" onChange={handleImageChange} hidden />
+              
+//               {!imagePreview ? (
+//                 <label htmlFor="recipe-image-upload" className="upload-empty-state">
+//                   <div className="icon-circle">
+//                     <InsertPhotoRoundedIcon />
+//                   </div>
+//                   <Typography className="upload-title">העלאת תמונה מגרת חושים</Typography>
+//                   <Typography className="upload-hint">לחיצה לבחירת קובץ (מומלץ מאוד, אבל אופציונלי!)</Typography>
+//                 </label>
+//               ) : (
+//                 <div className="upload-filled-state">
+//                   <img src={imagePreview} alt="תצוגה מקדימה" />
+//                   <IconButton type="button" className="remove-image-btn" onClick={handleRemoveImage} aria-label="הסר תמונה">
+//                     <CloseRoundedIcon />
+//                   </IconButton>
+//                 </div>
+//               )}
+//             </div>
+            
+//             <FormControlLabel 
+//               control={<Checkbox checked={formData.isPrivate} onChange={handleCheckboxChange} sx={{ color: '#ccc', '&.Mui-checked': { color: '#ff7e5f' } }} />} 
+//               label={<Typography sx={{ fontSize: '1rem', color: '#666', fontWeight: 500, mt: 3 }}>שמור במחברת הפרטית שלי (לא יפורסם בקהילה)</Typography>} 
+//               className="privacy-checkbox"
+//             />
+//           </Box>
+//         );
+//       default:
+//         return 'שלב לא ידוע';
+//     }
+//   };
+
+//   return (
+//     <div className="layout-2028-wrapper stepped-form-wrapper" dir="rtl" ref={formRef}>
+      
+//       <div className="dynamic-bg">
+//         <div className="glow-orb orb-1"></div>
+//         <div className="glow-orb orb-2"></div>
+//       </div>
+
+//       <div className="stepped-form-container">
+        
+//         <header className="form-header fade-in">
+//           <Typography variant="h1" className="super-title">
+//             {isEditMode ? <><span className="text-highlight">ערכי</span> קסם.</> : <><span className="text-highlight">צרי</span> קסם.</>}
+//           </Typography>
+//         </header>
+
+//         {(serverMsg || error) && (
+//           <Alert severity={(isError || error) ? "error" : "success"} className="modern-alert fade-in">
+//             {error || serverMsg}
+//           </Alert>
+//         )}
+
+//         <div className="modern-stepper fade-in delay-1">
+//           {steps.map((label, index) => (
+//             <div key={label} className={`stepper-item ${index <= activeStep ? 'active' : ''} ${index < activeStep ? 'completed' : ''}`}>
+//               <div className="stepper-icon">
+//                 {index < activeStep ? <CheckCircleRoundedIcon /> : index + 1}
+//               </div>
+//               <Typography className="stepper-label">{label}</Typography>
+//               {index < steps.length - 1 && <div className="stepper-line"></div>}
+//             </div>
+//           ))}
+//         </div>
+
+//         <div className="avant-garde-form fade-in delay-2">
+          
+//           <div className="step-content-area">
+//             {renderStepContent(activeStep)}
+//           </div>
+
+//           <div className="form-navigation fade-in delay-3">
+//             <Button
+//               type="button"
+//               disabled={activeStep === 0}
+//               onClick={handleBack}
+//               startIcon={<ArrowForwardRoundedIcon />} 
+//               className="nav-btn back-btn"
+//               disableRipple
+//             >
+//               חזרה
+//             </Button>
+            
+//             {activeStep === steps.length - 1 ? (
+//               <Button 
+//                 type="button" 
+//                 onClick={handleSubmit}
+//                 variant="contained" 
+//                 disabled={loading} 
+//                 className="master-submit-btn"
+//                 endIcon={<CheckCircleRoundedIcon />}
+//               >
+//                 {loading ? <CircularProgress size={24} color="inherit" /> : (isEditMode ? 'שמירת שינויים!' : (imagePreview ? 'פרסום המתכון!' : 'פרסום (ללא תמונה)'))}
+//               </Button>
+//             ) : (
+//               <Button
+//                 type="button"
+//                 variant="contained"
+//                 onClick={handleNext}
+//                 endIcon={<ArrowBackRoundedIcon />} 
+//                 className="nav-btn next-btn"
+//               >
+//                 השלב הבא
+//               </Button>
+//             )}
+//           </div>
+
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default AddRecipe;
 // react-client/src/components/AddRecipe.jsx
-import { useState, useEffect } from 'react';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addRecipe, clearSuccess, getAllRecipes } from '../features/recipes/recipeSlice';
-import { getAllCategories, addCategory } from '../features/categories/categorySlice';
-import { getAllLevels, addLevel } from '../features/levels/levelSlice';
+import { addRecipe, updateRecipe, clearSuccess, clearError } from '../features/recipes/recipeSlice';
+import { getAllCategories } from '../features/categories/categorySlice';
+import { getAllLevels } from '../features/levels/levelSlice';
+import { useParams, useNavigate } from 'react-router-dom';
 import { 
   TextField, 
-  Button, 
   Select, 
   MenuItem, 
   InputLabel, 
@@ -20,15 +1046,33 @@ import {
   OutlinedInput,
   Alert,
   IconButton,
-  Divider,
-  Tooltip
+  Button,
+  Autocomplete
 } from '@mui/material';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'; 
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded'; 
+import InsertPhotoRoundedIcon from '@mui/icons-material/InsertPhotoRounded';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import './AddRecipe.css';
+
+const steps = [
+  'שם וזמן',
+  'קטגוריות וקושי',
+  'מרכיבים',
+  'שלבי הכנה',
+  'תמונה ופרטיות'
+];
 
 function AddRecipe() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { id } = useParams(); 
+  const isEditMode = !!id;
+  const formRef = useRef(null);
   
   const recipesState = useSelector(state => state.recipes) || {};
   const categoriesState = useSelector(state => state.categories) || {};
@@ -38,16 +1082,10 @@ function AddRecipe() {
   const error = recipesState.error || null;
   const success = recipesState.success || false;
   
-  const rawCategories = categoriesState.allCategories;
-  const allCategories = Array.isArray(rawCategories) 
-    ? rawCategories 
-    : (rawCategories?.data && Array.isArray(rawCategories.data) ? rawCategories.data : []);
+  const allCategories = Array.isArray(categoriesState.allCategories) ? categoriesState.allCategories : [];
+  const allLevels = Array.isArray(levelsState.allLevels) ? levelsState.allLevels : [];
 
-  const rawLevels = levelsState.allLevels;
-  const allLevels = Array.isArray(rawLevels) 
-    ? rawLevels 
-    : (rawLevels?.data && Array.isArray(rawLevels.data) ? rawLevels.data : []);
-
+  const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
     preparationTime: '',
@@ -60,40 +1098,58 @@ function AddRecipe() {
     image: null,
   });
 
-  const [newCategory, setNewCategory] = useState('');
-  const [newLevel, setNewLevel] = useState('');
-  const [imagePreview, setImagePreview] = useState(null); // 🔥 הוספנו סטייט לתצוגה מקדימה!
-
+  const [imagePreview, setImagePreview] = useState(null);
   const [serverMsg, setServerMsg] = useState('');
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
+    dispatch(clearError());
     dispatch(getAllCategories());
     dispatch(getAllLevels());
   }, [dispatch]);
 
   useEffect(() => {
-    if (success) {
-      dispatch(getAllRecipes()); 
-      setFormData({
-        name: '',
-        preparationTime: '',
-        difficulty: '',
-        categories: [],
-        levels: [],
-        ingredients: [''],
-        instructions: [''],
-        isPrivate: false,
-        image: null,
-      });
-      setImagePreview(null); // מנקים גם את התצוגה המקדימה
-      dispatch(clearSuccess());
-      setIsError(false);
-      setServerMsg('המתכון התווסף בהצלחה לאוסף! 🎉');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      setTimeout(() => setServerMsg(''), 5000);
+    if (isEditMode && recipesState.recipes?.length > 0) {
+      const recipeToEdit = recipesState.recipes.find(r => r._id === id);
+      if (recipeToEdit) {
+        setFormData({
+          name: recipeToEdit.name || '',
+          preparationTime: recipeToEdit.preparationTime || '',
+          difficulty: recipeToEdit.difficulty || '',
+          categories: recipeToEdit.categories?.map(c => c._id || c) || [],
+          levels: recipeToEdit.levels?.map(l => l._id || l) || [],
+          ingredients: recipeToEdit.ingredients?.length > 0 ? recipeToEdit.ingredients : [''],
+          instructions: recipeToEdit.instructions?.length > 0 ? recipeToEdit.instructions : [''],
+          isPrivate: recipeToEdit.isPrivate || false,
+          image: null
+        });
+        if (recipeToEdit.imageUrl) {
+          const cleanName = recipeToEdit.imageUrl.split("/").pop().split("\\").pop();
+          setImagePreview(`http://localhost:5005/images/${cleanName}`);
+        }
+      }
     }
-  }, [success, dispatch]);
+  }, [id, isEditMode, recipesState.recipes]);
+
+  useEffect(() => {
+    if (success) {
+      dispatch(clearSuccess());
+      if (isEditMode) {
+        navigate(`/recipes`); 
+      } else {
+        setFormData({
+          name: '', preparationTime: '', difficulty: '', categories: [], levels: [],
+          ingredients: [''], instructions: [''], isPrivate: false, image: null,
+        });
+        setImagePreview(null);
+        setIsError(false);
+        setServerMsg('היצירה שלך נוספה בהצלחה.');
+        setActiveStep(0); 
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(() => setServerMsg(''), 5000);
+      }
+    }
+  }, [success, dispatch, isEditMode, navigate]);
 
   const handleTextChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -104,16 +1160,28 @@ function AddRecipe() {
     setFormData(prev => ({ ...prev, isPrivate: e.target.checked }));
   };
 
-  // 🔥 תיקון לקליטת התמונה ויצירת תצוגה מקדימה!
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setFormData(prev => ({ ...prev, image: file }));
-      setImagePreview(URL.createObjectURL(file)); // מציג את התמונה בטופס!
-    } else {
-      setFormData(prev => ({ ...prev, image: null }));
-      setImagePreview(null);
+      setImagePreview(URL.createObjectURL(file));
     }
+  };
+
+  const handleRemoveImage = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setFormData(prev => ({ ...prev, image: null }));
+    setImagePreview(null);
+  };
+
+  const handleCategoriesChange = (event, newValue) => {
+    const newCategories = newValue.map((val) => {
+      if (typeof val === 'string') return val;
+      if (val && val._id) return val._id;
+      return val;
+    });
+    setFormData(prev => ({ ...prev, categories: newCategories }));
   };
 
   const handleMultiSelectChange = (event) => {
@@ -124,54 +1192,20 @@ function AddRecipe() {
     }));
   };
 
-  const handleAddInlineCategory = async () => {
-    if (newCategory.trim()) {
-      await dispatch(addCategory({ description: newCategory }));
-      setNewCategory('');
-      dispatch(getAllCategories()); 
-    }
+  const handleArrayChange = (index, field, value) => {
+    const newArray = [...formData[field]];
+    newArray[index] = value;
+    setFormData({ ...formData, [field]: newArray });
   };
 
-  const handleAddInlineLevel = async () => {
-    if (newLevel.trim()) {
-      await dispatch(addLevel({ description: newLevel }));
-      setNewLevel('');
-      dispatch(getAllLevels()); 
-    }
+  const addArrayItem = (field) => {
+    setFormData({ ...formData, [field]: [...formData[field], ''] });
   };
 
-  const handleIngredientChange = (index, value) => {
-    const newIngredients = [...formData.ingredients];
-    newIngredients[index] = value;
-    setFormData({ ...formData, ingredients: newIngredients });
-  };
-
-  const addIngredient = () => {
-    setFormData({ ...formData, ingredients: [...formData.ingredients, ''] });
-  };
-
-  const removeIngredient = (index) => {
-    if (formData.ingredients.length > 1) {
-      const newIngredients = formData.ingredients.filter((_, i) => i !== index);
-      setFormData({ ...formData, ingredients: newIngredients });
-    }
-  };
-
-  const handleInstructionChange = (index, value) => {
-    const newInstructions = [...formData.instructions];
-    newInstructions[index] = value;
-    setFormData({ ...formData, instructions: newInstructions });
-  };
-
-  const addInstruction = () => {
-    setFormData({ ...formData, instructions: [...formData.instructions, ''] });
-  };
-
-  const removeInstruction = (index) => {
-    if (formData.instructions.length > 1) {
-      const newInstructions = formData.instructions.filter((_, i) => i !== index);
-      setFormData({ ...formData, instructions: newInstructions });
-    }
+  const removeArrayItem = (index, field) => {
+    const newArray = formData[field].filter((_, i) => i !== index);
+    if (newArray.length === 0) newArray.push('');
+    setFormData({ ...formData, [field]: newArray });
   };
 
   const handleSubmit = async (e) => {
@@ -179,10 +1213,10 @@ function AddRecipe() {
     setServerMsg('');
     setIsError(false);
     
-    if (!formData.name || !formData.preparationTime || formData.categories.length === 0 || !formData.difficulty) {
+    // התיקון שביקשת! הסרנו את החובה לבחור קטגוריה כדי לאפשר עריכה קלה
+    if (!formData.name || !formData.preparationTime || !formData.difficulty) {
       setIsError(true);
-      setServerMsg('נא למלא את כל שדות החובה: שם, זמן הכנה, רמת קושי וקטגוריות');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setServerMsg('נא להשלים שם, זמן הכנה ורמת קושי.');
       return;
     }
 
@@ -191,8 +1225,7 @@ function AddRecipe() {
 
     if (filteredIngredients.length === 0 || filteredInstructions.length === 0) {
       setIsError(true);
-      setServerMsg('חובה להזין לפחות רכיב אחד ושלב הכנה אחד');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setServerMsg('יש להזין לפחות מרכיב אחד ושלב הכנה אחד.');
       return;
     }
 
@@ -212,238 +1245,308 @@ function AddRecipe() {
       data.append('image', formData.image);
     }
 
-    dispatch(addRecipe(data));
+    if (isEditMode) {
+      dispatch(updateRecipe({ id, data }));
+    } else {
+      dispatch(addRecipe(data));
+    }
   };
 
-  const getCategoryNames = (selectedIds) => {
-    return selectedIds.map(id => allCategories.find(c => c._id === id)?.description || id);
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
   const getLevelNames = (selectedIds) => {
     return selectedIds.map(id => allLevels.find(l => l._id === id)?.description || id);
   };
 
+  const modernInputProps = {
+    sx: {
+      '& .MuiOutlinedInput-root': {
+        borderRadius: '20px',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        backdropFilter: 'blur(10px)',
+        transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+        '& fieldset': { borderColor: 'rgba(0,0,0,0.03)' },
+        '&:hover fieldset': { borderColor: 'rgba(0,0,0,0.08)' },
+        '&.Mui-focused fieldset': { borderColor: '#ff7e5f' },
+        '&.Mui-focused': { boxShadow: '0 10px 30px rgba(255, 126, 95, 0.15)' }
+      },
+      '& .MuiInputLabel-root': { color: '#888' },
+      '& .MuiInputLabel-root.Mui-focused': { color: '#ff7e5f' }
+    }
+  };
+
+  const renderStepContent = (step) => {
+    switch (step) {
+      case 0:
+        return (
+          <Box className="step-content-inner fade-in">
+            <Typography variant="h2" className="step-title">איך קוראים לזה?</Typography>
+            <TextField 
+              label="שם המתכון *" name="name" fullWidth 
+              value={formData.name} onChange={handleTextChange} required
+              {...modernInputProps} sx={{ mb: 4, ...modernInputProps.sx }}
+            />
+            <TextField 
+              label="זמן הכנה (דקות) *" name="preparationTime" type="number" fullWidth 
+              value={formData.preparationTime} onChange={handleTextChange} required
+              {...modernInputProps}
+            />
+          </Box>
+        );
+      case 1:
+        return (
+          <Box className="step-content-inner fade-in">
+            <Typography variant="h2" className="step-title">קצת הגדרות</Typography>
+            <FormControl fullWidth {...modernInputProps} sx={{ mb: 4, ...modernInputProps.sx }}>
+              <InputLabel>רמת קושי *</InputLabel>
+              <Select name="difficulty" value={formData.difficulty} onChange={handleTextChange} label="רמת קושי *">
+                <MenuItem value="easy">קלי קלות</MenuItem>
+                <MenuItem value="medium">דורש תשומת לב</MenuItem>
+                <MenuItem value="hard">מאתגר ומספק</MenuItem>
+              </Select>
+            </FormControl>
+            
+            <Autocomplete
+              multiple
+              freeSolo
+              options={allCategories}
+              getOptionLabel={(option) => {
+                if (typeof option === 'string') return option;
+                return option.description || option.name || '';
+              }}
+              value={formData.categories.map(cat => {
+                const existing = allCategories.find(c => c._id === cat);
+                return existing ? existing : cat;
+              })}
+              onChange={handleCategoriesChange}
+              renderInput={(params) => (
+                <TextField 
+                  {...params} 
+                  label="קטגוריות (אופציונלי)" 
+                  {...modernInputProps} 
+                  sx={{ mb: 4, ...modernInputProps.sx }}
+                />
+              )}
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                  <Chip 
+                    label={typeof option === 'string' ? option : (option.description || option.name)} 
+                    {...getTagProps({ index })} 
+                    className="designer-chip" 
+                  />
+                ))
+              }
+            />
+
+            <FormControl fullWidth {...modernInputProps}>
+              <InputLabel>רמות התאמה (אופציונלי)</InputLabel>
+              <Select
+                multiple name="levels" value={formData.levels}
+                onChange={handleMultiSelectChange}
+                input={<OutlinedInput label="רמות התאמה (אופציונלי)" />}
+                renderValue={(selected) => (
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                    {getLevelNames(selected).map((value) => (
+                      <Chip key={value} label={value} className="designer-chip outlined" variant="outlined" />
+                    ))}
+                  </Box>
+                )}
+              >
+                {allLevels.map((level) => (
+                  <MenuItem key={level._id} value={level._id}>{level.description || level.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+        );
+      case 2:
+        return (
+          <Box className="step-content-inner fade-in">
+            <Typography variant="h2" className="step-title">מה צריך?</Typography>
+            <div className="builder-list ingredients-list">
+              {formData.ingredients.map((ingredient, index) => (
+                <div key={index} className="builder-row ingredients-row">
+                  <div className="row-indicator"></div>
+                  <input 
+                    type="text" 
+                    className="clean-input" 
+                    placeholder="לדוגמא: 2 כוסות קמח מנופה..."
+                    value={ingredient}
+                    onChange={(e) => handleArrayChange(index, 'ingredients', e.target.value)}
+                  />
+                  <IconButton type="button" onClick={() => removeArrayItem(index, 'ingredients')} className="delete-icon">
+                    <RemoveRoundedIcon fontSize="small" />
+                  </IconButton>
+                </div>
+              ))}
+              <Button type="button" startIcon={<AddRoundedIcon />} onClick={() => addArrayItem('ingredients')} className="text-action-btn">
+                הוספת מרכיב נוסף
+              </Button>
+            </div>
+          </Box>
+        );
+      case 3:
+        return (
+          <Box className="step-content-inner fade-in">
+            <Typography variant="h2" className="step-title">שלב אחרי שלב</Typography>
+            <div className="builder-list instructions-list">
+              {formData.instructions.map((instruction, index) => (
+                <div key={index} className="builder-row instructions-row align-top">
+                  <div className="step-counter">{index + 1}</div>
+                  <textarea 
+                    className="clean-textarea" 
+                    placeholder="תארי את שלב ההכנה בצורה ברורה..."
+                    value={instruction}
+                    onChange={(e) => handleArrayChange(index, 'instructions', e.target.value)}
+                    rows={3}
+                  />
+                  <IconButton type="button" onClick={() => removeArrayItem(index, 'instructions')} className="delete-icon">
+                    <RemoveRoundedIcon fontSize="small" />
+                  </IconButton>
+                </div>
+              ))}
+              <Button type="button" startIcon={<AddRoundedIcon />} onClick={() => addArrayItem('instructions')} className="text-action-btn">
+                הוספת שלב נוסף
+              </Button>
+            </div>
+          </Box>
+        );
+      case 4:
+        return (
+          <Box className="step-content-inner fade-in">
+            <Typography variant="h2" className="step-title">תמונה וסיום</Typography>
+            <div className="spectacular-upload">
+              <input type="file" id="recipe-image-upload" accept="image/*" onChange={handleImageChange} hidden />
+              
+              {!imagePreview ? (
+                <label htmlFor="recipe-image-upload" className="upload-empty-state">
+                  <div className="icon-circle">
+                    <InsertPhotoRoundedIcon />
+                  </div>
+                  <Typography className="upload-title">העלאת תמונה מגרת חושים</Typography>
+                  <Typography className="upload-hint">לחיצה לבחירת קובץ (מומלץ מאוד, אבל אופציונלי!)</Typography>
+                </label>
+              ) : (
+                <div className="upload-filled-state">
+                  <img src={imagePreview} alt="תצוגה מקדימה" />
+                  <IconButton type="button" className="remove-image-btn" onClick={handleRemoveImage} aria-label="הסר תמונה">
+                    <CloseRoundedIcon />
+                  </IconButton>
+                </div>
+              )}
+            </div>
+            
+            <FormControlLabel 
+              control={<Checkbox checked={formData.isPrivate} onChange={handleCheckboxChange} sx={{ color: '#ccc', '&.Mui-checked': { color: '#ff7e5f' } }} />} 
+              label={<Typography sx={{ fontSize: '1rem', color: '#666', fontWeight: 500, mt: 3 }}>שמור במחברת הפרטית שלי (לא יפורסם בקהילה)</Typography>} 
+              className="privacy-checkbox"
+            />
+          </Box>
+        );
+      default:
+        return 'שלב לא ידוע';
+    }
+  };
+
   return (
-    <div className="add-recipe-wrapper">
-      <div className="add-recipe-card">
-        <Typography variant="h4" align="center" fontWeight="800" color="#ff7e5f" mb={1}>
-          הוספת מתכון חדש 🍰
-        </Typography>
-        <Typography variant="body1" align="center" color="text.secondary" mb={4}>
-          שתפי את הקסם שלך עם הקהילה!
-        </Typography>
+    <div className="layout-2028-wrapper stepped-form-wrapper" dir="rtl" ref={formRef}>
+      
+      <div className="dynamic-bg">
+        <div className="glow-orb orb-1"></div>
+        <div className="glow-orb orb-2"></div>
+      </div>
+
+      <div className="stepped-form-container">
+        
+        <header className="form-header fade-in">
+          <Typography variant="h1" className="super-title">
+            {isEditMode ? <><span className="text-highlight">ערכי</span> קסם.</> : <><span className="text-highlight">צרי</span> קסם.</>}
+          </Typography>
+        </header>
 
         {(serverMsg || error) && (
-          <Alert severity={(isError || error) ? "error" : "success"} sx={{ mb: 3, borderRadius: 2, fontWeight: 'bold' }}>
+          <Alert severity={(isError || error) ? "error" : "success"} className="modern-alert fade-in">
             {error || serverMsg}
           </Alert>
         )}
 
-        <form onSubmit={handleSubmit} className="recipe-form">
-          <div className="form-section">
-            <Typography variant="h6" className="section-title">פרטים כלליים</Typography>
-            <TextField 
-              label="שם המתכון *" name="name" fullWidth 
-              value={formData.name} onChange={handleTextChange} required
-              variant="outlined" color="warning"
-              sx={{ mb: 2 }}
-            />
+        <div className="modern-stepper fade-in delay-1">
+          {steps.map((label, index) => (
+            <div key={label} className={`stepper-item ${index <= activeStep ? 'active' : ''} ${index < activeStep ? 'completed' : ''}`}>
+              <div className="stepper-icon">
+                {index < activeStep ? <CheckCircleRoundedIcon /> : index + 1}
+              </div>
+              <Typography className="stepper-label">{label}</Typography>
+              {index < steps.length - 1 && <div className="stepper-line"></div>}
+            </div>
+          ))}
+        </div>
 
-            <Box sx={{ display: 'flex', gap: 2, mb: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
-              <TextField 
-                label="זמן הכנה (דקות) *" name="preparationTime" type="number" fullWidth 
-                value={formData.preparationTime} onChange={handleTextChange} required
-                color="warning"
-              />
-
-              <FormControl fullWidth required color="warning">
-                <InputLabel>רמת קושי</InputLabel>
-                <Select name="difficulty" value={formData.difficulty} onChange={handleTextChange} label="רמת קושי">
-                  <MenuItem value="easy">קלי קלות 🍓</MenuItem>
-                  <MenuItem value="medium">בינוני 🍋</MenuItem>
-                  <MenuItem value="hard">מאתגר לקונדיטורים 🎂</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
-
-            <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', mb: 2, flexDirection: { xs: 'column', md: 'row' } }}>
-              <FormControl sx={{ flex: 2, width: '100%' }} required color="warning">
-                <InputLabel>בחירת קטגוריות *</InputLabel>
-                <Select
-                  multiple
-                  name="categories"
-                  value={formData.categories}
-                  onChange={handleMultiSelectChange}
-                  input={<OutlinedInput label="בחירת קטגוריות *" />}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {getCategoryNames(selected).map((value) => (
-                        <Chip key={value} label={value} sx={{ bgcolor: '#ffe8e0', color: '#d35400', fontWeight: 'bold' }} />
-                      ))}
-                    </Box>
-                  )}
-                >
-                  {categoriesState.loading ? (
-                    <MenuItem disabled>טוען קטגוריות... ⏳</MenuItem>
-                  ) : allCategories.length === 0 ? (
-                    <MenuItem disabled>אין קטגוריות במסד הנתונים</MenuItem>
-                  ) : (
-                    allCategories.map((cat) => (
-                      <MenuItem key={cat._id} value={cat._id}>
-                        {cat.description || cat.name}
-                      </MenuItem>
-                    ))
-                  )}
-                </Select>
-              </FormControl>
-              
-              <Box className="inline-add-box">
-                <TextField 
-                  label="קטגוריה חדשה" 
-                  variant="outlined" 
-                  color="warning" 
-                  size="small"
-                  value={newCategory}
-                  onChange={(e) => setNewCategory(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddInlineCategory())}
-                />
-                <Tooltip title="הוסף קטגוריה">
-                  <IconButton onClick={handleAddInlineCategory} className="inline-add-btn">
-                    <AddCircleOutlineIcon />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            </Box>
-
-            <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', mb: 2, flexDirection: { xs: 'column', md: 'row' } }}>
-              <FormControl sx={{ flex: 2, width: '100%' }} color="warning">
-                <InputLabel>בחירת רמות מתאימות (אופציונלי)</InputLabel>
-                <Select
-                  multiple
-                  name="levels"
-                  value={formData.levels}
-                  onChange={handleMultiSelectChange}
-                  input={<OutlinedInput label="בחירת רמות מתאימות (אופציונלי)" />}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {getLevelNames(selected).map((value) => (
-                        <Chip key={value} label={value} sx={{ bgcolor: '#f0f4f8', color: '#2c3e50', fontWeight: '500' }} />
-                      ))}
-                    </Box>
-                  )}
-                >
-                  {levelsState.loading ? (
-                    <MenuItem disabled>טוען רמות... ⏳</MenuItem>
-                  ) : allLevels.length === 0 ? (
-                    <MenuItem disabled>אין רמות במסד הנתונים</MenuItem>
-                  ) : (
-                    allLevels.map((level) => (
-                      <MenuItem key={level._id} value={level._id}>
-                        {level.description || level.name}
-                      </MenuItem>
-                    ))
-                  )}
-                </Select>
-              </FormControl>
-
-              <Box className="inline-add-box">
-                <TextField 
-                  label="רמה חדשה" 
-                  variant="outlined" 
-                  color="warning" 
-                  size="small"
-                  value={newLevel}
-                  onChange={(e) => setNewLevel(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddInlineLevel())}
-                />
-                <Tooltip title="הוסף רמה">
-                  <IconButton onClick={handleAddInlineLevel} className="inline-add-btn">
-                    <AddCircleOutlineIcon />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            </Box>
+        <div className="avant-garde-form fade-in delay-2">
+          
+          <div className="step-content-area">
+            {renderStepContent(activeStep)}
           </div>
 
-          <Divider sx={{ my: 1 }} />
-
-          <div className="form-section">
-            <Typography variant="h6" className="section-title">מצרכים ורכיבים</Typography>
-            {formData.ingredients.map((ingredient, index) => (
-              <Box key={index} sx={{ display: 'flex', gap: 1, mb: 1.5, alignItems: 'center' }}>
-                <TextField
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  color="warning"
-                  label={`רכיב ${index + 1}`}
-                  value={ingredient}
-                  onChange={(e) => handleIngredientChange(index, e.target.value)}
-                />
-                <IconButton color="error" onClick={() => removeIngredient(index)} disabled={formData.ingredients.length === 1}>
-                  <RemoveCircleOutlineIcon />
-                </IconButton>
-              </Box>
-            ))}
-            <Button startIcon={<AddCircleOutlineIcon />} onClick={addIngredient} sx={{ color: '#ff7e5f', fontWeight: 'bold' }}>
-              הוסף רכיב
+          <div className="form-navigation fade-in delay-3">
+            <Button
+              type="button"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              startIcon={<ArrowForwardRoundedIcon />} 
+              className="nav-btn back-btn"
+              disableRipple
+            >
+              חזרה
             </Button>
-          </div>
-
-          <Divider sx={{ my: 1 }} />
-
-          <div className="form-section">
-            <Typography variant="h6" className="section-title">שלבי הכנה</Typography>
-            {formData.instructions.map((instruction, index) => (
-              <Box key={index} sx={{ display: 'flex', gap: 1, mb: 1.5, alignItems: 'flex-start' }}>
-                <TextField
-                  fullWidth
-                  multiline
-                  minRows={2}
-                  variant="outlined"
-                  size="small"
-                  color="warning"
-                  label={`שלב ${index + 1}`}
-                  value={instruction}
-                  onChange={(e) => handleInstructionChange(index, e.target.value)}
-                />
-                <IconButton color="error" onClick={() => removeInstruction(index)} sx={{ mt: 1 }} disabled={formData.instructions.length === 1}>
-                  <RemoveCircleOutlineIcon />
-                </IconButton>
-              </Box>
-            ))}
-            <Button startIcon={<AddCircleOutlineIcon />} onClick={addInstruction} sx={{ color: '#ff7e5f', fontWeight: 'bold' }}>
-              הוסף שלב הכנה
-            </Button>
-          </div>
-
-          <Divider sx={{ my: 1 }} />
-
-          <Box className="file-upload-box">
-            <Typography variant="body2" color="text.secondary" mb={1}>תמונת מגרה חושים (אופציונלי):</Typography>
-            <input type="file" accept="image/*" onChange={handleImageChange} className="elegant-file-input" />
             
-            {/* 🔥 התצוגה המקדימה המובטחת! */}
-            {imagePreview && (
-              <Box mt={3} sx={{ textAlign: 'center' }}>
-                <Typography variant="caption" display="block" mb={1} color="success.main" fontWeight="bold">תמונה נבחרה בהצלחה!</Typography>
-                <img src={imagePreview} alt="תצוגה מקדימה" style={{ maxWidth: '100%', maxHeight: '250px', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
-              </Box>
-            )}
-          </Box>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              {/* החידוש: כפתור שמירה שמופיע בכל שלב בעריכה! */}
+              {isEditMode && activeStep < steps.length - 1 && (
+                <Button 
+                  type="button" 
+                  onClick={handleSubmit}
+                  variant="contained" 
+                  disabled={loading} 
+                  sx={{ backgroundColor: '#27ae60', borderRadius: '12px', fontWeight: 'bold' }}
+                  endIcon={<SaveRoundedIcon />}
+                >
+                  {loading ? <CircularProgress size={20} color="inherit" /> : 'שמור וצא'}
+                </Button>
+              )}
 
-          <FormControlLabel 
-            control={<Checkbox checked={formData.isPrivate} onChange={handleCheckboxChange} sx={{ color: '#ff7e5f', '&.Mui-checked': { color: '#ff7e5f' } }} />} 
-            label={<Typography sx={{ fontWeight: '500', color: '#2c3e50' }}>סוד שמור! (מתכון פרטי רק בשבילי 🤫)</Typography>} 
-            sx={{ mt: 1, justifyContent: 'center' }}
-          />
+              {activeStep === steps.length - 1 ? (
+                <Button 
+                  type="button" 
+                  onClick={handleSubmit}
+                  variant="contained" 
+                  disabled={loading} 
+                  className="master-submit-btn"
+                  endIcon={<CheckCircleRoundedIcon />}
+                >
+                  {loading ? <CircularProgress size={24} color="inherit" /> : (isEditMode ? 'שמירת שינויים!' : (imagePreview ? 'פרסום המתכון!' : 'פרסום (ללא תמונה)'))}
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  variant="contained"
+                  onClick={handleNext}
+                  endIcon={<ArrowBackRoundedIcon />} 
+                  className="nav-btn next-btn"
+                >
+                  השלב הבא
+                </Button>
+              )}
+            </Box>
+          </div>
 
-          <Button 
-            type="submit" fullWidth variant="contained" disabled={loading} 
-            className="submit-btn"
-          >
-            {loading ? <CircularProgress size={26} color="inherit" /> : 'הוסיפי לאוסף! ❤️'}
-          </Button>
-        </form>
+        </div>
       </div>
     </div>
   );

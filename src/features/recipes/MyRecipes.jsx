@@ -1,4 +1,4 @@
-// react-client/src/features/recipes/Recipes.jsx
+// react-client/src/features/recipes/MyRecipes.jsx
 
 import { useNavigate } from "react-router-dom";
 import Masonry from "react-masonry-css";
@@ -20,7 +20,7 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { AuthContext } from "../../context/AuthContext";
 import { deleteRecipe } from "./recipeSlice";
-import "./Recipes.css";
+import "./Recipes.css"; // משתמשים באותו עיצוב בדיוק!
 
 const breakpointColumnsObj = {
   default: 4,
@@ -43,25 +43,20 @@ const SingleRecipe = ({ recipe }) => {
   const { user } = useContext(AuthContext); 
   const imageUrl = getImageUrl(recipe);
 
-  // סטייט לניהול הפופ-אפ של המחיקה
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
-  // בדיקת הרשאה: האם המשתמש מחובר והוא מנהל, או שהוא הבעלים של המתכון
   const isOwnerOrAdmin = user && (user.role === 'admin' || user._id === recipe.user?._id);
 
-  // פתיחת הפופ-אפ
   const handleDeleteClick = (e) => {
-    e.stopPropagation(); // מונע מעבר לדף המתכון
+    e.stopPropagation(); 
     setOpenDeleteDialog(true);
   };
 
-  // סגירת הפופ-אפ ללא מחיקה
   const handleCancelDelete = (e) => {
     e.stopPropagation();
     setOpenDeleteDialog(false);
   };
 
-  // אישור מחיקה סופי
   const handleConfirmDelete = (e) => {
     e.stopPropagation(); 
     dispatch(deleteRecipe(recipe._id));
@@ -96,7 +91,6 @@ const SingleRecipe = ({ recipe }) => {
             {recipe.difficulty && <span className="meta-badge outline">{recipe.difficulty}</span>}
           </div>
           
-          {/* אייקונים למחיקה/עריכה בתחתית הכרטיס */}
           {isOwnerOrAdmin && (
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', borderTop: '1px solid #f0f0f0', paddingTop: '12px' }}>
                   <IconButton onClick={handleEdit} style={{ color: '#555' }} title="עריכה">
@@ -110,17 +104,12 @@ const SingleRecipe = ({ recipe }) => {
         </div>
       </div>
 
-      {/* החלון הקופץ (פופ-אפ) המעוצב במקום ה-Alert של הדפדפן */}
       <Dialog
         open={openDeleteDialog}
         onClose={handleCancelDelete}
-        onClick={(e) => e.stopPropagation()} // כדי שלחיצה על הדיאלוג לא תיקח אותנו לדף המתכון
+        onClick={(e) => e.stopPropagation()} 
         PaperProps={{
-          sx: {
-            borderRadius: '24px',
-            padding: '10px',
-            direction: 'rtl'
-          }
+          sx: { borderRadius: '24px', padding: '10px', direction: 'rtl' }
         }}
       >
         <DialogTitle sx={{ fontWeight: 'bold', color: '#1a1a1a' }}>
@@ -133,10 +122,7 @@ const SingleRecipe = ({ recipe }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ padding: '0 24px 16px 24px', gap: '12px' }}>
-          <Button 
-            onClick={handleCancelDelete} 
-            sx={{ color: '#666', fontWeight: 'bold' }}
-          >
+          <Button onClick={handleCancelDelete} sx={{ color: '#666', fontWeight: 'bold' }}>
             ביטול
           </Button>
           <Button 
@@ -157,12 +143,17 @@ const SingleRecipe = ({ recipe }) => {
   );
 };
 
-const Recipes = () => {
+const MyRecipes = () => {
+  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState("");
   const { recipes, loading, error } = useSelector(state => state.recipes || {});
   const safeRecipes = Array.isArray(recipes) ? recipes : [];
 
-  const filteredRecipes = safeRecipes.filter(r =>
+  // הסינון החשוב ביותר: מציגים רק את המתכונים שה-ID של היוצר שלהם תואם ל-ID של המשתמש המחובר!
+  const myRecipes = safeRecipes.filter(r => r.user?._id === user?._id);
+
+  const filteredRecipes = myRecipes.filter(r =>
     r.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -171,6 +162,18 @@ const Recipes = () => {
       <CircularProgress sx={{ color: '#ff7e5f' }} size={60} thickness={4} />
     </div>
   );
+
+  // אם המשתמש לא מחובר, נבקש ממנו להתחבר
+  if (!user) {
+    return (
+        <div className="empty-state fade-in" style={{ marginTop: '100px' }}>
+            <h2>יש להתחבר כדי לצפות במתכונים שלך 🔒</h2>
+            <Button variant="contained" sx={{ mt: 3, backgroundColor: '#ff7e5f', borderRadius: '50px' }} onClick={() => navigate('/login')}>
+                מעבר להתחברות
+            </Button>
+        </div>
+    );
+  }
 
   return (
     <div className="recipes-wrapper" dir="rtl">
@@ -184,15 +187,18 @@ const Recipes = () => {
         
         <header className="recipes-header fade-in">
           <h1 className="super-title">
-            ספר <span className="text-highlight">המתכונים.</span>
+            המתכונים <span className="text-highlight">שלי.</span>
           </h1>
+          <p style={{ color: '#666', fontSize: '1.2rem', marginTop: '10px' }}>
+              כל היצירות והמתכונים ששמרת במקום אחד
+          </p>
           
           <div className="search-glass-container">
             <SearchRoundedIcon className="search-icon" />
             <input 
               type="text" 
               className="search-glass-input" 
-              placeholder="מה בא לך להכין היום?..." 
+              placeholder="חיפוש במתכונים שלי..." 
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
             />
@@ -220,8 +226,17 @@ const Recipes = () => {
         ) : (
           !error && (
             <div className="empty-state fade-in delay-1">
-              <h2>לא מצאנו מתכונים כאלה 🧐</h2>
-              <p>אולי כדאי לנסות חיפוש אחר או להוסיף מתכון חדש!</p>
+              {searchTerm ? (
+                 <h2>לא מצאנו מתכון כזה אצלך 🧐</h2>
+              ) : (
+                 <>
+                    <h2>עדיין לא הוספת מתכונים משלך 📝</h2>
+                    <p>זה הזמן להתחיל לשתף את הקסם שלך עם כולם!</p>
+                    <Button variant="contained" sx={{ mt: 3, backgroundColor: '#1a1a1a', borderRadius: '50px', padding: '10px 30px', fontSize: '1.1rem' }} onClick={() => navigate('/add-recipe')}>
+                        הוספת מתכון ראשון
+                    </Button>
+                 </>
+              )}
             </div>
           )
         )}
@@ -230,4 +245,4 @@ const Recipes = () => {
   );
 };
 
-export default Recipes;
+export default MyRecipes;
