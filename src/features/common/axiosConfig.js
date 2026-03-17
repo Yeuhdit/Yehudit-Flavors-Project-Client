@@ -2,7 +2,7 @@
 import axios from "axios";
 
 // הוספתי /api כדי שזה יתאים להגדרות השרת שלך
-const instance = axios.create({ baseURL: 'http://localhost:5000/api' });
+const instance = axios.create({ baseURL: 'http://localhost:5005/api' });
 
 instance.interceptors.request.use((value) => {
     // התיקון הקריטי: חיפוש של 'token' (איך ששמרת אותו ב-Login) ולא 'myToken'
