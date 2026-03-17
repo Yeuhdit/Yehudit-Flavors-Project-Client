@@ -52,6 +52,8 @@ const Navbar = () => {
           <Box className="navbar-links">
             <Button onClick={() => navigate("/")}>דף הבית</Button>
             <Button onClick={() => navigate("/recipes")}>מתכונים</Button>
+              <Button onClick={() => navigate("/about")}>אודות</Button>  {/* <-- כאן */}
+
 
             {user && (
               <Button onClick={() => navigate("/add-recipe")}>

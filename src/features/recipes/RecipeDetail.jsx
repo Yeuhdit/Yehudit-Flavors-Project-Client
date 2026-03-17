@@ -1,5 +1,3 @@
-// react-client/src/features/recipes/RecipeDetail.jsx
-
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
@@ -28,12 +26,10 @@ const RecipeDetail = () => {
 
     const rawName = recipe.image || recipe.img || recipe.imagUrl || recipe.imageUrl || "";
 
-    // אם אין תמונה, מחזירים null ולא מחפשים באינטרנט!
     if (!rawName) return null;
 
     const cleanName = rawName.split("/").pop().split("\\").pop();
 
-    // פונים אך ורק לשרת האמיתי שלך
     return `http://localhost:5005/images/${cleanName}`;
   };
 
@@ -49,13 +45,16 @@ const RecipeDetail = () => {
 
   return (
     <div className="yehudit-recipe-container">
-      
+      {/* כפתור הדפסה קבוע למעלה */}
+      <button className="print-button" onClick={() => window.print()}>
+        🖨️ הדפס
+      </button>
+
       <div
         className="yehudit-hero-banner"
-        // מציגים רקע עדין במקום תמונה שבורה אם לא העלית תמונה
-        style={{ 
-          backgroundImage: bgImage ? `url(${bgImage})` : 'none',
-          backgroundColor: bgImage ? 'transparent' : '#ffe8e0'
+        style={{
+          backgroundImage: bgImage ? `url(${bgImage})` : "none",
+          backgroundColor: bgImage ? "transparent" : "#ffe8e0",
         }}
       >
         <div className="yehudit-hero-overlay">
@@ -66,25 +65,16 @@ const RecipeDetail = () => {
           </p>
 
           <div className="yehudit-chips">
-            {recipe.category && (
-              <span className="yehudit-chip">{recipe.category}</span>
-            )}
-
+            {recipe.category && <span className="yehudit-chip">{recipe.category}</span>}
             {recipe.preparationTime && (
-              <span className="yehudit-chip">
-                {recipe.preparationTime} דקות
-              </span>
+              <span className="yehudit-chip">{recipe.preparationTime} דקות</span>
             )}
-
-            {recipe.difficulty && (
-              <span className="yehudit-chip">{recipe.difficulty}</span>
-            )}
+            {recipe.difficulty && <span className="yehudit-chip">{recipe.difficulty}</span>}
           </div>
         </div>
       </div>
 
       <div className="yehudit-content-area">
-        
         {recipe.ingredients && recipe.ingredients.length > 0 && (
           <div>
             <h2 className="yehudit-section-title">אז מה צריך בשביל להתחיל?</h2>

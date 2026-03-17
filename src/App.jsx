@@ -8,6 +8,7 @@ import rtlPlugin from '@mui/stylis-plugin-rtl'
 import { prefixer } from 'stylis'
 import Navbar from './features/common/Navbar' // ודא שהנתיב נכון
 import Home from './features/common/Home' // ודא שהנתיב נכון
+import About from './features/common/About'           // דף אודות
 import Recipes from './features/recipes/Recipes' // ודא שהנתיב נכון
 import RecipeDetail from './features/recipes/RecipeDetail'; // ודא שהנתיב נכון
 import Login from './components/Login' // ודא שהנתיב נכון
@@ -37,6 +38,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />           {/* דף אודות */}
         <Route path="/recipes" element={<Recipes />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
