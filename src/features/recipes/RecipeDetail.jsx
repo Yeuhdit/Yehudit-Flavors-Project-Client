@@ -1,3 +1,4 @@
+
 // react-client/src/features/recipes/RecipeDetail.jsx
 
 import { useParams } from "react-router-dom";
@@ -22,15 +23,15 @@ const RecipeDetail = () => {
     );
   };
 
+  // התיקון כאן: משיכת התמונה מכתובת השרת המדויקת
   const getImageUrl = () => {
     if (!recipe) return null;
-    const rawName = recipe.image || recipe.img || recipe.imagUrl || recipe.imageUrl || "";
+    const rawName = recipe.imageUrl || recipe.image || recipe.img || recipe.imagUrl || "";
     if (!rawName) return null;
     const cleanName = rawName.split("/").pop().split("\\").pop();
     return `http://localhost:5005/images/${cleanName}`;
   };
 
-  // פונקציית ההדפסה עם ההשהיה הקטנה למניעת חסימות דפדפן
   const handlePrint = (e) => {
     e.preventDefault(); 
     setTimeout(() => {
@@ -50,13 +51,11 @@ const RecipeDetail = () => {
 
   return (
     <div className="ydt-lux-wrapper">
-      {/* רקע התואם לדף הבית - צבעים חמים וכתמים זוהרים */}
       <div className="ydt-lux-ambient-bg">
         <div className="glow-circle glow-1"></div>
         <div className="glow-circle glow-2"></div>
       </div>
 
-      {/* כפתור הדפסה */}
       <button 
         type="button"
         className="ydt-lux-print-btn fade-in-up" 
@@ -73,7 +72,6 @@ const RecipeDetail = () => {
 
       <div className="ydt-lux-container fade-in-up" style={{ animationDelay: '0.1s' }}>
         
-        {/* אזור עליון - תמונת קפסולה וכותרת צפה */}
         <section className="ydt-lux-hero">
           <div className="ydt-lux-image-wrapper fade-in-up" style={{ animationDelay: '0.2s' }}>
             {bgImage ? (
@@ -85,7 +83,6 @@ const RecipeDetail = () => {
           
           <div className="ydt-lux-title-area fade-in-up" style={{ animationDelay: '0.3s' }}>
             <h1 className="ydt-lux-title">
-              {/* צביעת המילה הראשונה בצבע המותג */}
               {recipe.name.split(' ').map((word, index) => (
                 <span key={index} className={index === 0 ? "highlight-word" : ""}>
                   {word}{" "}
@@ -104,7 +101,6 @@ const RecipeDetail = () => {
           </div>
         </section>
 
-        {/* אזור התוכן */}
         <section className="ydt-lux-content">
           
           <div className="ydt-lux-ingredients fade-in-up" style={{ animationDelay: '0.4s' }}>
