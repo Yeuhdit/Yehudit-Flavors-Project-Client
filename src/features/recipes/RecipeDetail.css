@@ -347,147 +347,120 @@
 }
 
 
-/* --- תיקון מושלם להדפסה - תיקון הדף הריק ומספור מדויק (Print Fix) --- */
+/* --- תיקון מושלם להדפסה - הופך את הדף לספר מתכונים יוקרתי --- */
 @media print {
-  @page {
-    margin: 15mm; 
+  @page { 
+    margin: 1.5cm; 
+  }
+  
+  /* איפוס והעלמת רקעים / תפריטים / הצללות */
+  body, html, #root, .ydt-lux-wrapper {
+    background: #fff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
   }
 
-  /* הסתרת כפתורים, תפריטים עליונים (של האתר) ואלמנטים שאינם להדפסה */
-  header, nav, .header, .navbar, .menu, footer,
-  .ydt-lux-ambient-bg, 
-  .ydt-lux-print-btn,
-  .ydt-lux-image-wrapper {
+  .navbar, .ydt-lux-ambient-bg, .ydt-lux-print-btn, header, footer, .no-print {
     display: none !important;
   }
 
-  /* תיקון קריטי לדף הריק: ביטול האנימציות והכרחת שקיפות מלאה (100%) */
+  .ydt-lux-container {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    margin: 0 !important;
+    display: block !important;
+  }
+
+  /* כותרת עליונה ייעודית שמופיעה רק בהדפסה! */
+  .ydt-lux-container::before {
+    content: "יהודית בטעמים | אוסף מתכונים פרימיום";
+    display: block;
+    text-align: center;
+    font-size: 16pt;
+    font-weight: 800;
+    color: #000 !important;
+    border-bottom: 2px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+  }
+
+  /* סידור מחדש של תמונת הנושא והכותרת (אחד מעל השני) */
+  .ydt-lux-hero {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 20px !important;
+    text-align: center !important;
+    margin-bottom: 40px !important;
+    display: block !important;
+  }
+
+  /* הקטנת התמונה כדי שלא תבזבז חצי עמוד דיו */
+  .ydt-lux-image-wrapper {
+    width: 100% !important;
+    max-width: 400px !important;
+    height: auto !important;
+    border-radius: 16px !important;
+    box-shadow: none !important;
+    margin: 0 auto 20px auto !important;
+  }
+  
+  .ydt-lux-image { border-radius: 16px !important; }
+
+  /* טקסטים לשחור קריא וברור */
+  .ydt-lux-title, .ydt-lux-heading, .ydt-lux-step-text, .ydt-lux-ing-text, .lux-tag {
+    color: #000 !important;
+  }
+
+  .ydt-lux-title {
+    font-size: 32pt !important;
+    margin-bottom: 15px !important;
+  }
+
+  .lux-tag { border-color: #aaa !important; background: transparent !important; }
+
+  /* ביטול חלוקה ל-Grid שגורמת לבעיות בדפים קטנים */
+  .ydt-lux-content {
+    display: block !important; 
+  }
+
+  .ydt-lux-ingredients {
+    margin-bottom: 40px !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* מצרכים - הופכים לשורות נקיות עם עיגול ריק ואלגנטי */
+  .ydt-lux-ingredient-item {
+    background: transparent !important;
+    border: none !important;
+    padding: 8px 0 !important;
+    border-bottom: 1px dotted #ccc !important;
+    border-radius: 0 !important;
+    page-break-inside: avoid !important;
+  }
+
+  .ydt-lux-radio {
+    border-color: #000 !important;
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  /* שלבי הכנה - מניעת חיתוך שלב באמצע עמוד */
+  .ydt-lux-steps-container { gap: 25px !important; }
+  .ydt-lux-step { page-break-inside: avoid !important; }
+  .ydt-lux-step::before { color: #888 !important; opacity: 0.2 !important; }
+
+  /* ביטול אנימציות בהדפסה */
   *, *::before, *::after, .fade-in-up {
     opacity: 1 !important;
     visibility: visible !important;
     animation: none !important;
     transition: none !important;
     transform: none !important;
-    box-shadow: none !important;
-  }
-
-  body, html, #root, .ydt-lux-wrapper {
-    width: 100% !important;
-    height: auto !important;
-    min-height: auto !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: #fff !important;
-    overflow: visible !important;
-    display: block !important;
-  }
-
-  /* שבירת הגריד המורכב כך שהדף יזרום באופן חופשי למטה */
-  .ydt-lux-container,
-  .ydt-lux-content,
-  .ydt-lux-ingredients,
-  .ydt-lux-instructions {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    position: static !important;
-  }
-
-  .ydt-lux-hero {
-    display: block !important;
-    margin-bottom: 20px !important;
-    padding-top: 10px !important; 
-  }
-
-  /* כותרת ראשית בהדפסה - בלי קווים */
-  .ydt-lux-title {
-    font-size: 28pt !important;
-    color: #000 !important;
-    margin-top: 0 !important;
-    margin-bottom: 10px !important;
-    border-bottom: none !important; 
-    padding-bottom: 0 !important;
-  }
-
-  /* כותרות משנה בהדפסה - בלי קווים */
-  .ydt-lux-heading {
-    font-size: 18pt !important;
-    color: #000 !important;
-    margin-top: 30px !important;
-    margin-bottom: 15px !important;
-    border-bottom: none !important; 
-    padding-bottom: 0 !important;
-    page-break-after: avoid !important;
-  }
-
-  /* ביטול הפס הכתום (::after) מתחת לכותרות המשנה רק בזמן הדפסה */
-  .ydt-lux-heading::after {
-    display: none !important;
-  }
-
-  .lux-tag {
-    border: 1px solid #ccc !important;
-    color: #333 !important;
-    background: transparent !important;
-  }
-
-  /* מניעת חיתוך אכזרי של שורות (או רכיבים) באמצע העמוד */
-  .ydt-lux-ingredient-item, 
-  .ydt-lux-step {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-    display: block !important;
-    margin-bottom: 15px !important;
-    padding: 0 !important;
-  }
-
-  /* עיצוב המצרכים: שמירה על עיגול ריק ואסתטי */
-  .ydt-lux-radio {
-    display: inline-block !important;
-    vertical-align: middle !important;
-    margin-left: 12px !important;
-    width: 18px !important;
-    height: 18px !important;
-    border: 2px solid #666 !important;
-    border-radius: 50% !important;
-  }
-
-  .ydt-lux-ing-text {
-    color: #000 !important;
-  }
-
-  /* --- מספור השלבים בהדפסה (1, 2, 3...) בכתום עדין --- */
-  .ydt-lux-steps-container {
-    counter-reset: print-step-counter !important; 
-  }
-
-  .ydt-lux-step {
-    counter-increment: print-step-counter !important; 
-    position: relative !important;
-    padding-right: 25px !important; 
-  }
-
-  /* החלפת ה-Watermark (סימן המים) במספר מסודר בהדפסה */
-  .ydt-lux-step::before {
-    content: counter(print-step-counter) "." !important;
-    position: absolute !important;
-    right: 0 !important;
-    top: 0 !important;
-    font-size: 14pt !important;
-    font-weight: bold !important;
-    color: #ff8c6b !important; /* מספר בכתום המותג */
-    opacity: 1 !important;
-    font-family: inherit !important;
-  }
-
-  .ydt-lux-step-text {
-    display: block !important;
-    margin: 0 !important;
-    color: #000 !important;
   }
 }

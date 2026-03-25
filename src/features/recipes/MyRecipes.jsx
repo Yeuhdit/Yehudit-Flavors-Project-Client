@@ -12,6 +12,7 @@ import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
 import LocalDiningRoundedIcon from '@mui/icons-material/LocalDiningRounded';
 import { AuthContext } from "../../context/AuthContext";
 import { deleteRecipe } from "./recipeSlice";
+import ScrollReveal from "../../components/ScrollReveal";
 import "./Recipes.css"; 
 
 const breakpointColumnsObj = { default: 4, 1400: 4, 1100: 3, 700: 2, 500: 1 };
@@ -141,7 +142,9 @@ const MyRecipes = () => {
           <div className="fade-in delay-1">
             <Masonry breakpointCols={breakpointColumnsObj} className="masonry-grid" columnClassName="masonry-column">
               {filteredRecipes.map((recipe) => (
-                <SingleRecipeCard key={recipe._id} recipe={recipe} />
+                <ScrollReveal key={recipe._id}>
+                  <SingleRecipeCard recipe={recipe} />
+                </ScrollReveal>
               ))}
             </Masonry>
           </div>

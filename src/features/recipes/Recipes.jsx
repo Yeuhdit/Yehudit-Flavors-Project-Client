@@ -12,6 +12,7 @@ import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
 import LocalDiningRoundedIcon from '@mui/icons-material/LocalDiningRounded';
 import { AuthContext } from "../../context/AuthContext";
 import { deleteRecipe } from "./recipeSlice";
+import ScrollReveal from "../../components/ScrollReveal";
 import "./Recipes.css";
 
 const breakpointColumnsObj = { default: 4, 1400: 4, 1100: 3, 700: 2, 500: 1 };
@@ -107,6 +108,9 @@ const Recipes = () => {
   const safeRecipes = Array.isArray(recipes) ? recipes : [];
 
   const filteredRecipes = safeRecipes.filter(r => {
+    // חסימת מתכונים פרטיים!
+    if (r.isPrivate === true) return false;
+
     const matchText = r.name?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchCategory = selectedCategory === "" || (r.categories && r.categories.some(c => c._id === selectedCategory || c === selectedCategory));
     const matchDifficulty = selectedDifficulty === "" || r.difficulty === selectedDifficulty;
@@ -153,7 +157,11 @@ const Recipes = () => {
         {filteredRecipes.length > 0 ? (
           <div className="fade-in delay-1">
             <Masonry breakpointCols={breakpointColumnsObj} className="masonry-grid" columnClassName="masonry-column">
-              {filteredRecipes.map((recipe) => <SingleRecipeCard key={recipe._id} recipe={recipe} />)}
+              {filteredRecipes.map((recipe) => (
+                <ScrollReveal key={recipe._id}>
+                  <SingleRecipeCard recipe={recipe} />
+                </ScrollReveal>
+              ))}
             </Masonry>
           </div>
         ) : (
