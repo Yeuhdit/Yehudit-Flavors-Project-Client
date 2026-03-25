@@ -38,32 +38,20 @@ export const categoryService = {
 
   // הוספת קטגוריה (רק admin)
   addCategory: async (categoryData) => {
-    try {
-      // ב-Route הגדרת router.post('/', ...)
-      const response = await api.post('/categories', categoryData);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    // ב-Route הגדרת router.post('/', ...)
+    const response = await api.post('/categories', categoryData);
+    return response.data;
   },
 
   // עדכון קטגוריה (רק admin)
   updateCategory: async (id, categoryData) => {
-    try {
-      const response = await api.put(`/categories/${id}`, categoryData);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await api.put(`/categories/${id}`, categoryData);
+    return response.data;
   },
 
   // מחיקת קטגוריה (רק admin)
   deleteCategory: async (id) => {
-    try {
-      const response = await api.delete(`/categories/${id}`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await api.delete(`/categories/${id}`);
+    return response.data;
   }
 };

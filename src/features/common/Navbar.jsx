@@ -1,6 +1,6 @@
 // react-client/src/features/common/Navbar.jsx
 
-import React, { useState, useContext, useEffect } from "react";
+import  { useState, useContext, useEffect } from "react";
 import {
   AppBar,
   Toolbar,

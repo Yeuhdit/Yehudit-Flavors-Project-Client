@@ -1,8 +1,8 @@
 // react-client/src/components/RecipeList.js
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchRecipes, addRecipe, deleteRecipe } from '../features/recipesSlice';
+import { fetchRecipes, deleteRecipe } from '../features/recipesSlice';
 
 const RecipeList = () => {
   const dispatch = useDispatch();
@@ -11,10 +11,6 @@ const RecipeList = () => {
   useEffect(() => {
     dispatch(fetchRecipes());
   }, [dispatch]);
-
-  const handleAddRecipe = (newRecipe) => {
-    dispatch(addRecipe(newRecipe));
-  };
 
   const handleDeleteRecipe = (id) => {
     dispatch(deleteRecipe(id));

@@ -1,5 +1,4 @@
 // react-client/src/features/common/About.jsx
-import React from "react";
 import { Container, Typography } from "@mui/material";
 import "./About.css";
 

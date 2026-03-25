@@ -1,6 +1,7 @@
 // react-client/src/features/common/Home.jsx
 
-import React, { useState, useEffect } from "react";
+// import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Container, Typography, Box, CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
@@ -37,7 +38,7 @@ const Home = () => {
           // המשתמש אישר! שולחים את הקואורדינטות האמיתיות שלו
           fetchWeather(position.coords.latitude, position.coords.longitude, "במיקומך");
         },
-        (error) => {
+        (_error) => {
           // המשתמש סירב או שאין קליטת GPS - נחזור לדיפולט של ירושלים
           fetchWeather(31.769, 35.2163, "בירושלים");
         }
