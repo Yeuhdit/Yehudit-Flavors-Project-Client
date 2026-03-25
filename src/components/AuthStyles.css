@@ -1,5 +1,3 @@
-/* react-client/src/components/AuthStyles.css */
-
 .auth-wrapper {
   min-height: 100vh;
   display: flex;
@@ -13,7 +11,6 @@
   direction: rtl;
 }
 
-/* --- הילות חיות ברקע (Dynamic Ambient Orbs) --- */
 .auth-wrapper::before,
 .auth-wrapper::after {
   content: '';
@@ -23,7 +20,6 @@
   z-index: 0;
 }
 
-/* הילה כתומה-אפרסקית מרחפת מצד ימין למעלה */
 .auth-wrapper::before {
   top: -10%;
   right: -10%;
@@ -35,7 +31,6 @@
   animation: ambientFloat 12s ease-in-out infinite alternate;
 }
 
-/* הילה צהובה-חמה מרחפת מצד שמאל למטה */
 .auth-wrapper::after {
   bottom: -15%;
   left: -5%;
@@ -57,7 +52,6 @@
   100% { transform: translate(40px, -30px) scale(1.1); }
 }
 
-/* --- המיכל המרכזי --- */
 .auth-container {
   width: 100%;
   max-width: 460px;
@@ -65,37 +59,30 @@
   z-index: 1;
 }
 
-/* --- כרטיסיית זכוכית פרימיום --- */
 .auth-card {
-  background: rgba(255, 255, 255, 0.6); /* שקוף יותר כדי לראות את הרקע */
-  backdrop-filter: blur(40px); /* טשטוש עוצמתי */
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
-  border: 1px solid rgba(255, 255, 255, 0.8); /* מסגרת לבנה עדינה */
-  border-radius: 36px; /* מעוגל יותר וידידותי */
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 36px;
   padding: 60px 45px;
-  box-shadow: 
-    0 30px 60px rgba(0, 0, 0, 0.03), 
-    inset 0 0 0 1px rgba(255, 255, 255, 0.5); /* צל פנימי עדין שנותן נפח */
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.03), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
   animation: cardEntrance 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
   opacity: 0;
   transform: translateY(30px);
 }
 
 @keyframes cardEntrance {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- כותרות --- */
 .auth-header {
   text-align: center;
   margin-bottom: 40px;
 }
 
 .auth-title {
-  font-size: 2.8rem !important; /* כותרת ענקית ומלאת ביטחון */
+  font-size: 2.8rem !important;
   font-weight: 900 !important;
   color: #1a1a1a;
   margin-bottom: 8px !important;
@@ -115,7 +102,6 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* --- הודעות שרת --- */
 .auth-alert {
   border-radius: 16px;
   padding: 14px 20px;
@@ -145,18 +131,18 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- שדות קלט מודרניים --- */
+/* --- מיקום האייקונים בתוך השדות --- */
 .input-group {
-  margin-bottom: 24px;
   position: relative;
+  margin-bottom: 24px;
 }
 
 .auth-input {
   width: 100%;
-  padding: 20px 24px;
+  padding: 20px 50px 20px 24px !important;
   border-radius: 20px;
   border: 2px solid transparent;
-  background-color: rgba(255, 255, 255, 0.5); /* חצי שקוף */
+  background-color: rgba(255, 255, 255, 0.5);
   font-size: 1.1rem;
   color: #1a1a1a;
   font-family: inherit;
@@ -179,13 +165,44 @@
   background-color: #ffffff;
   border-color: #ff7e5f;
   box-shadow: 0 10px 25px rgba(255, 126, 95, 0.15), inset 0 0 0 1px #ff7e5f;
-  transform: translateY(-2px); /* קפיצה קטנה ומגניבה למעלה */
+  transform: translateY(-2px);
 }
 
 .auth-input.has-error {
   border-color: #ef4444;
   background-color: #fffafa;
   box-shadow: 0 10px 25px rgba(239, 68, 68, 0.1);
+}
+
+/* --- תיקון מראה ההשלמה האוטומטית של הדפדפן (Autofill Fix) --- */
+.auth-input:-webkit-autofill,
+.auth-input:-webkit-autofill:hover, 
+.auth-input:-webkit-autofill:focus, 
+.auth-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.9) inset !important;
+  -webkit-text-fill-color: #1a1a1a !important;
+  transition: background-color 5000s ease-in-out 0s;
+  border-radius: 20px;
+}
+
+.input-icon {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.auth-input:focus ~ .input-icon {
+  color: #ff7e5f;
+  transform: translateY(-60%); 
+}
+
+.auth-input.has-error ~ .input-icon {
+  color: #ef4444;
 }
 
 .error-text {
@@ -197,7 +214,6 @@
   display: block;
 }
 
-/* --- כפתור ראשי אולטרה-פרימיום --- */
 .auth-button {
   width: 100%;
   padding: 20px;
@@ -216,7 +232,6 @@
   overflow: hidden;
 }
 
-/* אפקט ברק פנימי על הכפתור */
 .auth-button::after {
   content: '';
   position: absolute;
@@ -250,7 +265,6 @@
   box-shadow: none;
 }
 
-/* --- לינקים בתחתית --- */
 .auth-footer-link {
   margin-top: 35px;
   text-align: center;
@@ -268,7 +282,6 @@
   position: relative;
 }
 
-/* קו תחתון מגניב שמופיע בהובר */
 .auth-footer-link span::after {
   content: '';
   position: absolute;
@@ -286,24 +299,10 @@
   transform: scaleX(1);
 }
 
-/* --- רספונסיביות --- */
 @media (max-width: 600px) {
-  .auth-wrapper {
-    padding: 20px 15px;
-  }
-  .auth-card {
-    padding: 45px 25px;
-    border-radius: 28px;
-  }
-  .auth-title {
-    font-size: 2.2rem !important;
-  }
-  .auth-input {
-    padding: 16px 20px;
-    font-size: 1rem;
-  }
-  .auth-button {
-    padding: 16px;
-    font-size: 1.1rem;
-  }
+  .auth-wrapper { padding: 20px 15px; }
+  .auth-card { padding: 45px 25px; border-radius: 28px; }
+  .auth-title { font-size: 2.2rem !important; }
+  .auth-input { padding: 16px 20px; font-size: 1rem; }
+  .auth-button { padding: 16px; font-size: 1.1rem; }
 }

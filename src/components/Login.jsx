@@ -1,14 +1,14 @@
-// // react-client/src/components/Login.jsx
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
+import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
+import LockRoundedIcon from '@mui/icons-material/LockRounded';
 import userService from '../services/userService';
 import { AuthContext } from '../context/AuthContext';
 import './AuthStyles.css';
 
-// הגדרת סכימת הוולידציה עם Joi בדיוק כמו שלמדנו
 const loginSchema = Joi.object({
   email: Joi.string().email({ tlds: { allow: false } }).required().messages({
     'string.empty': 'חובה למלא כתובת אימייל',
@@ -27,24 +27,17 @@ const Login = () => {
   const [serverError, setServerError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
-  // הפעלת React Hook Form בשילוב Joi
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: joiResolver(loginSchema),
-    mode: 'onTouched' // יבדוק תקינות כשהמשתמש יוצא מהשדה, חוויית משתמש טובה יותר!
+    mode: 'onTouched'
   });
 
-  // פונקציה זו תופעל רק אם ה-Joi אישר שהטופס תקין לחלוטין!
   const onSubmit = async (data) => {
     setServerError('');
     setSuccessMsg('');
 
     try {
       setLoading(true);
-      // data כבר מכיל את האובייקט עם המידע המאומת: { email, password }
       const resData = await userService.login({ 
         email: data.email.trim(), 
         password: data.password 
@@ -75,17 +68,16 @@ const Login = () => {
           {serverError && <div className="auth-alert error">{serverError}</div>}
           {successMsg && <div className="auth-alert success">{successMsg}</div>}
 
-          {/* חיבור הטופס לפונקציית ה-handleSubmit של react-hook-form */}
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             
             <div className="input-group">
-              {/* השימוש ב-register מחליף את value ואת onChange */}
               <input 
                 type="email" 
                 placeholder="כתובת אימייל" 
                 {...register('email')}
                 className={`auth-input ${errors.email ? 'has-error' : ''}`} 
               />
+              <EmailRoundedIcon className="input-icon" />
               {errors.email && <span className="error-text">{errors.email.message}</span>}
             </div>
 
@@ -96,6 +88,7 @@ const Login = () => {
                 {...register('password')}
                 className={`auth-input ${errors.password ? 'has-error' : ''}`} 
               />
+              <LockRoundedIcon className="input-icon" />
               {errors.password && <span className="error-text">{errors.password.message}</span>}
             </div>
 

@@ -1,81 +1,72 @@
 // react-client/src/components/Register.jsx
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { joiResolver } from "@hookform/resolvers/joi";
+import Joi from "joi";
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
+import LockRoundedIcon from '@mui/icons-material/LockRounded';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import VpnKeyRoundedIcon from '@mui/icons-material/VpnKeyRounded';
 import userService from "../services/userService";
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from "../context/AuthContext";
 import "./AuthStyles.css";
+
+const registerSchema = Joi.object({
+  username: Joi.string().required().messages({
+    "string.empty": "איך קוראים לך? (חובה להזין שם)",
+  }),
+  email: Joi.string().email({ tlds: { allow: false } }).required().messages({
+    "string.empty": "אימייל חובה",
+    "string.email": "כתובת אימייל לא תקינה",
+  }),
+  // ביטלנו את ה-Regex! דורשים רק מינימום 6 תווים
+  password: Joi.string().min(6).required().messages({
+    "string.empty": "סיסמה חובה",
+    "string.min": "הסיסמה חייבת להכיל לפחות 6 תווים",
+  }),
+  confirmPassword: Joi.any().valid(Joi.ref('password')).required().messages({
+    "any.only": "הסיסמאות לא תואמות",
+    "any.required": "חובה לאמת סיסמה",
+  }),
+  address: Joi.string().allow("").optional(),
+});
 
 const Register = () => {
   const navigate = useNavigate();
   const { loginContext } = useContext(AuthContext);
 
-  const [form, setForm] = useState({ username: "", email: "", password: "", confirmPassword: "", address: "" });
-  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [serverError, setServerError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
 
-  const [serverError, setServerError] = useState('');
-  const [successMsg, setSuccessMsg] = useState('');
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: joiResolver(registerSchema),
+    mode: "onTouched",
+  });
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" });
-    setServerError('');
-  };
-
-  const validate = () => {
-    const newErrors = {};
-    if (!form.username) newErrors.username = "איך קוראים לך?";
-    
-    if (!form.email) {
-      newErrors.email = "אימייל חובה";
-    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(form.email)) {
-      newErrors.email = "כתובת אימייל לא תקינה";
-    }
-    
-    if (!form.password) {
-      newErrors.password = "סיסמה חובה";
-    } else if (form.password.length < 6) {
-      newErrors.password = "הסיסמה חייבת להכיל לפחות 6 תווים";
-    }
-
-    if (form.password !== form.confirmPassword) {
-      newErrors.confirmPassword = "הסיסמאות לא תואמות";
-    }
-    
-    return newErrors;
-  };
-
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    setServerError('');
-    setSuccessMsg('');
-
-    const validationErrors = validate();
-    setErrors(validationErrors);
-    
-    if (Object.keys(validationErrors).length > 0) {
-      setServerError('נא לתקן את השגיאות בטופס');
-      return;
-    }
+  const onSubmit = async (data) => {
+    setServerError("");
+    setSuccessMsg("");
 
     try {
       setLoading(true);
-      const data = await userService.register({
-        username: form.username.trim(),
-        email: form.email.trim().toLowerCase(),
-        password: form.password,
-        address: form.address.trim(),
+      const resData = await userService.register({
+        username: data.username.trim(),
+        email: data.email.trim().toLowerCase(),
+        password: data.password,
+        address: data.address?.trim() || "",
       });
 
-      if (data?.user) {
-        loginContext(data.user);
+      if (resData?.user) {
+        loginContext(resData.user);
       }
 
       setSuccessMsg("איזה כיף שהצטרפת! מעביר אותך פנימה...");
       setTimeout(() => navigate("/"), 1200);
     } catch (err) {
       if (err?.response?.status === 409) {
-        setErrors({ email: "האימייל הזה כבר רשום" });
         setServerError("האימייל הזה כבר רשום במערכת, נסי להתחבר.");
       } else {
         setServerError("אירעה שגיאה בהרשמה. נסי שוב מאוחר יותר.");
@@ -98,65 +89,60 @@ const Register = () => {
           {serverError && <div className="auth-alert error">{serverError}</div>}
           {successMsg && <div className="auth-alert success">{successMsg}</div>}
 
-          <form onSubmit={handleRegister} noValidate>
+          <form onSubmit={handleSubmit(onSubmit)} noValidate>
             
             <div className="input-group">
               <input 
                 type="text" 
-                name="username" 
                 placeholder="שם משתמש *" 
-                value={form.username} 
-                onChange={handleChange} 
-                className={`auth-input ${errors.username ? 'has-error' : ''}`} 
+                {...register("username")}
+                className={`auth-input ${errors.username ? "has-error" : ""}`} 
               />
-              {errors.username && <span className="error-text">{errors.username}</span>}
+              <PersonRoundedIcon className="input-icon" />
+              {errors.username && <span className="error-text">{errors.username.message}</span>}
             </div>
 
             <div className="input-group">
               <input 
                 type="email" 
-                name="email" 
                 placeholder="כתובת אימייל *" 
-                value={form.email} 
-                onChange={handleChange} 
-                className={`auth-input ${errors.email ? 'has-error' : ''}`} 
+                {...register("email")}
+                className={`auth-input ${errors.email ? "has-error" : ""}`} 
               />
-              {errors.email && <span className="error-text">{errors.email}</span>}
+              <EmailRoundedIcon className="input-icon" />
+              {errors.email && <span className="error-text">{errors.email.message}</span>}
             </div>
 
             <div className="input-group">
               <input 
                 type="password" 
-                name="password" 
-                placeholder="סיסמה (לפחות 6 תווים) *" 
-                value={form.password} 
-                onChange={handleChange} 
-                className={`auth-input ${errors.password ? 'has-error' : ''}`} 
+                placeholder="סיסמה (6 תווים לפחות) *" 
+                {...register("password")}
+                className={`auth-input ${errors.password ? "has-error" : ""}`} 
               />
-              {errors.password && <span className="error-text">{errors.password}</span>}
+              <LockRoundedIcon className="input-icon" />
+              {errors.password && <span className="error-text">{errors.password.message}</span>}
             </div>
 
             <div className="input-group">
               <input 
                 type="password" 
-                name="confirmPassword" 
                 placeholder="אימות סיסמה *" 
-                value={form.confirmPassword} 
-                onChange={handleChange} 
-                className={`auth-input ${errors.confirmPassword ? 'has-error' : ''}`} 
+                {...register("confirmPassword")}
+                className={`auth-input ${errors.confirmPassword ? "has-error" : ""}`} 
               />
-              {errors.confirmPassword && <span className="error-text">{errors.confirmPassword}</span>}
+              <VpnKeyRoundedIcon className="input-icon" />
+              {errors.confirmPassword && <span className="error-text">{errors.confirmPassword.message}</span>}
             </div>
 
             <div className="input-group">
               <input 
                 type="text" 
-                name="address" 
                 placeholder="כתובת (אופציונלי)" 
-                value={form.address} 
-                onChange={handleChange} 
+                {...register("address")}
                 className="auth-input" 
               />
+              <HomeRoundedIcon className="input-icon" />
             </div>
             
             <button type="submit" className="auth-button" disabled={loading}>

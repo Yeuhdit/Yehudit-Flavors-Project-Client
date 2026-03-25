@@ -1,15 +1,15 @@
-
 // react-client/src/features/recipes/MyRecipes.jsx
-
 import { useNavigate } from "react-router-dom";
 import Masonry from "react-masonry-css";
 import { useState, useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { CircularProgress, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
+import { CircularProgress, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Chip } from "@mui/material";
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
+import LocalDiningRoundedIcon from '@mui/icons-material/LocalDiningRounded';
 import { AuthContext } from "../../context/AuthContext";
 import { deleteRecipe } from "./recipeSlice";
 import "./Recipes.css"; 
@@ -20,11 +20,9 @@ const getImageUrl = (recipe) => {
   const rawName = recipe.imageUrl || recipe.image || recipe.img || recipe.imagUrl || "";
   if (!rawName) return null;
   const cleanName = rawName.split("/").pop().split("\\").pop();
-  
   const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
   const RENDER_BACKEND_URL = "https://yhudit-backend-project.onrender.com"; 
   const BASE_URL = isLocalhost ? "http://localhost:5005" : RENDER_BACKEND_URL;
-
   return `${BASE_URL}/images/${cleanName}`;
 };
 
@@ -34,6 +32,7 @@ const SingleRecipeCard = ({ recipe }) => {
   const { user } = useContext(AuthContext); 
   const imageUrl = getImageUrl(recipe);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
   const isOwnerOrAdmin = user && (user.role === 'admin' || user._id === recipe.user?._id);
 
   const handleDeleteClick = (e) => { e.stopPropagation(); setOpenDeleteDialog(true); };
@@ -45,19 +44,43 @@ const SingleRecipeCard = ({ recipe }) => {
     <>
       <div className="modern-recipe-card fade-in" onClick={() => navigate(`/recipe/${recipe._id}`)}>
         <div className="card-image-container">
-          {imageUrl ? <img src={imageUrl} alt={recipe.name} className="card-image" /> : <div className="card-no-image"><span>אין תמונה 📷</span></div>}
+          {imageUrl ? (
+            <img 
+              src={imageUrl} 
+              alt={recipe.name} 
+              className="card-image" 
+              loading="lazy" 
+            />
+          ) : (
+            <div className="card-no-image"><span>אין תמונה 📷</span></div>
+          )}
           <div className="card-overlay"><span className="overlay-text">צפייה במתכון <ArrowBackRoundedIcon fontSize="small"/></span></div>
         </div>
         <div className="card-content">
           <h3 className="card-title">{recipe.name}</h3>
           <div className="card-meta">
-            {recipe.preparationTime && <span className="meta-badge">{recipe.preparationTime} דק'</span>}
-            {recipe.difficulty && <span className="meta-badge outline">{recipe.difficulty === 'easy' ? 'קל' : recipe.difficulty === 'medium' ? 'בינוני' : 'קשה'}</span>}
+            {recipe.preparationTime && (
+              <Chip 
+                icon={<AccessTimeRoundedIcon style={{ fontSize: '1rem', color: '#ff7e5f' }}/>} 
+                label={`${recipe.preparationTime} דק'`} 
+                size="small" 
+                className="meta-chip primary-chip" 
+              />
+            )}
+            {recipe.difficulty && (
+              <Chip 
+                icon={<LocalDiningRoundedIcon style={{ fontSize: '1rem', color: '#666' }}/>} 
+                label={recipe.difficulty === 'easy' ? 'קל' : recipe.difficulty === 'medium' ? 'בינוני' : 'קשה'} 
+                size="small" 
+                variant="outlined" 
+                className="meta-chip secondary-chip" 
+              />
+            )}
           </div>
           {isOwnerOrAdmin && (
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', borderTop: '1px solid #f0f0f0', paddingTop: '12px' }}>
                   <IconButton onClick={handleEdit} style={{ color: '#555' }} title="עריכה"><EditRoundedIcon /></IconButton>
-                  <IconButton onClick={handleDeleteClick} style={{ color: '#555' }} title="מחיקה"><DeleteRoundedIcon /></IconButton>
+                  <IconButton onClick={handleDeleteClick} style={{ color: '#e74c3c' }} title="מחיקה"><DeleteRoundedIcon /></IconButton>
               </div>
           )}
         </div>
@@ -88,8 +111,9 @@ const MyRecipes = () => {
 
   if (!user) {
     return (
-        <div className="empty-state fade-in" style={{ marginTop: '100px' }}>
-            <h2>יש להתחבר כדי לצפות במתכונים שלך 🔒</h2>
+        <div className="empty-state-modern fade-in" style={{ marginTop: '100px' }}>
+            <div className="empty-illustration">🔒</div>
+            <h2>יש להתחבר כדי לצפות במתכונים שלך</h2>
             <Button variant="contained" sx={{ mt: 3, backgroundColor: '#ff7e5f', borderRadius: '50px' }} onClick={() => navigate('/login')}>מעבר להתחברות</Button>
         </div>
     );
@@ -123,12 +147,15 @@ const MyRecipes = () => {
           </div>
         ) : (
           !error && (
-            <div className="empty-state fade-in delay-1">
-              {searchTerm ? <h2>לא מצאנו מתכון כזה אצלך 🧐</h2> : <>
-                <h2>עדיין לא הוספת מתכונים משלך 📝</h2>
-                <p>זה הזמן להתחיל לשתף את הקסם שלך עם כולם!</p>
-                <Button variant="contained" sx={{ mt: 3, backgroundColor: '#1a1a1a', borderRadius: '50px', padding: '10px 30px', fontSize: '1.1rem' }} onClick={() => navigate('/add-recipe')}>הוספת מתכון ראשון</Button>
-              </>}
+            <div className="empty-state-modern fade-in delay-1">
+              <div className="empty-illustration">📝</div>
+              {searchTerm ? <h2>לא מצאנו מתכון כזה אצלך 🧐</h2> : <h2>ספר המתכונים האישי שלך ריק</h2>}
+              <p>{searchTerm ? "נסי לחפש משהו אחר." : "זה הזמן להתחיל לשתף את הקסם שלך עם כולם ולהוסיף מתכונים משלך!"}</p>
+              {!searchTerm && (
+                <Button variant="contained" sx={{ mt: 3, backgroundColor: '#1a1a1a', borderRadius: '50px', padding: '12px 30px', fontSize: '1.1rem' }} onClick={() => navigate('/add-recipe')}>
+                  הוספת מתכון ראשון
+                </Button>
+              )}
             </div>
           )
         )}

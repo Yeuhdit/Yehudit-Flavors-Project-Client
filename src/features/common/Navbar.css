@@ -1,106 +1,100 @@
-/* // react-client/src/features/common/Navbar.css */
 .navbar {
-background: transparent !important;
-box-shadow: none !important;
-transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-padding: 10px 0;
+  background: transparent !important;
+  box-shadow: none !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 10px 0;
 }
 
 .navbar.scrolled {
-background: rgba(255, 255, 255, 0.8) !important;
-backdrop-filter: blur(15px);
-padding: 5px 0;
-box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(15px);
+  padding: 5px 0;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
 }
 
 .navbar-toolbar {
-display: flex;
-justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .navbar-logo {
-font-weight: 800 !important;
-color: #333;
-cursor: pointer;
-letter-spacing: -1px;
-font-size: 1.9rem; /* גדל קצת */
+  font-weight: 800 !important;
+  color: #333;
+  cursor: pointer;
+  letter-spacing: -1px;
+  font-size: 1.9rem;
 }
 
 .navbar-logo span {
-color: #ff7e5f;
+  color: #ff7e5f;
 }
 
 .scrolled .navbar-logo { color: #222; }
 
-.navbar-links button {
-color: #444;
-font-weight: 600;
-margin: 0 10px;
-border-radius: 8px;
-transition: 0.3s;
-font-size: 1.05rem; /* הגדלת גופן לכפתורים */
-padding: 10px 16px;
+/* --- עיצוב הפס התחתון של עמוד פעיל ב-Navbar --- */
+.navbar-links .nav-link-btn {
+  color: #444 !important;
+  font-weight: 600 !important;
+  margin: 0 10px !important;
+  font-size: 1.05rem !important;
+  padding: 10px 16px !important;
+  position: relative;
+  background: transparent !important;
+  text-transform: none !important;
 }
 
-.navbar-links button:hover {
-color: #ff7e5f;
-background: rgba(255, 126, 95, 0.05);
+.navbar-links .nav-link-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ff7e5f, #ffb47b);
+  border-radius: 4px;
+  transition: width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.navbar-links .nav-link-btn:hover::after {
+  width: 50%;
+}
+
+.navbar-links .nav-link-btn.active-nav-link {
+  color: #ff7e5f !important;
+  font-weight: 800 !important;
+}
+
+.navbar-links .nav-link-btn.active-nav-link::after {
+  width: 70%;
 }
 
 .register-btn {
-background: #ff7e5f !important;
-color: white !important;
-padding: 10px 26px !important; /* קצת רחב יותר */
-border-radius: 50px !important;
-text-transform: none;
-font-weight: 700 !important;
-box-shadow: 0 4px 15px rgba(255, 126, 95, 0.3);
-font-size: 1.05rem;
+  background: #ff7e5f !important;
+  color: white !important;
+  padding: 10px 26px !important;
+  border-radius: 50px !important;
+  text-transform: none !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 15px rgba(255, 126, 95, 0.3);
+  font-size: 1.05rem !important;
+}
+
+.login-btn {
+  color: #333 !important;
+  font-weight: 600 !important;
+  font-size: 1.05rem !important;
+  text-transform: none !important;
 }
 
 .user-btn {
-text-transform: none !important;
-color: #333 !important;
-font-weight: 600 !important;
-gap: 10px;
-font-size: 1rem; /* קצת גדול יותר */
-}
-
-/* הדגשה לפי דף: הוספת מחלקות "home" ו-"recipes" ל-nav כדי להבליט */
-.navbar.home {
-  background: linear-gradient(90deg, rgba(255,243,236,0.95), rgba(255,250,240,0.95)) !important;
-  box-shadow: 0 12px 40px rgba(255,126,95,0.08) !important;
-}
-
-.navbar.home .navbar-logo h1,
-.navbar.home .navbar-links a,
-.navbar.home .navbar-links button {
-  color: #ff5e3a !important;
-}
-
-/* דף מתכונים - להדגיש את הקישור של מתכונים */
-.navbar.recipes {
-  background: linear-gradient(90deg, rgba(240,249,255,0.95), rgba(245,253,255,0.95)) !important;
-  box-shadow: 0 12px 40px rgba(59,130,246,0.06) !important;
-}
-
-/* קלאס להדגשת קישור ספציפי (למשל על ה-link של מתכונים תן לו class="recipes-link") */
-.navbar .navbar-links .active {
-  background: rgba(255,126,95,0.12);
-  color: #b23f2a !important;
-  box-shadow: 0 8px 24px rgba(255,126,95,0.08);
-  transform: translateY(-3px);
-}
-
-/* כאשר ה-navbar הוא recipes וברצונך להדגיש את קישור המתכונים */
-.navbar.recipes .navbar-links .recipes-link,
-.navbar.recipes .navbar-links .recipes-link.active {
-  background: rgba(59,130,246,0.12);
-  color: #1e40af !important;
-  box-shadow: 0 8px 24px rgba(59,130,246,0.08);
-  transform: translateY(-3px);
+  text-transform: none !important;
+  color: #333 !important;
+  font-weight: 600 !important;
+  gap: 10px;
+  font-size: 1rem;
 }
 
 @media (max-width: 768px) {
-.navbar-links { display: none; } /* מומלץ להוסיף Drawer בהמשך */
+  .navbar-links { display: none; }
 }

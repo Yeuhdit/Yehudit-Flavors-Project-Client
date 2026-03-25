@@ -1,5 +1,4 @@
 /* react-client/src/features/recipes/Recipes.css */
-
 .recipes-wrapper {
   min-height: 100vh;
   background-color: #faf9f8;
@@ -123,7 +122,7 @@
 
 .card-no-image {
   width: 100%;
-  height: 250px;
+  height: 220px;
   background: #f0eeeb;
   display: flex;
   align-items: center;
@@ -181,19 +180,58 @@
   flex-wrap: wrap;
 }
 
-.meta-badge {
-  background: #fff0eb;
-  color: #ff7e5f;
-  padding: 4px 12px;
-  border-radius: 50px;
-  font-size: 0.85rem;
-  font-weight: 700;
+/* --- עיצוב ה-Chips (תגיות מתכון) --- */
+.meta-chip {
+  font-family: inherit !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
 }
 
-.meta-badge.outline {
-  background: transparent;
+.primary-chip {
+  background-color: #fff0eb !important;
+  color: #1a1a1a !important;
+}
+
+.secondary-chip {
+  border-color: rgba(0,0,0,0.1) !important;
+  color: #666 !important;
+  background-color: #fafafa !important;
+}
+
+/* --- עיצוב מצב ריק מודרני (Empty State) --- */
+.empty-state-modern {
+  text-align: center;
+  padding: 80px 20px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: 30px;
+  border: 1px dashed rgba(0,0,0,0.05);
+  max-width: 600px;
+  margin: 40px auto;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.02);
+}
+
+.empty-illustration {
+  font-size: 5rem;
+  margin-bottom: 20px;
+  animation: floatEmpty 4s ease-in-out infinite;
+}
+
+.empty-state-modern h2 {
+  font-size: 2rem;
+  color: #1a1a1a;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.empty-state-modern p {
+  font-size: 1.2rem;
   color: #666;
-  border: 1px solid #ddd;
+}
+
+@keyframes floatEmpty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
 }
 
 .page-loader {
@@ -202,10 +240,4 @@
   align-items: center;
   justify-content: center;
   background: #faf9f8;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 60px 20px;
-  color: #666;
 }
