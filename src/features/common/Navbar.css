@@ -1,48 +1,70 @@
+/* react-client/src/features/common/Navbar.css */
+
 .navbar {
   background: transparent !important;
   box-shadow: none !important;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 10px 0;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 15px 0;
 }
 
 .navbar.scrolled {
-  background: rgba(255, 255, 255, 0.8) !important;
-  backdrop-filter: blur(15px);
-  padding: 5px 0;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  background: rgba(252, 250, 248, 0.9) !important; /* תואם מושלם לרקע הבהיר של הבית */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 8px 0;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
 }
 
 .navbar-toolbar {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
+/* --- לוגו יוקרתי --- */
 .navbar-logo {
-  font-weight: 800 !important;
-  color: #333;
+  font-weight: 900 !important;
+  color: #1a1a1a;
   cursor: pointer;
-  letter-spacing: -1px;
-  font-size: 1.9rem;
+  letter-spacing: -1.5px;
+  font-size: 2.2rem !important;
+  transition: transform 0.3s ease;
+}
+
+.navbar-logo:hover {
+  transform: scale(1.02);
 }
 
 .navbar-logo span {
-  color: #ff7e5f;
+  background: linear-gradient(135deg, #E07A5F, #F4A261);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.scrolled .navbar-logo { color: #222; }
+/* --- קישורים בתפריט --- */
+.navbar-links {
+  display: flex;
+  gap: 15px;
+}
 
-/* --- עיצוב הפס התחתון של עמוד פעיל ב-Navbar --- */
 .navbar-links .nav-link-btn {
-  color: #444 !important;
+  color: #555 !important;
   font-weight: 600 !important;
-  margin: 0 10px !important;
-  font-size: 1.05rem !important;
-  padding: 10px 16px !important;
+  font-size: 1.1rem !important;
+  padding: 8px 18px !important;
   position: relative;
   background: transparent !important;
   text-transform: none !important;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
 }
 
+.navbar-links .nav-link-btn:hover {
+  color: #1a1a1a !important;
+}
+
+/* האנימציה של הקו התחתון במעבר עכבר */
 .navbar-links .nav-link-btn::after {
   content: '';
   position: absolute;
@@ -50,51 +72,87 @@
   left: 50%;
   transform: translateX(-50%);
   width: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #ff7e5f, #ffb47b);
-  border-radius: 4px;
-  transition: width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  height: 2px;
+  background: linear-gradient(90deg, #E07A5F, #F4A261);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 2px;
 }
 
 .navbar-links .nav-link-btn:hover::after {
-  width: 50%;
+  width: 60%;
 }
 
 .navbar-links .nav-link-btn.active-nav-link {
-  color: #ff7e5f !important;
+  color: #1a1a1a !important;
   font-weight: 800 !important;
 }
 
 .navbar-links .nav-link-btn.active-nav-link::after {
-  width: 70%;
+  width: 80%;
+}
+
+/* --- כפתורי התחברות והרשמה --- */
+.login-btn {
+  color: #1a1a1a !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+  text-transform: none !important;
+  padding: 10px 24px !important;
+  border-radius: 50px !important;
+  transition: all 0.3s ease !important;
+}
+
+.login-btn:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
 }
 
 .register-btn {
-  background: #ff7e5f !important;
-  color: white !important;
-  padding: 10px 26px !important;
+  background: #1a1a1a !important;
+  color: #ffffff !important;
+  padding: 10px 30px !important;
   border-radius: 50px !important;
   text-transform: none !important;
   font-weight: 700 !important;
-  box-shadow: 0 4px 15px rgba(255, 126, 95, 0.3);
-  font-size: 1.05rem !important;
+  font-size: 1.1rem !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-.login-btn {
-  color: #333 !important;
-  font-weight: 600 !important;
-  font-size: 1.05rem !important;
-  text-transform: none !important;
+.register-btn:hover {
+  background: #333 !important;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
 }
 
+/* --- אזור המשתמש המחובר (העפנו את הכחול!) --- */
 .user-btn {
   text-transform: none !important;
-  color: #333 !important;
+  color: #1a1a1a !important;
   font-weight: 600 !important;
-  gap: 10px;
+  gap: 12px;
   font-size: 1rem;
+  padding: 6px 20px 6px 12px !important;
+  border-radius: 50px !important;
+  background: rgba(0,0,0,0.03) !important;
+  transition: background 0.3s ease !important;
 }
 
-@media (max-width: 768px) {
+.user-btn:hover {
+  background: rgba(0,0,0,0.06) !important;
+}
+
+/* שינוי צבע ההרשאה מכחול לכתום-אפרסק יוקרתי */
+.user-name span {
+  color: #E07A5F !important; 
+  letter-spacing: 0.5px;
+}
+
+/* האווטאר מקבל גרדיאנט שמתאים לאתר */
+.MuiAvatar-root {
+  background: linear-gradient(135deg, #E07A5F, #F4A261) !important; 
+  box-shadow: 0 4px 10px rgba(224, 122, 95, 0.3);
+}
+
+@media (max-width: 900px) {
   .navbar-links { display: none; }
 }
