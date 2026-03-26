@@ -1,0 +1,158 @@
+/* src/features/common/Footer.css */
+
+:root {
+  --primary-orange: #ff7e5f;
+  --dark-luxury: #0f0f0f;
+  --text-light: #e8e8e8;
+  --text-muted: #999;
+}
+
+.footer-minimal {
+  background: linear-gradient(180deg, rgba(15, 15, 15, 0.95), rgba(10, 10, 10, 1));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 126, 95, 0.2);
+  padding: 35px 40px;
+  margin-top: 60px;
+  font-family: 'Assistant', sans-serif;
+  position: relative;
+  z-index: 10;
+}
+
+.footer-content-min {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+}
+
+/* --- חלק שמאל --- */
+.footer-left {
+  flex: 1;
+  text-align: right;
+}
+
+.footer-credit {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+}
+
+.footer-credit:hover {
+  color: var(--text-light);
+}
+
+.owner-name {
+  color: var(--primary-orange);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* --- חלק מרכזי --- */
+.footer-center {
+  flex: 1;
+  text-align: center;
+}
+
+.footer-email {
+  font-size: 0.9rem;
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  padding: 8px 16px;
+  border-radius: 20px;
+  display: inline-block;
+  border: 1px solid transparent;
+}
+
+.footer-email:hover {
+  color: var(--primary-orange);
+  border-color: rgba(255, 126, 95, 0.3);
+  background: rgba(255, 126, 95, 0.05);
+}
+
+/* --- חלק ימין --- */
+.footer-right {
+  flex: 1;
+  text-align: left;
+}
+
+.footer-reserved {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.footer-reserved:hover {
+  color: var(--primary-orange);
+}
+
+/* --- Responsive Tablet --- */
+@media (max-width: 768px) {
+  .footer-minimal {
+    padding: 25px 25px;
+    margin-top: 40px;
+  }
+
+  .footer-content-min {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .footer-left,
+  .footer-right {
+    text-align: center;
+  }
+
+  .footer-credit,
+  .footer-reserved {
+    font-size: 0.85rem;
+  }
+
+  .footer-email {
+    font-size: 0.85rem;
+  }
+}
+
+/* --- Responsive Mobile --- */
+@media (max-width: 480px) {
+  .footer-minimal {
+    padding: 20px 15px;
+    margin-top: 30px;
+  }
+
+  .footer-content-min {
+    gap: 10px;
+  }
+
+  .footer-credit,
+  .footer-reserved {
+    font-size: 0.75rem;
+    letter-spacing: 0px;
+  }
+
+  .owner-name {
+    display: block;
+    margin-top: 4px;
+  }
+
+  .footer-email {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+
+  .footer-reserved {
+    text-transform: none;
+  }
+}

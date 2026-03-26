@@ -144,9 +144,9 @@ const Recipes = () => {
               <InputLabel>רמת קושי</InputLabel>
               <Select value={selectedDifficulty} label="רמת קושי" onChange={e => setSelectedDifficulty(e.target.value)} sx={{ borderRadius: '50px' }}>
                 <MenuItem value=""><em>הכל</em></MenuItem>
-                <MenuItem value="easy">קלי קלות</MenuItem>
-                <MenuItem value="medium">דורש תשומת לב</MenuItem>
-                <MenuItem value="hard">מאתגר ומספק</MenuItem>
+                <MenuItem value="easy">קל </MenuItem>
+                <MenuItem value="medium">בינוני</MenuItem>
+                <MenuItem value="hard">קשה</MenuItem>
               </Select>
             </FormControl>
           </div>

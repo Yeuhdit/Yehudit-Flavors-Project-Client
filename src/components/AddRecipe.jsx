@@ -245,9 +245,9 @@ function AddRecipe() {
             <FormControl fullWidth {...modernInputProps} sx={{ mb: 4, ...modernInputProps.sx }}>
               <InputLabel>רמת קושי *</InputLabel>
               <Select name="difficulty" value={formData.difficulty} onChange={handleTextChange} label="רמת קושי *">
-                <MenuItem value="easy">קלי קלות</MenuItem>
-                <MenuItem value="medium">דורש תשומת לב</MenuItem>
-                <MenuItem value="hard">מאתגר ומספק</MenuItem>
+                <MenuItem value="easy">קל</MenuItem>
+                <MenuItem value="medium">בינוני</MenuItem>
+                <MenuItem value="hard">קשה</MenuItem>
               </Select>
             </FormControl>
             
