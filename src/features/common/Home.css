@@ -245,3 +245,32 @@
     border-radius: 20px;
   }
 }
+/* react-client/src/features/common/Home.css - תוספות לסוף הקובץ */
+
+.recent-recipes-section {
+  padding: 80px 20px 120px;
+  position: relative;
+  z-index: 1;
+}
+
+.section-title {
+  text-align: center;
+  font-weight: 900 !important;
+  color: #1a1a1a;
+  margin-bottom: 20px !important;
+  letter-spacing: -1.5px;
+}
+
+.preview-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 25px 50px rgba(255, 126, 95, 0.15) !important;
+  background: rgba(255,255,255,0.95) !important;
+}
+
+/* התאמת אדמין ל-Home */
+.admin-wrapper {
+  min-height: 100vh;
+  background-color: #FCFAF8;
+  position: relative;
+  overflow: hidden;
+}

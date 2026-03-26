@@ -1,244 +1,301 @@
 /* react-client/src/components/AdminPanel.css */
 
-.admin-panel {
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 12px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-  color: white;
-  direction: rtl;
+:root {
+  --lux-bg: #FCFAF8; /* רקע שמנת נקי */
+  --lux-text-dark: #1a1a1a;
+  --lux-text-muted: #666;
+  --lux-primary: #ff7e5f;
+  --lux-primary-hover: #ff6b6b;
+  --lux-glass-bg: rgba(255, 255, 255, 0.7);
+  --lux-glass-border: rgba(255, 255, 255, 1);
+  --lux-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
 }
 
-.admin-panel h1 {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.tabs {
+.admin-wrapper {
+  min-height: 100vh;
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
-  flex-direction: row-reverse;
+  background-color: var(--lux-bg);
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'Assistant', sans-serif;
 }
 
-.tab {
-  padding: 1rem 2rem;
-  background: transparent;
-  color: white;
-  border: none;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border-bottom: 3px solid transparent;
-  margin-bottom: -2px;
+.admin-container {
+  position: relative;
+  width: 100%;
+  padding: 60px 20px;
+  z-index: 1;
 }
 
-.tab:hover {
-  opacity: 0.8;
+.admin-title {
+  font-weight: 900 !important;
+  margin-bottom: 40px !important;
+  text-align: center;
+  color: var(--lux-text-dark);
+  letter-spacing: -1px;
 }
 
-.tab.active {
-  border-bottom-color: white;
-  opacity: 1;
+.admin-title span {
+  color: var(--lux-primary);
 }
 
+/* ====== פאנל זכוכית חלבית בהירה ====== */
+.admin-glass-panel {
+  background-color: var(--lux-glass-bg) !important;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--lux-glass-border) !important;
+  border-radius: 30px !important;
+  overflow: hidden;
+  box-shadow: var(--lux-shadow) !important;
+}
+
+/* ====== כרטיסיות (Tabs) ====== */
+.admin-tabs {
+  background: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.admin-tabs .MuiTabs-indicator {
+  background-color: var(--lux-primary) !important;
+  height: 4px !important;
+  border-radius: 4px 4px 0 0;
+}
+
+.admin-tabs .MuiTab-root {
+  color: var(--lux-text-muted) !important;
+  text-transform: none !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+  padding: 15px 30px !important;
+  transition: color 0.3s ease;
+}
+
+.admin-tabs .Mui-selected {
+  color: var(--lux-primary) !important;
+}
+
+/* ====== תוכן פנימי ====== */
 .tab-content {
-  background: rgba(255, 255, 255, 0.95);
-  padding: 2rem;
-  border-radius: 8px;
-  color: #333;
+  padding: 40px;
 }
 
-.tab-content h2 {
-  margin-bottom: 1.5rem;
-  color: #667eea;
-  font-size: 1.5rem;
+.inner-title {
+  font-weight: 800 !important;
+  color: var(--lux-text-dark) !important;
+  margin-bottom: 30px !important;
 }
 
+/* שדה קלט - עיצוב נקי ובהיר */
 .form-group {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  flex-direction: row-reverse;
+  gap: 15px;
+  margin-bottom: 30px;
+  align-items: center;
 }
 
-.form-group input {
-  flex: 1;
-  padding: 0.75rem;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-family: inherit;
-  transition: border-color 0.3s ease;
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 8px rgba(102, 126, 234, 0.2);
-}
-
-.form-group button {
-  padding: 0.75rem 1.5rem;
-  background: #667eea;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
+.modern-input .MuiOutlinedInput-root {
+  border-radius: 16px !important;
+  background-color: #ffffff !important;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.02);
 }
 
-.form-group button:hover:not(:disabled) {
-  background: #764ba2;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+.modern-input .MuiOutlinedInput-root.Mui-focused {
+  box-shadow: 0 8px 20px rgba(255, 126, 95, 0.1);
 }
 
-.form-group button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.modern-input .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(0,0,0,0.08) !important;
 }
 
-.form-group .cancel-btn {
-  background: #e74c3c;
+.modern-input .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--lux-primary) !important;
+  border-width: 2px;
 }
 
-.form-group .cancel-btn:hover:not(:disabled) {
-  background: #c0392b;
+.modern-input .MuiInputLabel-root.Mui-focused {
+  color: var(--lux-primary) !important;
 }
 
-.items-list {
-  margin-top: 2rem;
+/* כפתור הוספה עגול */
+.add-btn-round {
+  background: linear-gradient(135deg, var(--lux-primary), #f4a261) !important;
+  color: #ffffff !important;
+  min-width: 55px !important;
+  width: 55px !important;
+  height: 55px !important;
+  border-radius: 50% !important;
+  box-shadow: 0 8px 15px rgba(255, 126, 95, 0.3) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
 }
 
-.items-list h3 {
-  color: #667eea;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
+.add-btn-round:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 12px 20px rgba(255, 126, 95, 0.4) !important;
 }
 
-.empty-message {
-  text-align: center;
-  color: #999;
-  padding: 2rem;
-  font-style: italic;
-}
-
-.items-list ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+/* ====== רשימות הפריטים ====== */
+.categories-list, .levels-list {
+  background-color: transparent !important;
+  padding: 0 !important;
 }
 
 .item {
+  background-color: #ffffff !important;
+  border-radius: 16px !important;
+  margin-bottom: 12px !important;
+  padding: 15px 25px !important;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border-left: 4px solid #667eea;
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02) !important;
+  border: 1px solid rgba(0,0,0,0.02) !important;
+  transition: all 0.3s ease !important;
 }
 
 .item:hover {
-  background: #eef0f7;
-  transform: translateX(-5px);
+  transform: translateX(-5px) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05) !important;
+  border-color: rgba(255, 126, 95, 0.2) !important;
 }
 
 .item-name {
-  flex: 1;
-  font-weight: 500;
-  color: #333;
-  font-size: 1.05rem;
+  color: var(--lux-text-dark) !important;
 }
 
+.item-name .MuiTypography-root {
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+}
+
+.category-icon {
+  color: var(--lux-primary) !important;
+  font-size: 1.8rem !important;
+  margin-left: 15px;
+  background-color: #fff0eb;
+  padding: 8px;
+  border-radius: 12px;
+}
+
+/* ====== כפתורי פעולה בתוך הפריט ====== */
 .item-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 10px;
 }
 
-.edit-btn,
-.delete-btn {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.action-btn {
+  text-transform: none !important;
+  font-weight: 700 !important;
+  border-radius: 12px !important;
+  padding: 6px 18px !important;
+  box-shadow: none !important;
 }
 
 .edit-btn {
-  background: #3498db;
-  color: white;
+  background-color: #f0f4f8 !important;
+  color: #3498db !important;
 }
 
 .edit-btn:hover {
-  background: #2980b9;
-  transform: scale(1.05);
+  background-color: #e1eaf2 !important;
 }
 
 .delete-btn {
-  background: #e74c3c;
-  color: white;
+  background-color: #fceceb !important;
+  color: #e74c3c !important;
 }
 
 .delete-btn:hover {
-  background: #c0392b;
-  transform: scale(1.05);
+  background-color: #fadada !important;
 }
 
-@media (max-width: 768px) {
-  .admin-panel {
-    margin: 1rem;
-    padding: 1.5rem;
-  }
+/* ====== תפריט צדדי (ניהול ראשי) ====== */
+.admin-sidebar {
+  width: 280px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(0,0,0,0.05);
+  box-shadow: -5px 0 30px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  z-index: 10;
+}
 
-  .admin-panel h1 {
-    font-size: 2rem;
-  }
+.admin-avatar {
+  width: 80px !important;
+  height: 80px !important;
+  background: linear-gradient(135deg, var(--lux-primary), #f4a261) !important;
+  box-shadow: 0 10px 20px rgba(255, 126, 95, 0.2);
+  margin-bottom: 20px;
+  font-size: 2rem !important;
+  font-weight: 800 !important;
+}
 
-  .tabs {
-    flex-direction: column-reverse;
-  }
+.menu-user-name {
+  color: var(--lux-text-dark) !important;
+  font-weight: 800 !important;
+  font-size: 1.2rem !important;
+  text-align: center;
+  margin-bottom: 5px !important;
+}
 
-  .tab {
-    text-align: right;
-    border-bottom: none;
-    border-right: 3px solid transparent;
-    padding: 0.75rem 1.5rem;
-    margin-bottom: 0;
-    margin-right: -2px;
-  }
+.menu-user-role {
+  color: var(--lux-primary) !important;
+  font-weight: 600 !important;
+  background-color: #fff0eb;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 40px !important;
+}
 
-  .tab.active {
-    border-right-color: white;
-    border-bottom: none;
-  }
+.menu-actions-list {
+  width: 100%;
+}
 
-  .form-group {
-    flex-direction: column-reverse;
-  }
+.menu-action-item {
+  color: var(--lux-text-dark) !important;
+  border-radius: 16px !important;
+  margin-bottom: 10px !important;
+  transition: all 0.3s ease !important;
+}
 
-  .item {
+.menu-action-item:hover {
+  background-color: #ffffff !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03) !important;
+  transform: translateX(-5px);
+}
+
+.menu-item-icon {
+  color: #888 !important;
+  transition: color 0.3s ease;
+}
+
+.menu-action-item:hover .menu-item-icon {
+  color: var(--lux-primary) !important;
+}
+
+.menu-action-item.logout {
+  color: #e74c3c !important;
+  margin-top: 30px !important;
+}
+
+.menu-action-item.logout .menu-item-icon {
+  color: #e74c3c !important;
+}
+
+@media (max-width: 900px) {
+  .admin-wrapper {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
   }
-
-  .item-actions {
+  .admin-sidebar {
     width: 100%;
-    justify-content: flex-end;
+    border-left: none;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding: 20px;
+  }
+  .tab-content {
+    padding: 20px;
   }
 }

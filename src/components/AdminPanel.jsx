@@ -1,16 +1,33 @@
 // react-client/src/components/AdminPanel.jsx
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { getAllCategories, addCategory, updateCategory, deleteCategory } from '../features/categories/categorySlice';
 import { getAllLevels, addLevel, updateLevel, deleteLevel } from '../features/levels/levelSlice';
+import { 
+  Box, Typography, Tabs, Tab, TextField, Button, List, ListItem, 
+  ListItemText, IconButton, Paper, Container, Avatar, Fade
+} from '@mui/material';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import CategoryRoundedIcon from '@mui/icons-material/CategoryRounded';
+import LocalFireDepartmentRoundedIcon from '@mui/icons-material/LocalFireDepartmentRounded';
+import BarChartRoundedIcon from '@mui/icons-material/BarChartRounded';
+import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
+import RestaurantRoundedIcon from '@mui/icons-material/RestaurantRounded';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import './AdminPanel.css';
 
 function AdminPanel() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { allCategories, loading: categoriesLoading } = useSelector(state => state.categories);
   const { allLevels, loading: levelsLoading } = useSelector(state => state.levels);
 
-  const [activeTab, setActiveTab] = useState('categories');
+  const [activeTab, setActiveTab] = useState(0);
   const [isEditingCategory, setIsEditingCategory] = useState(null);
   const [isEditingLevel, setIsEditingLevel] = useState(null);
   const [categoryName, setCategoryName] = useState('');
@@ -21,18 +38,15 @@ function AdminPanel() {
     dispatch(getAllLevels());
   }, [dispatch]);
 
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue);
+  };
+
   // ====== קטגוריות ======
   const handleAddCategory = () => {
-    if (!categoryName.trim()) {
-      alert('אנא הכנס שם קטגוריה');
-      return;
-    }
-
+    if (!categoryName.trim()) return;
     if (isEditingCategory) {
-      dispatch(updateCategory({
-        id: isEditingCategory,
-        data: { description: categoryName }
-      }));
+      dispatch(updateCategory({ id: isEditingCategory, data: { description: categoryName } }));
       setIsEditingCategory(null);
     } else {
       dispatch(addCategory({ description: categoryName }));
@@ -46,7 +60,7 @@ function AdminPanel() {
   };
 
   const handleDeleteCategory = (id) => {
-    if (window.confirm('האם אתה בטוח שברצונך למחוק קטגוריה זו?')) {
+    if (window.confirm('האם את בטוחה שברצונך למחוק קטגוריה זו?')) {
       dispatch(deleteCategory(id));
     }
   };
@@ -58,16 +72,9 @@ function AdminPanel() {
 
   // ====== רמות ======
   const handleAddLevel = () => {
-    if (!levelName.trim()) {
-      alert('אנא הכנס שם רמה');
-      return;
-    }
-
+    if (!levelName.trim()) return;
     if (isEditingLevel) {
-      dispatch(updateLevel({
-        id: isEditingLevel,
-        data: { description: levelName }
-      }));
+      dispatch(updateLevel({ id: isEditingLevel, data: { description: levelName } }));
       setIsEditingLevel(null);
     } else {
       dispatch(addLevel({ description: levelName }));
@@ -81,7 +88,7 @@ function AdminPanel() {
   };
 
   const handleDeleteLevel = (id) => {
-    if (window.confirm('האם אתה בטוח שברצונך למחוק רמה זו?')) {
+    if (window.confirm('האם את בטוחה שברצונך למחוק רמה זו?')) {
       dispatch(deleteLevel(id));
     }
   };
@@ -91,132 +98,132 @@ function AdminPanel() {
     setLevelName('');
   };
 
+  // בחירת אייקון מותאם לקטגוריה
+  const getCategoryIcon = (description) => {
+    if (description.includes('חריפ') || description.includes('אש')) return <LocalFireDepartmentRoundedIcon className="category-icon" />;
+    return <CategoryRoundedIcon className="category-icon" />;
+  };
+
   return (
-    <div className="admin-panel">
-      <h1>פאנל ניהול</h1>
+    <div className="admin-wrapper" dir="rtl">
       
-      <div className="tabs">
-        <button 
-          className={`tab ${activeTab === 'categories' ? 'active' : ''}`}
-          onClick={() => setActiveTab('categories')}
-        >
-          קטגוריות
-        </button>
-        <button 
-          className={`tab ${activeTab === 'levels' ? 'active' : ''}`}
-          onClick={() => setActiveTab('levels')}
-        >
-          רמות
-        </button>
-      </div>
+      {/* תפריט צד (Sidebar) */}
+      <Box className="admin-sidebar">
+        <Avatar className="admin-avatar">י</Avatar>
+        <Typography className="menu-user-name">יהודית יברוב</Typography>
+        <Typography className="menu-user-role">מנהלת מערכת</Typography>
+        
+        <List className="menu-actions-list">
+          <ListItem button className="menu-action-item" onClick={() => navigate('/admin')}>
+            <SettingsRoundedIcon className="menu-item-icon" sx={{ ml: 2 }}/>
+            <ListItemText primary="ניהול הגדרות" primaryTypographyProps={{ fontWeight: 700 }} />
+          </ListItem>
+          <ListItem button className="menu-action-item" onClick={() => navigate('/my-recipes')}>
+            <RestaurantRoundedIcon className="menu-item-icon" sx={{ ml: 2 }}/>
+            <ListItemText primary="המתכונים שלי" primaryTypographyProps={{ fontWeight: 700 }} />
+          </ListItem>
+          <ListItem button className="menu-action-item logout" onClick={() => navigate('/login')}>
+            <LogoutRoundedIcon className="menu-item-icon" sx={{ ml: 2 }}/>
+            <ListItemText primary="התנתקות" primaryTypographyProps={{ fontWeight: 700 }} />
+          </ListItem>
+        </List>
+      </Box>
 
-      {/* ====== טאב קטגוריות ====== */}
-      {activeTab === 'categories' && (
-        <div className="tab-content">
-          <h2>ניהול קטגוריות</h2>
-          
-          <div className="form-group">
-            <input
-              type="text"
-              placeholder="שם קטגוריה"
-              value={categoryName}
-              onChange={(e) => setCategoryName(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleAddCategory()}
-            />
-            <button onClick={handleAddCategory} disabled={categoriesLoading}>
-              {isEditingCategory ? 'עדכן קטגוריה' : 'הוסף קטגוריה'}
-            </button>
-            {isEditingCategory && (
-              <button onClick={handleCancelEditCategory} className="cancel-btn">
-                ביטול
-              </button>
-            )}
-          </div>
+      {/* אזור מרכזי */}
+      <Container maxWidth="md" className="admin-container">
+        <Typography variant="h1" className="admin-title">
+          מרכז <span>ניהול.</span>
+        </Typography>
 
-          <div className="items-list">
-            <h3>קטגוריות קיימות</h3>
-            {allCategories.length === 0 ? (
-              <p className="empty-message">אין קטגוריות עדיין</p>
-            ) : (
-              <ul>
-                {allCategories.map(category => (
-                  <li key={category._id} className="item">
-                    <span className="item-name">{category.description}</span>
-                    <div className="item-actions">
-                      <button 
-                        onClick={() => handleEditCategory(category)}
-                        className="edit-btn"
-                      >
-                        עריכה
-                      </button>
-                      <button 
-                        onClick={() => handleDeleteCategory(category._id)}
-                        className="delete-btn"
-                      >
-                        מחיקה
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
-      )}
+        <Paper elevation={0} className="admin-glass-panel">
+          <Tabs value={activeTab} onChange={handleTabChange} centered className="admin-tabs">
+            <Tab label="ניהול קטגוריות" />
+            <Tab label="ניהול רמות קושי" />
+          </Tabs>
 
-      {/* ====== טאב רמות ====== */}
-      {activeTab === 'levels' && (
-        <div className="tab-content">
-          <h2>ניהול רמות</h2>
-          
-          <div className="form-group">
-            <input
-              type="text"
-              placeholder="שם רמה"
-              value={levelName}
-              onChange={(e) => setLevelName(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleAddLevel()}
-            />
-            <button onClick={handleAddLevel} disabled={levelsLoading}>
-              {isEditingLevel ? 'עדכן רמה' : 'הוסף רמה'}
-            </button>
-            {isEditingLevel && (
-              <button onClick={handleCancelEditLevel} className="cancel-btn">
-                ביטול
-              </button>
-            )}
-          </div>
+          <Box className="tab-content">
+            {/* ====== טאב קטגוריות ====== */}
+            {activeTab === 0 && (
+              <Fade in timeout={500}>
+                <Box>
+                  <Typography variant="h5" className="inner-title">הוספה ועדכון קטגוריות</Typography>
+                  
+                  <Box className="form-group">
+                    <TextField 
+                      fullWidth label="שם קטגוריה חדשה..." value={categoryName} 
+                      onChange={(e) => setCategoryName(e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && handleAddCategory()}
+                      className="modern-input"
+                    />
+                    <Button variant="contained" onClick={handleAddCategory} disabled={categoriesLoading} className="add-btn-round">
+                      {isEditingCategory ? <CheckRoundedIcon /> : <AddRoundedIcon />}
+                    </Button>
+                    {isEditingCategory && (
+                      <Button variant="outlined" color="error" onClick={handleCancelEditCategory} sx={{ borderRadius: '16px', minHeight: '55px' }}>
+                        <CloseRoundedIcon />
+                      </Button>
+                    )}
+                  </Box>
 
-          <div className="items-list">
-            <h3>רמות קיימות</h3>
-            {allLevels.length === 0 ? (
-              <p className="empty-message">אין רמות עדיין</p>
-            ) : (
-              <ul>
-                {allLevels.map(level => (
-                  <li key={level._id} className="item">
-                    <span className="item-name">{level.description}</span>
-                    <div className="item-actions">
-                      <button 
-                        onClick={() => handleEditLevel(level)}
-                        className="edit-btn"
-                      >
-                        עריכה
-                      </button>
-                      <button 
-                        onClick={() => handleDeleteLevel(level._id)}
-                        className="delete-btn"
-                      >
-                        מחיקה
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+                  <List className="categories-list">
+                    {allCategories.length === 0 && <Typography align="center" color="text.secondary">אין קטגוריות במערכת</Typography>}
+                    {allCategories.map(category => (
+                      <ListItem key={category._id} className="item">
+                        {getCategoryIcon(category.description)}
+                        <ListItemText primary={category.description} className="item-name" sx={{ pr: 2 }} />
+                        <Box className="item-actions">
+                          <Button className="action-btn edit-btn" onClick={() => handleEditCategory(category)}>עריכה</Button>
+                          <Button className="action-btn delete-btn" onClick={() => handleDeleteCategory(category._id)}>מחיקה</Button>
+                        </Box>
+                      </ListItem>
+                    ))}
+                  </List>
+                </Box>
+              </Fade>
             )}
-          </div>
-        </div>
-      )}
+
+            {/* ====== טאב רמות ====== */}
+            {activeTab === 1 && (
+              <Fade in timeout={500}>
+                <Box>
+                  <Typography variant="h5" className="inner-title">הוספה ועדכון רמות קושי</Typography>
+                  
+                  <Box className="form-group">
+                    <TextField 
+                      fullWidth label="שם רמה חדשה..." value={levelName} 
+                      onChange={(e) => setLevelName(e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && handleAddLevel()}
+                      className="modern-input"
+                    />
+                    <Button variant="contained" onClick={handleAddLevel} disabled={levelsLoading} className="add-btn-round">
+                      {isEditingLevel ? <CheckRoundedIcon /> : <AddRoundedIcon />}
+                    </Button>
+                    {isEditingLevel && (
+                      <Button variant="outlined" color="error" onClick={handleCancelEditLevel} sx={{ borderRadius: '16px', minHeight: '55px' }}>
+                        <CloseRoundedIcon />
+                      </Button>
+                    )}
+                  </Box>
+
+                  <List className="levels-list">
+                    {allLevels.length === 0 && <Typography align="center" color="text.secondary">אין רמות במערכת</Typography>}
+                    {allLevels.map(level => (
+                      <ListItem key={level._id} className="item">
+                        <BarChartRoundedIcon className="category-icon" />
+                        <ListItemText primary={level.description} className="item-name" sx={{ pr: 2 }} />
+                        <Box className="item-actions">
+                          <Button className="action-btn edit-btn" onClick={() => handleEditLevel(level)}>עריכה</Button>
+                          <Button className="action-btn delete-btn" onClick={() => handleDeleteLevel(level._id)}>מחיקה</Button>
+                        </Box>
+                      </ListItem>
+                    ))}
+                  </List>
+                </Box>
+              </Fade>
+            )}
+          </Box>
+        </Paper>
+      </Container>
     </div>
   );
 }
