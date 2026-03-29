@@ -171,6 +171,37 @@ const Home = () => {
 
   return (
     <div className="home-wrapper" dir="rtl">
+      {/* 🍽️ ANIMATED FOOD - SIDES ONLY (LEFT & RIGHT) - FAST & FURIOUS! */}
+      <div className="animated-food-background">
+        {/* LEFT COLUMN */}
+        <div className="food-column food-column-left">
+          <div className="food-element food-left-1">🍽️</div>
+          <div className="food-element food-left-2">🥘</div>
+          <div className="food-element food-left-3">🍳</div>
+          <div className="food-element food-left-4">🥗</div>
+          <div className="food-element food-left-5">🍲</div>
+          <div className="food-element food-left-6">🥙</div>
+          <div className="food-element food-left-7">🍜</div>
+          <div className="food-element food-left-8">🥖</div>
+          <div className="food-element food-left-9">🍱</div>
+          <div className="food-element food-left-10">👨‍🍳</div>
+        </div>
+
+        {/* RIGHT COLUMN */}
+        <div className="food-column food-column-right">
+          <div className="food-element food-right-1">🍽️</div>
+          <div className="food-element food-right-2">🥘</div>
+          <div className="food-element food-right-3">🍳</div>
+          <div className="food-element food-right-4">🥗</div>
+          <div className="food-element food-right-5">🍲</div>
+          <div className="food-element food-right-6">🥙</div>
+          <div className="food-element food-right-7">🍜</div>
+          <div className="food-element food-right-8">🥖</div>
+          <div className="food-element food-right-9">🍱</div>
+          <div className="food-element food-right-10">👨‍🍳</div>
+        </div>
+      </div>
+
       <div className="ambient-background">
         <div className="glow-orb orb-primary"></div>
         <div className="glow-orb orb-secondary"></div>

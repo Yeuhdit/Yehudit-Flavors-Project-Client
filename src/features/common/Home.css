@@ -274,3 +274,96 @@
   position: relative;
   overflow: hidden;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   🍽️ ANIMATED FOOD - SIDES ONLY (LEFT & RIGHT) - FAST & FURIOUS!
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.animated-food-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+  background: transparent;
+}
+
+.food-column {
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 15%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.food-column-left {
+  left: 0;
+}
+
+.food-column-right {
+  right: 0;
+}
+
+.food-element {
+  position: absolute;
+  opacity: 0.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  will-change: transform;
+}
+
+@keyframes floatFoodFast {
+  0% {
+    transform: translateY(-100px) rotateZ(0deg) scale(1);
+    opacity: 0;
+  }
+  
+  5% {
+    opacity: 0.6;
+  }
+  
+  50% {
+    transform: translateY(50vh) rotateZ(180deg) scale(0.95);
+    opacity: 0.7;
+  }
+  
+  95% {
+    opacity: 0.4;
+  }
+  
+  100% {
+    transform: translateY(100vh) rotateZ(360deg) scale(0.5);
+    opacity: 0;
+  }
+}
+
+/* LEFT COLUMN - STAGGERED */
+.food-left-1 { left: 5%; animation: floatFoodFast 8s infinite linear; animation-delay: 0s; }
+.food-left-2 { left: 5%; animation: floatFoodFast 7s infinite linear; animation-delay: 0.8s; }
+.food-left-3 { left: 5%; animation: floatFoodFast 8.5s infinite linear; animation-delay: 1.6s; }
+.food-left-4 { left: 5%; animation: floatFoodFast 7.5s infinite linear; animation-delay: 2.4s; }
+.food-left-5 { left: 5%; animation: floatFoodFast 8s infinite linear; animation-delay: 3.2s; }
+.food-left-6 { left: 5%; animation: floatFoodFast 7.8s infinite linear; animation-delay: 0.4s; }
+.food-left-7 { left: 5%; animation: floatFoodFast 8.2s infinite linear; animation-delay: 1.2s; }
+.food-left-8 { left: 5%; animation: floatFoodFast 7.5s infinite linear; animation-delay: 2s; }
+.food-left-9 { left: 5%; animation: floatFoodFast 8.3s infinite linear; animation-delay: 2.8s; }
+.food-left-10 { left: 5%; animation: floatFoodFast 8s infinite linear; animation-delay: 3.6s; }
+
+/* RIGHT COLUMN - STAGGERED */
+.food-right-1 { right: 5%; animation: floatFoodFast 8s infinite linear; animation-delay: 0.2s; }
+.food-right-2 { right: 5%; animation: floatFoodFast 7.5s infinite linear; animation-delay: 1s; }
+.food-right-3 { right: 5%; animation: floatFoodFast 8.5s infinite linear; animation-delay: 1.8s; }
+.food-right-4 { right: 5%; animation: floatFoodFast 7.8s infinite linear; animation-delay: 2.6s; }
+.food-right-5 { right: 5%; animation: floatFoodFast 8.2s infinite linear; animation-delay: 3.4s; }
+.food-right-6 { right: 5%; animation: floatFoodFast 8s infinite linear; animation-delay: 0.6s; }
+.food-right-7 { right: 5%; animation: floatFoodFast 7.6s infinite linear; animation-delay: 1.4s; }
+.food-right-8 { right: 5%; animation: floatFoodFast 8.3s infinite linear; animation-delay: 2.2s; }
+.food-right-9 { right: 5%; animation: floatFoodFast 7.9s infinite linear; animation-delay: 3s; }
+.food-right-10 { right: 5%; animation: floatFoodFast 8.1s infinite linear; animation-delay: 3.8s; }
