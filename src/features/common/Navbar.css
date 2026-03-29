@@ -1,158 +1,210 @@
 /* react-client/src/features/common/Navbar.css */
-
 .navbar {
   background: transparent !important;
   box-shadow: none !important;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 15px 0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 10px 0;
 }
 
 .navbar.scrolled {
-  background: rgba(252, 250, 248, 0.9) !important; /* תואם מושלם לרקע הבהיר של הבית */
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  padding: 8px 0;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05) !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(15px);
+  padding: 5px 0;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
 }
 
 .navbar-toolbar {
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
-/* --- לוגו יוקרתי --- */
 .navbar-logo {
-  font-weight: 900 !important;
-  color: #1a1a1a;
+  font-weight: 800 !important;
+  color: #333;
   cursor: pointer;
-  letter-spacing: -1.5px;
-  font-size: 2.2rem !important;
-  transition: transform 0.3s ease;
-}
-
-.navbar-logo:hover {
-  transform: scale(1.02);
+  letter-spacing: -1px;
+  font-size: 1.9rem;
 }
 
 .navbar-logo span {
-  background: linear-gradient(135deg, #E07A5F, #F4A261);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #ff7e5f            ;
 }
 
-/* --- קישורים בתפריט --- */
-.navbar-links {
-  display: flex;
-  gap: 15px;
+.scrolled .navbar-logo {
+  color: #222;
 }
 
-.navbar-links .nav-link-btn {
-  color: #555 !important;
-  font-weight: 600 !important;
-  font-size: 1.1rem !important;
-  padding: 8px 18px !important;
+.navbar-links button {
+  color: #444;
+  font-weight: 600;
+  margin: 0 10px;
+  border-radius: 8px;
+  transition: 0.3s;
+  font-size: 1.05rem;
+  padding: 10px 16px;
+}
+
+.navbar-links button:hover {
+  color: #ff7e5f;
+  background: rgba(224, 122, 95, 0.05);
+}
+
+/* פס דק מתחת לכפתור הפעיל */
+.nav-link-btn {
   position: relative;
-  background: transparent !important;
-  text-transform: none !important;
-  letter-spacing: 0.5px;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.navbar-links .nav-link-btn:hover {
-  color: #1a1a1a !important;
-}
-
-/* האנימציה של הקו התחתון במעבר עכבר */
-.navbar-links .nav-link-btn::after {
+.nav-link-btn::after {
   content: '';
   position: absolute;
-  bottom: 2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #E07A5F, #F4A261);
-  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: #ff7e5f;
   border-radius: 2px;
+  transform: scaleX(0);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.navbar-links .nav-link-btn:hover::after {
-  width: 60%;
+.nav-link-btn.active-nav-link::after {
+  transform: scaleX(1);
 }
 
-.navbar-links .nav-link-btn.active-nav-link {
-  color: #1a1a1a !important;
-  font-weight: 800 !important;
+.nav-link-btn.active-nav-link {
+  color: #E07A5F !important;
+  font-weight: 700;
 }
 
-.navbar-links .nav-link-btn.active-nav-link::after {
-  width: 80%;
-}
-
-/* --- כפתורי התחברות והרשמה --- */
-.login-btn {
-  color: #1a1a1a !important;
-  font-weight: 700 !important;
-  font-size: 1.1rem !important;
-  text-transform: none !important;
-  padding: 10px 24px !important;
-  border-radius: 50px !important;
-  transition: all 0.3s ease !important;
-}
-
-.login-btn:hover {
-  background: rgba(0, 0, 0, 0.04) !important;
+.nav-link-btn:hover::after {
+  transform: scaleX(1);
 }
 
 .register-btn {
-  background: #1a1a1a !important;
-  color: #ffffff !important;
-  padding: 10px 30px !important;
+  background: #E07A5F !important;
+  color: white !important;
+  padding: 10px 26px !important;
   border-radius: 50px !important;
-  text-transform: none !important;
+  text-transform: none;
   font-weight: 700 !important;
-  font-size: 1.1rem !important;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 4px 15px rgba(255, 126, 95, 0.3);
+  font-size: 1.05rem;
 }
 
-.register-btn:hover {
-  background: #333 !important;
-  transform: translateY(-3px);
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-}
-
-/* --- אזור המשתמש המחובר (העפנו את הכחול!) --- */
 .user-btn {
   text-transform: none !important;
-  color: #1a1a1a !important;
+  color: #333 !important;
   font-weight: 600 !important;
-  gap: 12px;
+  gap: 10px;
   font-size: 1rem;
-  padding: 6px 20px 6px 12px !important;
-  border-radius: 50px !important;
-  background: rgba(0,0,0,0.03) !important;
-  transition: background 0.3s ease !important;
 }
 
-.user-btn:hover {
-  background: rgba(0,0,0,0.06) !important;
+.navbar.home {
+  background: linear-gradient(90deg, rgba(255,243,236,0.95), rgba(255,250,240,0.95)) !important;
+  box-shadow: 0 12px 40px rgba(255,126,95,0.08) !important;
 }
 
-/* שינוי צבע ההרשאה מכחול לכתום-אפרסק יוקרתי */
-.user-name span {
-  color: #E07A5F !important; 
-  letter-spacing: 0.5px;
+.navbar.home .navbar-logo h1,
+.navbar.home .navbar-links a,
+.navbar.home .navbar-links button {
+  color: #E07A5F !important;
 }
 
-/* האווטאר מקבל גרדיאנט שמתאים לאתר */
-.MuiAvatar-root {
-  background: linear-gradient(135deg, #E07A5F, #F4A261) !important; 
-  box-shadow: 0 4px 10px rgba(224, 122, 95, 0.3);
+.navbar.recipes {
+  background: linear-gradient(90deg, rgba(240,249,255,0.95), rgba(245,253,255,0.95)) !important;
+  box-shadow: 0 12px 40px rgba(59,130,246,0.06) !important;
 }
 
-@media (max-width: 900px) {
-  .navbar-links { display: none; }
+.navbar .navbar-links .active {
+  background: rgba(255,126,95,0.12);
+  color: #ff7e5f !important;
+  box-shadow: 0 8px 24px rgba(255,126,95,0.08);
+  transform: translateY(-3px);
 }
+
+.navbar.recipes .navbar-links .recipes-link,
+.navbar.recipes .navbar-links .recipes-link.active {
+  background: rgba(59,130,246,0.12);
+  color: #1e40af !important;
+  box-shadow: 0 8px 24px rgba(59,130,246,0.08);
+  transform: translateY(-3px);
+}
+
+@media (max-width: 768px) {
+  .navbar-links {
+    display: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   🍽️ ANIMATED FOOD BACKGROUND - LIKE YOUTUBE VIDEO BUT FOR RECIPES!
+   ORGANIC FLOATING FOOD ELEMENTS WITH GRADIENT ANIMATIONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.animated-food-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+  background: linear-gradient(135deg, #FCFAF8 0%, #FFF5F0 50%, #F9EEEB 100%);
+}
+
+.food-element {
+  position: absolute;
+  opacity: 0.15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  animation: floatFood 20s infinite ease-in-out;
+  filter: blur(1px) drop-shadow(0 8px 20px rgba(0, 0, 0, 0.1));
+}
+
+/* ───────────────────────────────────────────────────────────── */
+/* FLOATING ANIMATION - ORGANIC MOTION */
+/* ───────────────────────────────────────────────────────────── */
+
+@keyframes floatFood {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+    opacity: 0;
+  }
+  
+  10% {
+    opacity: 0.15;
+  }
+  
+  50% {
+    transform: translateY(-100px) translateX(50px) rotate(180deg) scale(1.2);
+    opacity: 0.2;
+  }
+  
+  90% {
+    opacity: 0.1;
+  }
+  
+  100% {
+    transform: translateY(-200px) translateX(-80px) rotate(360deg) scale(0.9);
+    opacity: 0;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────── */
+/* INDIVIDUAL FOOD ITEMS - STAGGERED WITH DIFFERENT TIMING */
+/* ───────────────────────────────────────────────────────────── */
+
+.food-1 { bottom: 10%; left: 10%; animation-delay: 0s; animation-duration: 25s; }
+.food-2 { bottom: 20%; right: 15%; animation-delay: 2s; animation-duration: 30s; }
+.food-3 { bottom: 30%; left: 25%; animation-delay: 4s; animation-duration: 28s; }
+.food-4 { bottom: 15%; right: 25%; animation-delay: 1s; animation-duration: 26s; }
+.food-5 { bottom: 40%; left: 5%; animation-delay: 3s; animation-duration: 32s; }
+.food-6 { bottom: 25%; right: 5%; animation-delay: 5s; animation-duration: 27s; }
+.food-7 { bottom: 35%; left: 40%; animation-delay: 2.5s; animation-duration: 29s; }
+.food-8 { bottom: 20%; left: 60%; animation-delay: 3.5s; animation-duration: 31s; }
+.food-9 { bottom: 45%; right: 40%; animation-delay: 1.5s; animation-duration: 28s; }
+.food-10 { bottom: 10%; left: 80%; animation-delay: 4.5s; animation-duration: 30s; }
