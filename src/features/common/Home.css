@@ -1,14 +1,15 @@
+
 /* react-client/src/features/common/Home.css */
 
 .home-wrapper {
   min-height: 100vh;
-  background-color: #FCFAF8; /* גוון שמנת-אלבסטר סופר יוקרתי ונקי */
+  background-color: #FAFAFA; /* רקע חם, יוקרתי ונקי */
   overflow-x: hidden;
   position: relative;
   font-family: 'Heebo', 'Assistant', sans-serif;
 }
 
-/* --- רקע חי ויוקרתי (Ambient Orbs) --- */
+/* --- רקע יוקרתי (Glow Orbs) --- */
 .ambient-background {
   position: absolute;
   inset: 0;
@@ -20,41 +21,127 @@
 .glow-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(140px); /* טשטוש גבוה יותר למראה רך יותר */
-  opacity: 0.35;
-  animation: ambientFloat 18s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+  filter: blur(140px);
+  opacity: 0.25;
+  animation: ambientFloat 20s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
 }
 
 .orb-primary {
   width: 55vw;
   height: 55vw;
-  background: radial-gradient(circle, #F4A261 0%, transparent 70%); /* כתום-אפרסק מעודן */
-  top: -15vw;
+  background: radial-gradient(circle, #F4A261 0%, transparent 70%);
+  top: -20vw;
   right: -10vw;
-  animation-delay: -2s;
 }
 
 .orb-secondary {
   width: 45vw;
   height: 45vw;
-  background: radial-gradient(circle, #E07A5F 0%, transparent 70%); /* טרקוטה עמוקה */
-  bottom: -5vw;
+  background: radial-gradient(circle, #E07A5F 0%, transparent 70%);
+  bottom: -10vw;
   left: -15vw;
-  opacity: 0.25;
-  animation: ambientFloatReverse 15s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+  opacity: 0.15;
+  animation-delay: -5s;
 }
 
 @keyframes ambientFloat {
   0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(-40px, 60px) scale(1.1); }
+  100% { transform: translate(8vw, 8vh) scale(1.05); }
 }
 
-@keyframes ambientFloatReverse {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(60px, -40px) scale(1.05); }
+/* =========================================================
+   אפקט דליס: אלמנטים מרחפים יוקרתיים ונצנצים
+   ========================================================= */
+
+.luxury-floating-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
 }
 
-/* --- אזור התוכן המרכזי --- */
+/* נצנצים מרצדים */
+.sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background-color: #F4A261;
+  border-radius: 50%;
+  box-shadow: 0 0 12px #F4A261, 0 0 24px #E07A5F;
+  opacity: 0;
+  animation: twinkle 4s infinite ease-in-out;
+}
+
+.sp-1 { top: 18%; left: 22%; animation-delay: 0.2s; width: 5px; height: 5px; }
+.sp-2 { top: 40%; right: 18%; animation-delay: 1.5s; width: 8px; height: 8px; }
+.sp-3 { top: 65%; left: 12%; animation-delay: 2.7s; }
+.sp-4 { top: 25%; right: 35%; animation-delay: 0.8s; width: 4px; height: 4px; }
+.sp-5 { top: 85%; right: 28%; animation-delay: 3.1s; }
+
+@keyframes twinkle {
+  0% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1.3); }
+  100% { opacity: 0; transform: scale(0.5); }
+}
+
+/* תמונות צפות */
+.float-img {
+  position: absolute;
+  filter: drop-shadow(0 15px 35px rgba(0,0,0,0.12));
+  opacity: 0.9;
+}
+
+.float-left-1 { /* לחם גדול מאוד */
+  width: 220px;
+  top: 8%;
+  left: -30px;
+  animation: floatSlow 15s infinite ease-in-out alternate;
+}
+
+.float-right-1 { /* עגבנייה */
+  width: 160px;
+  top: 55%;
+  right: -20px;
+  animation: floatSlowReverse 18s infinite ease-in-out alternate;
+}
+
+.float-left-2 { /* שום */
+  width: 100px;
+  bottom: 10%;
+  left: 8%;
+  animation: floatRotate 25s infinite linear;
+}
+
+.float-right-2 { /* עלה */
+  width: 120px;
+  top: 25%;
+  right: 12%;
+  animation: floatSlow 20s infinite ease-in-out alternate;
+}
+
+/* סוגי האנימציות */
+@keyframes floatSlow {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-50px) rotate(12deg); }
+}
+
+@keyframes floatSlowReverse {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(45px) rotate(-12deg); }
+}
+
+@keyframes floatRotate {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-40px) rotate(180deg); }
+  100% { transform: translateY(0px) rotate(360deg); }
+}
+
+/* ========================================================= */
+
 .hero-section {
   min-height: 100vh;
   display: flex;
@@ -62,7 +149,7 @@
   justify-content: center;
   text-align: center;
   position: relative;
-  z-index: 1;
+  z-index: 2;
   padding: 80px 20px;
 }
 
@@ -72,43 +159,39 @@
   align-items: center;
 }
 
-/* --- טיפוגרפיה סופר-מודרנית --- */
 .hero-subtitle {
-  color: #E07A5F !important;
-  font-size: 1.15rem !important;
+  color: #ff7e5f !important;
+  font-size: 1.25rem !important;
   font-weight: 800 !important;
-  letter-spacing: 3px !important;
+  letter-spacing: 4px !important;
   margin-bottom: 24px !important;
-  text-transform: uppercase;
 }
 
 .hero-title {
-  font-size: clamp(3.5rem, 8vw, 6.5rem) !important;
+  font-size: clamp(4rem, 9vw, 7.5rem) !important;
   font-weight: 900 !important;
   color: #1A1A1A;
   line-height: 1.05 !important;
   margin-bottom: 30px !important;
-  letter-spacing: -2.5px;
+  letter-spacing: -3px;
 }
 
 .text-highlight {
-  background: linear-gradient(135deg, #E07A5F, #F4A261);
+  background: linear-gradient(135deg, #ff7e5f, #ffb47b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
-  padding-bottom: 5px;
 }
 
 .hero-description {
-  font-size: clamp(1.2rem, 2vw, 1.45rem) !important;
-  color: #555 !important;
-  max-width: 650px;
+  font-size: clamp(1.2rem, 2vw, 1.5rem) !important;
+  color: #666 !important;
+  max-width: 680px;
   line-height: 1.6 !important;
   margin-bottom: 60px !important;
   font-weight: 400 !important;
 }
 
-/* --- כפתורי פרימיום --- */
 .hero-actions {
   display: flex;
   gap: 20px;
@@ -122,71 +205,50 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  padding: 16px 42px;
+  padding: 16px 46px;
   border-radius: 50px;
   font-size: 1.15rem;
-  font-weight: 700;
+  font-weight: 800;
   font-family: inherit;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  text-decoration: none;
+  border: none;
 }
 
 .btn-primary {
   background-color: #1A1A1A;
   color: #ffffff;
-  border: 1px solid transparent;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 .btn-primary:hover {
-  background-color: #fff;
-  color: #1A1A1A;
-  border-color: #1A1A1A;
-  transform: translateY(-4px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-}
-
-.btn-icon {
-  font-size: 1.3rem !important;
-  transition: transform 0.3s ease !important;
-}
-
-.btn-primary:hover .btn-icon {
-  transform: translateX(-6px);
+  background-color: #ff7e5f;
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(255, 126, 95, 0.3);
 }
 
 .btn-outline {
-  background-color: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
+  background-color: transparent;
   color: #1A1A1A;
-  border: 1px solid rgba(26, 26, 26, 0.15);
+  border: 2px solid rgba(26, 26, 26, 0.1);
 }
 
 .btn-outline:hover {
-  background-color: #1A1A1A;
-  color: #fff;
   border-color: #1A1A1A;
-  transform: translateY(-4px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  background-color: rgba(26, 26, 26, 0.03);
+  transform: translateY(-3px);
 }
 
-/* --- ווידג'ט מזג אוויר פרימיום (Glassmorphism) --- */
+/* ווידג'ט מזג אוויר */
 .weather-glass-widget {
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  padding: 24px 48px;
-  border-radius: 30px;
+  padding: 20px 40px;
+  border-radius: 100px;
   border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
   display: inline-block;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-}
-
-.weather-glass-widget:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 25px 60px rgba(224, 122, 95, 0.08);
 }
 
 .weather-widget-title {
@@ -195,62 +257,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 12px !important;
+  gap: 8px;
+  margin-bottom: 8px !important;
 }
 
 .weather-widget-text {
-  color: #555 !important;
-  font-size: 1.2rem !important;
+  color: #666 !important;
+  font-size: 1.1rem !important;
   font-weight: 500 !important;
-  line-height: 1.5 !important;
 }
 
 .weather-temp-highlight {
-  color: #E07A5F;
+  color: #ff7e5f;
   font-weight: 800;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 
-/* --- אנימציות כניסה מתוזמנות --- */
-.reveal-stagger-1 { animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(40px); }
-.reveal-stagger-2 { animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards; opacity: 0; transform: translateY(40px); }
-.reveal-stagger-3 { animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; opacity: 0; transform: translateY(40px); }
-.reveal-stagger-4 { animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards; opacity: 0; transform: translateY(40px); }
-
-@keyframes slideUpFade {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* --- רספונסיביות --- */
-@media (max-width: 600px) {
-  .hero-actions {
-    flex-direction: column;
-    width: 100%;
-    margin-bottom: 40px;
-  }
-  .btn-premium {
-    width: 100%;
-  }
-  .hero-title {
-    font-size: 3.2rem !important;
-    letter-spacing: -1.5px;
-  }
-  .weather-glass-widget {
-    padding: 20px;
-    width: 100%;
-    border-radius: 20px;
-  }
-}
-/* react-client/src/features/common/Home.css - תוספות לסוף הקובץ */
-
+/* אזור "מתכונים מומלצים" */
 .recent-recipes-section {
-  padding: 80px 20px 120px;
+  padding: 60px 20px 120px;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .section-title {
@@ -262,108 +289,25 @@
 }
 
 .preview-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 25px 50px rgba(255, 126, 95, 0.15) !important;
-  background: rgba(255,255,255,0.95) !important;
+  transform: translateY(-12px);
+  box-shadow: 0 30px 60px rgba(255, 126, 95, 0.1) !important;
+  background: #ffffff !important;
 }
 
-/* התאמת אדמין ל-Home */
-.admin-wrapper {
-  min-height: 100vh;
-  background-color: #FCFAF8;
-  position: relative;
-  overflow: hidden;
+/* אנימציות כניסה (Reveal) */
+.reveal-stagger-1 { animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(40px); }
+.reveal-stagger-2 { animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards; opacity: 0; transform: translateY(40px); }
+.reveal-stagger-3 { animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; opacity: 0; transform: translateY(40px); }
+.reveal-stagger-4 { animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards; opacity: 0; transform: translateY(40px); }
+
+@keyframes slideUpFade {
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   🍽️ ANIMATED FOOD - SIDES ONLY (LEFT & RIGHT) - FAST & FURIOUS!
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-.animated-food-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-  overflow: hidden;
-  background: transparent;
+@media (max-width: 900px) {
+  .float-img { display: none; /* מסתיר את התמונות הצפות במסכים קטנים כדי שלא יפריעו לקריאה */ }
+  .hero-title { font-size: 3rem !important; }
+  .hero-actions { flex-direction: column; width: 100%; }
+  .btn-premium { width: 100%; }
+  .weather-glass-widget { border-radius: 30px; }
 }
-
-.food-column {
-  position: fixed;
-  top: 0;
-  height: 100%;
-  width: 15%;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.food-column-left {
-  left: 0;
-}
-
-.food-column-right {
-  right: 0;
-}
-
-.food-element {
-  position: absolute;
-  opacity: 0.5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 4rem;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-  will-change: transform;
-}
-
-@keyframes floatFoodFast {
-  0% {
-    transform: translateY(-100px) rotateZ(0deg) scale(1);
-    opacity: 0;
-  }
-  
-  5% {
-    opacity: 0.6;
-  }
-  
-  50% {
-    transform: translateY(50vh) rotateZ(180deg) scale(0.95);
-    opacity: 0.7;
-  }
-  
-  95% {
-    opacity: 0.4;
-  }
-  
-  100% {
-    transform: translateY(100vh) rotateZ(360deg) scale(0.5);
-    opacity: 0;
-  }
-}
-
-/* LEFT COLUMN - STAGGERED */
-.food-left-1 { left: 5%; animation: floatFoodFast 8s infinite linear; animation-delay: 0s; }
-.food-left-2 { left: 5%; animation: floatFoodFast 7s infinite linear; animation-delay: 0.8s; }
-.food-left-3 { left: 5%; animation: floatFoodFast 8.5s infinite linear; animation-delay: 1.6s; }
-.food-left-4 { left: 5%; animation: floatFoodFast 7.5s infinite linear; animation-delay: 2.4s; }
-.food-left-5 { left: 5%; animation: floatFoodFast 8s infinite linear; animation-delay: 3.2s; }
-.food-left-6 { left: 5%; animation: floatFoodFast 7.8s infinite linear; animation-delay: 0.4s; }
-.food-left-7 { left: 5%; animation: floatFoodFast 8.2s infinite linear; animation-delay: 1.2s; }
-.food-left-8 { left: 5%; animation: floatFoodFast 7.5s infinite linear; animation-delay: 2s; }
-.food-left-9 { left: 5%; animation: floatFoodFast 8.3s infinite linear; animation-delay: 2.8s; }
-.food-left-10 { left: 5%; animation: floatFoodFast 8s infinite linear; animation-delay: 3.6s; }
-
-/* RIGHT COLUMN - STAGGERED */
-.food-right-1 { right: 5%; animation: floatFoodFast 8s infinite linear; animation-delay: 0.2s; }
-.food-right-2 { right: 5%; animation: floatFoodFast 7.5s infinite linear; animation-delay: 1s; }
-.food-right-3 { right: 5%; animation: floatFoodFast 8.5s infinite linear; animation-delay: 1.8s; }
-.food-right-4 { right: 5%; animation: floatFoodFast 7.8s infinite linear; animation-delay: 2.6s; }
-.food-right-5 { right: 5%; animation: floatFoodFast 8.2s infinite linear; animation-delay: 3.4s; }
-.food-right-6 { right: 5%; animation: floatFoodFast 8s infinite linear; animation-delay: 0.6s; }
-.food-right-7 { right: 5%; animation: floatFoodFast 7.6s infinite linear; animation-delay: 1.4s; }
-.food-right-8 { right: 5%; animation: floatFoodFast 8.3s infinite linear; animation-delay: 2.2s; }
-.food-right-9 { right: 5%; animation: floatFoodFast 7.9s infinite linear; animation-delay: 3s; }
-.food-right-10 { right: 5%; animation: floatFoodFast 8.1s infinite linear; animation-delay: 3.8s; }

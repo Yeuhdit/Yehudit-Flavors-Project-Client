@@ -79,6 +79,7 @@ import About from './features/common/About'
 import Recipes from './features/recipes/Recipes'
 import RecipeDetail from './features/recipes/RecipeDetail';
 import MyRecipes from './features/recipes/MyRecipes';
+import Favorites from './features/recipes/Favorites'; // <--- הייבוא החדש לעמוד המועדפים
 
 import Login from './components/Login'
 import Register from './components/Register'
@@ -113,6 +114,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/recipes" element={<Recipes />} />
             <Route path="/my-recipes" element={<MyRecipes />} />
+            <Route path="/favorites" element={<Favorites />} /> {/* <--- הראוט החדש */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/recipe/:id" element={<RecipeDetail />} />
