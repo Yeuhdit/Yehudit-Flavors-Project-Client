@@ -1,4 +1,3 @@
-
 /* react-client/src/features/common/Home.css */
 
 .home-wrapper {
@@ -29,7 +28,7 @@
 .orb-primary {
   width: 55vw;
   height: 55vw;
-  background: radial-gradient(circle, #F4A261 0%, transparent 70%);
+  background: radial-gradient(circle, #F4A261 0%, transparent 70%); 
   top: -20vw;
   right: -10vw;
 }
@@ -37,7 +36,7 @@
 .orb-secondary {
   width: 45vw;
   height: 45vw;
-  background: radial-gradient(circle, #E07A5F 0%, transparent 70%);
+  background: radial-gradient(circle, #E07A5F 0%, transparent 70%); 
   bottom: -10vw;
   left: -15vw;
   opacity: 0.15;
@@ -81,6 +80,7 @@
 .sp-3 { top: 65%; left: 12%; animation-delay: 2.7s; }
 .sp-4 { top: 25%; right: 35%; animation-delay: 0.8s; width: 4px; height: 4px; }
 .sp-5 { top: 85%; right: 28%; animation-delay: 3.1s; }
+.sp-6 { top: 5%; right: 48%; animation-delay: 1.2s; }
 
 @keyframes twinkle {
   0% { opacity: 0; transform: scale(0.5); }
@@ -95,32 +95,82 @@
   opacity: 0.9;
 }
 
-.float-left-1 { /* לחם גדול מאוד */
-  width: 220px;
-  top: 8%;
-  left: -30px;
-  animation: floatSlow 15s infinite ease-in-out alternate;
+/* לחם גדול מאוד ואפקט ברק זהוב שביקשת! */
+.float-bread-1 {
+  width: 250px; /* הוגדל משמעותית! */
+  top: 5%; 
+  left: -50px;
+  animation: floatSlowBread 15s infinite ease-in-out alternate;
 }
-
-.float-right-1 { /* עגבנייה */
-  width: 160px;
-  top: 55%;
+.float-bread-2 {
+  width: 180px; 
+  bottom: 8%; 
   right: -20px;
   animation: floatSlowReverse 18s infinite ease-in-out alternate;
 }
 
-.float-left-2 { /* שום */
-  width: 100px;
-  bottom: 10%;
-  left: 8%;
-  animation: floatRotate 25s infinite linear;
+@keyframes floatSlowBread {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-50px) rotate(12deg); box-shadow: 0 0 40px rgba(244, 162, 97, 0.4); }
 }
 
-.float-right-2 { /* עלה */
-  width: 120px;
-  top: 25%;
-  right: 12%;
-  animation: floatSlow 20s infinite ease-in-out alternate;
+/* עגבנייה ואפקט ברק זהוב שביקשת! */
+.float-tomato {
+  width: 180px; 
+  top: 60%; 
+  right: -30px;
+  animation: floatSlowReverseTomato 18s infinite ease-in-out alternate;
+}
+
+@keyframes floatSlowReverseTomato {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(45px) rotate(-12deg); box-shadow: 0 0 40px rgba(255, 126, 95, 0.4); }
+}
+
+/* עלים */
+.float-leaf-1 { width: 120px; top: 18%; right: 15%; animation: floatSlow 20s infinite ease-in-out alternate; }
+.float-leaf-2 { width: 90px; bottom: 15%; left: 10%; animation: floatSlowReverse 16s infinite ease-in-out alternate; }
+
+/* חמשת השומים המיוחדים שביקשת! לכל אחד אנימציה מיוחדת משלו! */
+.float-garlic-1 { width: 90px; top: 35%; right: 8%; animation: floatRotate 25s infinite linear; }
+.float-garlic-2 { width: 110px; bottom: 25%; left: 5%; animation: floatSlow 18s infinite ease-in-out alternate; }
+.float-garlic-3 { width: 80px; top: 8%; left: 42%; animation: floatSlowReverse 15s infinite ease-in-out alternate; }
+.float-garlic-4 { width: 100px; bottom: 5%; left: 38%; animation: floatRotate 22s infinite linear; }
+.float-garlic-5 { width: 85px; top: 80%; right: 15%; animation: floatSlow 20s infinite ease-in-out alternate; }
+
+/* הצימוקים המתפוצצים! הוספתי המון כדי שזה ייראה כמו מיליון דולר! */
+.float-cranberry {
+  width: 30px; 
+  filter: drop-shadow(0 5px 15px rgba(139, 0, 0, 0.3));
+  opacity: 0.8;
+}
+
+.float-cranberry-1 { top: 25%; right: 30%; animation: burstFly 5s infinite; }
+.float-cranberry-2 { top: 40%; right: 25%; animation: burstFly 4.5s infinite; animation-delay: 0.2s; }
+.float-cranberry-3 { top: 15%; right: 35%; animation: burstFly 5.5s infinite; animation-delay: 0.4s; }
+.float-cranberry-4 { top: 60%; right: 28%; animation: burstFly 4.8s infinite; animation-delay: 0.1s; }
+.float-cranberry-5 { top: 80%; right: 32%; animation: burstFly 5.2s infinite; animation-delay: 0.3s; }
+.float-cranberry-6 { top: 30%; left: 30%; animation: burstFlyLeft 5s infinite; animation-delay: 0.5s; }
+.float-cranberry-7 { top: 45%; left: 25%; animation: burstFlyLeft 4.5s infinite; animation-delay: 0.7s; }
+.float-cranberry-8 { top: 10%; left: 35%; animation: burstFlyLeft 5.5s infinite; animation-delay: 0.9s; }
+.float-cranberry-9 { top: 65%; left: 28%; animation: burstFlyLeft 4.8s infinite; animation-delay: 0.6s; }
+.float-cranberry-10 { top: 85%; left: 32%; animation: burstFlyLeft 5.2s infinite; animation-delay: 0.8s; }
+.float-cranberry-11 { top: 10%; right: 50%; animation: burstFly 6s infinite; animation-delay: 1.1s; }
+.float-cranberry-12 { top: 50%; right: 50%; animation: burstFlyLeft 6s infinite; animation-delay: 1.3s; }
+.float-cranberry-13 { top: 90%; right: 50%; animation: burstFly 6.2s infinite; animation-delay: 1.5s; }
+.float-cranberry-14 { top: 20%; left: 50%; animation: burstFlyLeft 6.4s infinite; animation-delay: 1.7s; }
+.float-cranberry-15 { top: 70%; left: 50%; animation: burstFly 6.6s infinite; animation-delay: 1.9s; }
+
+@keyframes burstFly {
+  0% { transform: scale(0) translate(0, 0); opacity: 0; }
+  20% { transform: scale(1) translate(0, 0); opacity: 1; }
+  100% { transform: scale(0.5) translate(-100px, 100px); opacity: 0; filter: blur(2px); }
+}
+
+@keyframes burstFlyLeft {
+  0% { transform: scale(0) translate(0, 0); opacity: 0; }
+  20% { transform: scale(1) translate(0, 0); opacity: 1; }
+  100% { transform: scale(0.5) translate(100px, -100px); opacity: 0; filter: blur(2px); }
 }
 
 /* סוגי האנימציות */

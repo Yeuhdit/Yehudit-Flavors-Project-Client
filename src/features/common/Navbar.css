@@ -27,7 +27,7 @@
 }
 
 .navbar-logo span {
-  color: #ff7e5f            ;
+  color: #ff7e5f;
 }
 
 .scrolled .navbar-logo {
@@ -118,7 +118,7 @@
 
 .navbar .navbar-links .active {
   background: rgba(255,126,95,0.12);
-  color: #ff7e5f !important;
+  color: #E07A5F !important;
   box-shadow: 0 8px 24px rgba(255,126,95,0.08);
   transform: translateY(-3px);
 }
@@ -136,75 +136,3 @@
     display: none;
   }
 }
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   🍽️ ANIMATED FOOD BACKGROUND - LIKE YOUTUBE VIDEO BUT FOR RECIPES!
-   ORGANIC FLOATING FOOD ELEMENTS WITH GRADIENT ANIMATIONS
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-.animated-food-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: -1;
-  overflow: hidden;
-  background: linear-gradient(135deg, #FCFAF8 0%, #FFF5F0 50%, #F9EEEB 100%);
-}
-
-.food-element {
-  position: absolute;
-  opacity: 0.15;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 4rem;
-  animation: floatFood 20s infinite ease-in-out;
-  filter: blur(1px) drop-shadow(0 8px 20px rgba(0, 0, 0, 0.1));
-}
-
-/* ───────────────────────────────────────────────────────────── */
-/* FLOATING ANIMATION - ORGANIC MOTION */
-/* ───────────────────────────────────────────────────────────── */
-
-@keyframes floatFood {
-  0% {
-    transform: translateY(0) translateX(0) rotate(0deg) scale(1);
-    opacity: 0;
-  }
-  
-  10% {
-    opacity: 0.15;
-  }
-  
-  50% {
-    transform: translateY(-100px) translateX(50px) rotate(180deg) scale(1.2);
-    opacity: 0.2;
-  }
-  
-  90% {
-    opacity: 0.1;
-  }
-  
-  100% {
-    transform: translateY(-200px) translateX(-80px) rotate(360deg) scale(0.9);
-    opacity: 0;
-  }
-}
-
-/* ───────────────────────────────────────────────────────────── */
-/* INDIVIDUAL FOOD ITEMS - STAGGERED WITH DIFFERENT TIMING */
-/* ───────────────────────────────────────────────────────────── */
-
-.food-1 { bottom: 10%; left: 10%; animation-delay: 0s; animation-duration: 25s; }
-.food-2 { bottom: 20%; right: 15%; animation-delay: 2s; animation-duration: 30s; }
-.food-3 { bottom: 30%; left: 25%; animation-delay: 4s; animation-duration: 28s; }
-.food-4 { bottom: 15%; right: 25%; animation-delay: 1s; animation-duration: 26s; }
-.food-5 { bottom: 40%; left: 5%; animation-delay: 3s; animation-duration: 32s; }
-.food-6 { bottom: 25%; right: 5%; animation-delay: 5s; animation-duration: 27s; }
-.food-7 { bottom: 35%; left: 40%; animation-delay: 2.5s; animation-duration: 29s; }
-.food-8 { bottom: 20%; left: 60%; animation-delay: 3.5s; animation-duration: 31s; }
-.food-9 { bottom: 45%; right: 40%; animation-delay: 1.5s; animation-duration: 28s; }
-.food-10 { bottom: 10%; left: 80%; animation-delay: 4.5s; animation-duration: 30s; }
