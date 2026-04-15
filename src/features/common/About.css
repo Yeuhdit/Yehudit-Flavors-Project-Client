@@ -1,5 +1,3 @@
-/* react-client/src/features/common/About.css */
-
 :root {
   --primary-orange: #ff7e5f;
   --accent-orange: #ffb47b;
@@ -12,7 +10,7 @@
   min-height: 100vh;
   position: relative;
   overflow: hidden;
-  background-color: #faf9f8; /* רקע בהיר ורך יותר */
+  background-color: #faf9f8;
   font-family: 'Assistant', sans-serif;
   padding: 140px 20px;
   display: flex;
@@ -20,7 +18,6 @@
   justify-content: center;
 }
 
-/* --- רקע 2027: תאורת אורורה (Aurora) דינמית וחלקה --- */
 .modern-gradient-bg {
   position: absolute;
   top: 0;
@@ -51,20 +48,17 @@
   100% { transform: translate(40px, -30px) scale(1); opacity: 0.3; }
 }
 
-/* --- מיכל מרכזי --- */
 .about-container {
   position: relative;
   z-index: 1;
   max-width: 1200px !important;
 }
 
-/* --- כותרות וקו הסטייל הכתום --- */
 .about-header {
   margin-bottom: 120px;
   text-align: center;
 }
 
-/* כותרת מגזין יוקרתית */
 .massive-title {
   font-size: clamp(4.5rem, 12vw, 8.5rem) !important;
   font-weight: 900 !important;
@@ -75,7 +69,6 @@
   text-shadow: 0 20px 40px rgba(0,0,0,0.03);
 }
 
-/* טקסט צבעוני עם אנימציית זרימה */
 .text-accent {
   position: relative;
   display: inline-block;
@@ -92,7 +85,6 @@
   100% { background-position: 0% 50%; }
 }
 
-/* הפס החצי שקוף מתחת למילה המודגשת */
 .text-accent::after {
   content: '';
   position: absolute;
@@ -123,7 +115,6 @@
   letter-spacing: -0.5px;
 }
 
-/* --- גריד כרטיסיות: Glassmorphism 2.0 --- */
 .about-content-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -139,14 +130,13 @@
   border-radius: 40px;
   padding: 70px 50px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.03), 
-              inset 0 0 0 1px rgba(255, 255, 255, 0.5); /* מסגרת פנימית יוקרתית */
+              inset 0 0 0 1px rgba(255, 255, 255, 0.5);
   transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1),
               box-shadow 0.6s ease, background 0.6s ease;
   position: relative;
   overflow: hidden;
 }
 
-/* אפקט ברק (Shine) שעובר על הכרטיס במעבר עכבר */
 .content-card::before {
   content: '';
   position: absolute;
@@ -172,7 +162,6 @@
   left: 200%;
 }
 
-/* --- תיקון הפסים: עכשיו למטה ומתרחבים! --- */
 .card-title {
   font-size: 2.4rem !important;
   font-weight: 800 !important;
@@ -180,7 +169,7 @@
   margin-bottom: 30px !important;
   position: relative;
   display: inline-block;
-  padding-bottom: 12px; /* יצירת רווח לפס התחתון */
+  padding-bottom: 12px;
   z-index: 2;
 }
 
@@ -188,7 +177,7 @@
   content: '';
   position: absolute;
   bottom: 0;
-  right: 0; /* מתחיל מימין לעברית */
+  right: 0;
   width: 45px;
   height: 5px;
   background: linear-gradient(90deg, var(--primary-orange), var(--accent-orange));
@@ -197,7 +186,7 @@
 }
 
 .content-card:hover .card-title::after {
-  width: 100%; /* מתרחב על כל המילה במעבר עכבר */
+  width: 100%;
 }
 
 .card-text {
@@ -217,10 +206,9 @@
 
 .col-span-2 .card-title::after {
   right: 50%;
-  transform: translateX(50%); /* מירכוז הפס התחתון בכרטיס המרכזי */
+  transform: translateX(50%);
 }
 
-/* --- באנר פרימיום מודגש (Dark Luxury) --- */
 .highlight-banner {
   background: var(--dark-luxury);
   border-radius: 40px;
@@ -234,7 +222,6 @@
   border: 1px solid rgba(255, 180, 123, 0.15);
 }
 
-/* הילה כתומה זוהרת בתוך הבאנר השחור */
 .highlight-banner::before {
   content: '';
   position: absolute;
@@ -266,7 +253,6 @@
   color: #e6e6e6;
 }
 
-/* --- פוטר --- */
 .about-footer {
   text-align: center;
   padding: 60px 0 20px;
@@ -278,18 +264,35 @@
   font-weight: 400;
 }
 
-.copyright {
-  display: inline-block;
-  margin-top: 35px;
-  padding: 10px 25px;
-  background: rgba(0,0,0,0.03);
-  border-radius: 30px;
-  font-size: 0.95rem;
-  letter-spacing: 1.5px;
-  color: #888;
+
+
+.signature-container {
+  margin-top: 40px;
+  min-height: 60px;
 }
 
-/* --- אנימציות כניסה (Staggered Fade) --- */
+.animated-signature {
+  display: inline-block;
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.8rem;
+  color: #222;
+  white-space: nowrap;
+  overflow: hidden;
+  direction: rtl;
+  letter-spacing: 2px;
+  transition: color 0.3s;
+  min-width: 7.5em;
+  /* אין קו תחתון */
+}
+
+@keyframes signatureWrite {
+  to { width: 10.5em; }
+}
+@keyframes signatureLoop {
+  0%, 90% { color: #ff7e5f; }
+  95%, 100% { color: #ffb47b; }
+}
+
 .fade-in-up {
   opacity: 0;
   transform: translateY(40px) scale(0.98);
@@ -309,7 +312,6 @@
   }
 }
 
-/* --- התאמה חכמה למסכים קטנים --- */
 @media (max-width: 950px) {
   .about-content-grid {
     grid-template-columns: 1fr;
@@ -321,7 +323,7 @@
   }
   .col-span-2 .card-title::after {
     right: 0;
-    transform: none; /* החזרת הפס לימין במובייל */
+    transform: none;
   }
   .massive-title {
     font-size: 5rem !important;
@@ -330,4 +332,21 @@
   .content-card {
     padding: 50px 35px;
   }
+}
+.animated-signature {
+  display: inline-block;
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.5rem;
+  color: #ff7e5f;
+  border-bottom: 2px solid #ffb47b;
+  white-space: nowrap;
+  overflow: hidden;
+  direction: rtl;
+  letter-spacing: 2px;
+  transition: color 0.3s;
+  min-width: 7.5em;
+}
+.signature-container {
+  margin-top: 40px;
+  min-height: 60px;
 }

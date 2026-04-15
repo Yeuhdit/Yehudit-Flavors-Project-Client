@@ -1,69 +1,218 @@
-/* react-client/src/components/Contact.css */
+.contact-wrapper {
+  min-height: 100vh;
+  padding: 140px 20px 80px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  overflow: hidden;
+  background-color: #FAFAFA;
+}
 
+/* אנימציית רקע - מתחבר לעיצוב הקיים */
+.ambient-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(140px);
+  opacity: 0.25;
+  animation: ambientFloat 20s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+}
+
+.orb-primary {
+  width: 55vw;
+  height: 55vw;
+  background: radial-gradient(circle, #F4A261 0%, transparent 70%);
+  top: -10vw;
+  left: -20vw;
+}
+
+.orb-secondary {
+  width: 45vw;
+  height: 45vw;
+  background: radial-gradient(circle, #E07A5F 0%, transparent 70%);
+  bottom: -10vw;
+  right: -10vw;
+  animation-delay: -5s;
+}
+
+/* כרטיס יצירת הקשר - זכוכית חלבית */
 .contact-container {
-  max-width: 600px;
-  margin: 80px auto 50px;
-  padding: 40px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: 60px 50px;
+  border-radius: 40px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.04), inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+  max-width: 650px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
 }
 
-.contact-form {
+.contact-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.contact-title {
+  font-size: clamp(3rem, 6vw, 4rem) !important;
+  font-weight: 900 !important;
+  color: #1a1a1a;
+  line-height: 1.1 !important;
+  letter-spacing: -2px;
+  margin-bottom: 15px !important;
+}
+
+.text-highlight {
+  background: linear-gradient(135deg, #ff7e5f, #ffb47b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.contact-subtitle {
+  color: #666;
+  font-size: 1.2rem !important;
+  line-height: 1.6 !important;
+}
+
+/* שדות הטופס (Inputs) */
+.modern-contact-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
 
-.form-group {
+.input-group-modern {
   display: flex;
   flex-direction: column;
+  gap: 6px;
 }
 
-.form-group label {
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #333;
-  font-size: 16px;
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
-.form-group input,
-.form-group textarea {
-  padding: 12px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  font-size: 14px;
-  font-family: 'Heebo', sans-serif;
-  transition: border-color 0.3s;
+.contact-input-icon {
+  position: absolute;
+  right: 20px;
+  color: #999;
+  z-index: 2;
+  transition: color 0.3s ease;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
+.textarea-icon-wrapper {
+  align-items: flex-start;
+}
+
+.textarea-icon {
+  top: 20px;
+}
+
+.lux-input {
+  width: 100%;
+  padding: 18px 50px 18px 20px;
+  border: 2px solid transparent;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  font-family: inherit;
+  font-size: 1.05rem;
+  color: #1a1a1a;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.01);
+}
+
+.lux-textarea {
+  resize: none;
+  min-height: 140px;
+}
+
+.lux-input::placeholder {
+  color: #a0a0a0;
+}
+
+.lux-input:focus {
   outline: none;
+  background: #ffffff;
   border-color: #ff7e5f;
-  box-shadow: 0 0 8px rgba(255, 126, 95, 0.2);
+  box-shadow: 0 10px 25px rgba(255, 126, 95, 0.1);
+  transform: translateY(-2px);
 }
 
-.submit-btn {
-  padding: 14px 30px;
-  background: linear-gradient(135deg, #ff7e5f, #ff6347);
+.lux-input:focus + .contact-input-icon,
+.lux-input:not(:placeholder-shown) + .contact-input-icon {
+  color: #ff7e5f;
+}
+
+.input-error {
+  border-color: #ef4444 !important;
+  background: #fffafa !important;
+}
+
+.contact-error-text {
+  color: #ef4444;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-right: 15px;
+}
+
+/* כפתור שליחה יוקרתי */
+.lux-submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 18px;
+  margin-top: 10px;
+  background: #1a1a1a;
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
+  border-radius: 20px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  font-family: inherit;
   cursor: pointer;
-  transition: all 0.3s;
-  margin-top: 10px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
 
-.submit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 126, 95, 0.3);
+.lux-submit-btn:hover:not(:disabled) {
+  background: #ff7e5f;
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(255, 126, 95, 0.25);
 }
 
-.submit-btn:disabled {
-  background: #ccc;
+.lux-submit-btn:disabled {
+  background: #d1d5db;
+  color: #9ca3af;
   cursor: not-allowed;
-  transform: none;
+  box-shadow: none;
+}
+
+/* אנימציית כניסה */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: floatUpAnim 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes floatUpAnim {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .contact-container { padding: 40px 25px; border-radius: 30px; }
+  .contact-title { font-size: 2.5rem !important; }
 }
